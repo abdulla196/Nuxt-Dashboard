@@ -252,8 +252,7 @@ export default {
       this.getUserfirebase()
   },
   mounted(){
-    
-      this.getUserfirebase()
+    this.getUserfirebase()
     if(this.allAuth.checkAuth){
     setTimeout(() => this.myInfo(), 1000);
     }

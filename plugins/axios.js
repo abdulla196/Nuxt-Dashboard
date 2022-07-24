@@ -12,6 +12,6 @@ export default function ({ $axios, app }, inject) {
     }
   })
 
-  axios.setBaseURL('http://162.0.236.15:5003')
+  axios.setBaseURL('http://66.29.155.80:5003')
   inject('axios', axios)
 }
