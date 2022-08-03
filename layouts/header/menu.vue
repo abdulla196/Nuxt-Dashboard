@@ -77,9 +77,8 @@
           </v-list-group>
         </v-list>
         
-              <NuxtLink :to="localePath('/chat')" v-if="allAuth.checkAuth" style="position: relative;">
-              
-                      <div class = "number"  v-if="is_read == false">new</div>
+              <NuxtLink :to="localePath('/chat')" v-if="allAuth.checkAuth" style="position: relative;display: block;">
+                
                 <v-list-item link>
                   <v-list-item-icon>
                     <font-awesome-icon icon="message" class="fa" />
@@ -87,6 +86,7 @@
 
                   <v-list-item-content>
                     <v-list-item-title>
+                      <div class = "number"  v-if="is_read = false">new</div>
                       <span class="navM_">chat</span></v-list-item-title
                     >
                   </v-list-item-content>
@@ -240,16 +240,20 @@ export default {
         ...doc.data(), id: doc.id
       }));
       workInfo.forEach((newarray, idx, array)=>{
-        if (idx === array.length - 1){ 
+        if (idx === array.length - 1){
             if(newarray.from != 'admin'){
-              this.is_read = newarray.isRead
+              if(newarray.isRead == 'false'){
+                this.is_read = false
+              }
             } 
         }
       })
     }
   },
   created() {
-      this.getUserfirebase()
+    setInterval(() => {
+      // this.getUserfirebase()
+    }, 1000)
   },
   mounted(){
     this.getUserfirebase()

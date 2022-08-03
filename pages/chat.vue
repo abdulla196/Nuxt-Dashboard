@@ -15,7 +15,7 @@
                       <v-icon>mdi-account</v-icon>
                     </v-list-item-avatar>
                     <v-list-item-content>
-                      <div class = "unread"  v-if="is_read == false">new</div>
+                      <div class = "unread"  v-if="is_read== false"> new</div>
                       <v-list-item-title v-text="maids.name" />
                     </v-list-item-content>
                   </v-list-item>
@@ -52,7 +52,7 @@
                               v-on="on">
                               {{ msg.text }}
                               <sub class="ml-2" style="font-size: 0.5rem;">{{ msg.time }}</sub>
-
+                              {{msg.is_read}}
                             </v-chip>
                           </v-hover>
                         </div>
@@ -117,10 +117,10 @@ export default {
       console.log(documentID)
       const document = {
         text: this.messagesend,
-        form: "admin",
+        from: "admin",
         to: this.client_id,
         time: time.getTime().toString(),
-        isRead:false,
+        isRead:'false',
       };
       const q = query(collection(db, "messages"));
       const querySnapshot = await getDocs(q);
@@ -153,12 +153,13 @@ export default {
         ...doc.data(), id: doc.id
       }));
       workInfo.forEach((newarray, idx, array)=>{
-        // if(newarray.from != 'admin'){
-        //   if (idx === array.length - 1){ 
-        //       // this.Read(id,newarray.time)
-        //       console.log("Last callback call at index " + idx + " with value " + newarray.time ); 
-        //   } 
-        // }
+        if(newarray.from != 'admin'){
+          if (idx === array.length - 1){ 
+            if(newarray.isRead = 'false'){
+              this.Read(id,newarray.id)
+            }
+          } 
+        }
         var timestamps = newarray.time
         var res =parseInt(timestamps.substring(0, 13));
         var date = new Date(res);
@@ -167,7 +168,7 @@ export default {
           "from":newarray.from,
           "to":newarray.to,
           "text":newarray.text,
-          "isRead":false,
+          "isRead":newarray.isRead,
         })
       })
       this.arraymessages = messages
@@ -178,9 +179,9 @@ export default {
     async Read(id,timeid){
       const washingtonRef =doc(db, `messages/${id}/${id}`, timeid);
       await updateDoc(washingtonRef, {
-        isRead: true
+        isRead: 'true'
       });
-      this.is_read = true
+      this.is_read = 'true'
     },
     async getUserfirebase() {
       const querySnapshot = await getDocs(collection(db, "messages"));
@@ -189,7 +190,6 @@ export default {
       });
     },
     async ReadOrNotRead(id){
-      console.log(id)
       const db = getFirestore()
       const workQ = query(collection(db, `messages/${id}/${id}`))
       const workDetails = await getDocs(workQ)
@@ -205,10 +205,11 @@ export default {
                 "id":this.allUsersList.data._id,
                 "time":newarray.time,
               })
-            }, 1000);
-            console.log(this.alluser)
+            }, 1500);
             if(newarray.from != 'admin'){
-              this.is_read = newarray.isRead
+              if(newarray.isRead == 'false'){
+                this.is_read = false
+              }
             } 
         }
       })
@@ -217,7 +218,7 @@ export default {
   created() {
     setInterval(() => {
       this.clientData(this.client_id)
-    }, 1000)
+    }, 2000)
   },
   mounted() {
     if (this.alluser == '') {

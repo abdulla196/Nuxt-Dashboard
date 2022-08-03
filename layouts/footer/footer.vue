@@ -18,13 +18,13 @@
         ></path>
       </svg>
     </div>   -->
-    <footer class="mt-5" >
+    <!-- <footer class="mt-5" >
 
 
     <p class="my-2 copy">
       All copyrights © 2022.
     </p>
-  </footer>
+  </footer> -->
 </div>
  
 </template>
