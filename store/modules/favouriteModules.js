@@ -2,6 +2,8 @@ const state = {
     loading: true,
     data: [],
     oneFavourite: '',
+    length:0,
+    user_length:[]
 }
 
 const getters = {
@@ -9,9 +11,16 @@ const getters = {
 }
 
 const actions = {
-    async getFavourite({ state }) {
+    async getFavourite({ state },id) {
         await this.$axios.get('/api/favourite').then((res) => {
             state.data = res.data
+            state.length = res.data.data.length;
+            var fav = res.data.data
+            for (let i=0; i < fav.length; i++) {
+                if(fav[i].maid_id == id){
+                    state.user_length.push(fav[i].user_id)
+                }
+            }
             state.loading = false
         })
     },

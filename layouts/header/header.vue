@@ -15,7 +15,7 @@
         <ul>
           <li class="box_op_header">
             <NuxtLink :to="localePath('/')" class="logo">
-              logo
+              HALAN
             </NuxtLink>
           </li>
         </ul>
@@ -73,16 +73,13 @@ export default {
 
 <style scoped>
 .header {
-  box-shadow: 0px 1px 4px 0 rgb(0 0 0 / 5%);
-  border: 1px solid #efefef;
   z-index: 99;
-  background: #fff;
+  background: #f6ad08;
   width: 100%;
   position: fixed;
 }
 .headerFixed {
   position: fixed;
-  background: #fff;
   width: 100%;
   top: 0px;
 }
@@ -149,7 +146,11 @@ a.nuxt-link-exact-active.login_ {
 .menu ul li a:hover {
   color: #30c88c;
 }
-
+.box_op_header .logo{
+  font-size: 2rem;
+  color: #fff !important;
+  font-weight: bold;
+}
 .logo img {
   min-width: 47px;
   height: 40px;

@@ -57,11 +57,11 @@ export default {
 
     completeUserData() {
         console.log(this.allReviewsList)
-      this.ReviewEdit.comment = this.allReviewsList.oneReviews.comment
-      this.ReviewEdit.rate = this.allReviewsList.oneReviews.rate
-      this.ReviewEdit.user_id = this.allReviewsList.oneReviews.user_id
-      this.ReviewEdit.maid_id = this.allReviewsList.oneReviews.maid_id
-      this.ReviewEdit.id = this.$route.params.id
+        this.ReviewEdit.comment = this.allReviewsList.oneReviews.comment
+        this.ReviewEdit.rate = this.allReviewsList.oneReviews.rate
+        this.ReviewEdit.user_id = this.allReviewsList.oneReviews.user_id
+        this.ReviewEdit.maid_id = this.allReviewsList.oneReviews.maid_id
+        this.ReviewEdit.id = this.$route.params.id
     },
     UpdateReview() {
         console.log(this.ReviewEdit)

@@ -1,6 +1,18 @@
 <template>
 <div class="my-5">
   <h1 class="text-center">welcome dashboard</h1>
+  <div class="container">
+    <v-row class="m-3">
+      <v-card class="col-md-3 col-12">
+        <v-card-media fill-height src="https://i.pinimg.com/originals/ea/37/df/ea37df8d51c2c4bcc27c1708fff6c9d6.jpg" height="400px"></v-card-media>
+          <v-card-title primary-title>
+              <div>
+                  <h3 class="headline mb-0">dsads</h3>
+              </div>
+          </v-card-title>
+        </v-card>
+    </v-row>
+  </div>
 </div>
 </template>
 

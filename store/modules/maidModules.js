@@ -2,7 +2,9 @@
 const state = {
     loading:true,
     data: [],
-    
+    maidInfo:[],
+    maidreviews:[],
+    length:0
   };
   
   const getters = {
@@ -14,6 +16,7 @@ const state = {
     async getMaids({state}) {
      await this.$axios.get("/api/user/filter/maid").then((res) => {
         const maids = res.data.data;
+        state.length = maids.length;
           for (let i=0; i < maids.length; i++) {
               if(maids[i].maid.type =='maid'){
                 state.data.push(maids[i].maid)
@@ -23,6 +26,18 @@ const state = {
       });
     },
     
+async DeleteMids({ state, dispatch }, dataObj) {
+  this.$axios
+      .delete('/api/user/' + dataObj)
+      .then(function (res) {
+          alert('Maids deteled ' + res.data.message)
+          state.data = []
+          dispatch('getMaids')
+      })
+      .catch(function (error) {
+          console.log(error)
+      })
+},
     async getoneMaids({ state }, id) {
         state.loading = true
 
@@ -35,12 +50,14 @@ const state = {
     async getMaidWothReview({ state }, id) {
         state.loading = true
 
-        await this.$axios.get('/api/user/filter/maidwithreview/' + id).then((res) => {
-            state.data = res.data.data
+        await this.$axios.get('/api/user/filter/maidwithreview/'+id).then((res) => {
+            state.maidInfo = res.data.data.maid
+            state.maidreviews = res.data.data.reviews
             state.loading = false
         })
     },
     async updateMaids({ state, dispatch }, Obj) {
+      console.log(Obj)
         state.loading = true
         var data = JSON.stringify({
             phone: Obj.phone,
@@ -50,14 +67,15 @@ const state = {
             price: Obj.price,
             userName: Obj.userName,
             email: Obj.email,
+            maid_paper:Obj.maid_paper
         })
+        console.log(data)
         this.$axios.put('/api/user/' + Obj.id, data).then((res) => {
             state.cart = res.data
             if (res.data.status === 1) {
                 state.data = res.data
-                this.$router.push('/maids')
                 setTimeout(function(){
-                  window.location.reload()},500)
+                  window.location.href = '/maids'})
             } else {
                 state.addressMSG = res.data.message
             }

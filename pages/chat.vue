@@ -26,13 +26,10 @@
         </v-col>
         <v-col cols="auto" class="flex-grow-1 flex-shrink-0">
           <v-responsive class="overflow-y-hidden fill-height" height="500">
-            <v-card flat class="d-flex flex-column fill-height" v-if="active == true">
-              <v-card-title>
-                {{ client_name }}
-              </v-card-title>
-              <v-card-text class="flex-grow-1 overflow-y-auto">
+            <v-card flat class="fill-height" v-if="active == true">
+              <v-card-text class="flex-grow-1 overflow-y-auto chat-container" ref="block">
                 <template>
-                  <div class="" v-for="(msg , i) in arraymessages" :key="i">
+                  <div v-for="(msg , i) in arraymessages" :key="i" >
                     <v-menu offset-y>
                       <template v-slot:activator="{ on }">
                         <div v-if="msg.to == 'admin'" class="text-left">
@@ -66,13 +63,9 @@
                   </div>
                 </template>
               </v-card-text>
-              <v-card-text class="flex-shrink-1">
+              <v-card-text class="d-flex  flex-shrink-1">
                 <v-text-field v-model="messagesend" label="type a message" type="text" no- outlined />
-                
-                <v-btn
-                  depressed
-                  color="error"  @keyup.enter="writeToFirestore()" @click="writeToFirestore()"
-                >
+                <v-btn depressed color="error"  @keyup.enter="writeToFirestore()" @click="writeToFirestore()" >
                   Send now
                 </v-btn>
               </v-card-text>
@@ -89,13 +82,13 @@
 <script>
 import { db } from "~/plugins/firebase.js"
 import { doc, collection, getDocs, getFirestore, setDoc, query,updateDoc } from 'firebase/firestore'
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters,mapState } from 'vuex'
 export default {
   data() {
     return {
-      active: false,
+      active: true,
       user_icon: 'mdi-account',
-      messages: [],
+      // messages: [],
       arraymessages: [],
       messagesend: '',
       client_name: '',
@@ -105,11 +98,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["allAuth", 'allUsersList'])
+    ...mapGetters(["allAuth", 'allUsersList']),
+    ...mapState([ "messages"]),
   },
   methods: {
     ...mapActions(['AddReview', 'getUsers', 'getMaids','getoneUser']),
-
+     
+        // this.$refs.block.offsetTop
     
     async writeToFirestore() {
       const time = new Date()
@@ -143,6 +138,7 @@ export default {
     },
     async clientData(id) {
       if(id){ 
+        this.$refs.block.scrollTop = this.$refs.block.scrollHeight;
         this.client_id = id
       }
       const db = getFirestore()
@@ -215,10 +211,16 @@ export default {
       })
     }
   },
+  watch: {
+    messages() {
+      alert('ds')
+        
+    },
+  },
   created() {
     setInterval(() => {
       this.clientData(this.client_id)
-    }, 2000)
+    }, 1000)
   },
   mounted() {
     if (this.alluser == '') {
@@ -228,7 +230,14 @@ export default {
 }
 </script>
 <style scoped>
-
+.chat-container {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    height: calc(100vh - 19rem);
+    overflow-y: auto;
+    padding: 10px;
+    background-color: #f2f2f2;
+}
 .unread{
     height: 24px;
     width: 50px;

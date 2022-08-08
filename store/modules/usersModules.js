@@ -3,6 +3,8 @@ const state = {
   loading:true,
   data: [],
   myInfo:[],
+  message:'loading',
+  length:0
 };
 
 const getters = {
@@ -13,7 +15,13 @@ const actions = {
 
   async getUsers({state}) {
    await this.$axios.get("/api/user").then((res) => {
-      state.data = res.data.data;
+      const users = res.data.data;
+      for (let i=0; i < users.length; i++) {
+        if(users[i].type =='user'){
+          state.data.push(users[i])
+        }
+      } 
+      state.length = state.data.length;
       state.loading = false;
     });
   },
@@ -26,7 +34,17 @@ const actions = {
         state.loading = false
     })
 },
-
+async DeleteUser({ state, dispatch }, dataObj) {
+  this.$axios
+      .delete('/api/user/' + dataObj)
+      .then(function (res) {
+          alert('User deteled ' + res.data.message)
+          dispatch('getUsers')
+      })
+      .catch(function (error) {
+          console.log(error)
+      })
+},
 async updateUsers({ state, dispatch }, Obj) {
   state.loading = true
   var data = JSON.stringify({
@@ -37,16 +55,18 @@ async updateUsers({ state, dispatch }, Obj) {
       price: Obj.price,
       userName: Obj.userName,
       email: Obj.email,
+      maid_paper:Obj.maid_paper
   })
+  
   this.$axios.put('/api/user/' + Obj.id, data).then((res) => {
       state.cart = res.data
       if (res.data.status === 1) {
           state.data = res.data
-          this.$router.push('/users')
-          setTimeout(function(){
-            window.location.reload()},500)
+            state.message = res.data.message
+            setTimeout(function(){
+              window.location.href = '/users'})
       } else {
-          state.addressMSG = res.data.message
+          state.message = res.data.message
       }
       state.loading = false
   })
@@ -61,11 +81,13 @@ Signup({ state, dispatch }, arrayData) {
       "type":arrayData.type,
       "location":arrayData.location,
       "phone":arrayData.phone,
-      "details":arrayData.details
+      "details":arrayData.details,
+      "maid_paper":arrayData.maid_paper
   });
   this.$axios
       .post('/signup', data)
       .then((res) => {
+        console.log(res)
           state.loading = false
           if (res.data.status == 1) {
              dispatch('routerTo')
@@ -73,9 +95,11 @@ Signup({ state, dispatch }, arrayData) {
               alert('error')
           }
       })
-      .catch((error) => {
-        alert(res.data.message)
-      })
+      .catch(function (error) {
+        if(error.message = 'Request failed with status code 500'){
+          state.message = 'duplicate key error collection email or user name';
+        }
+      });
 },
   async changePassword({ state }, arrayData) {
     var data = JSON.stringify({
@@ -123,8 +147,8 @@ Signup({ state, dispatch }, arrayData) {
 
 
     var data = new FormData()
-    data.append('image', Obj.photo)
-    var config = { headers: {'Content-Type': 'application/json'} }; 
+    data.append('image', Obj,Obj.name)
+    var config = { headers: {'Content-Type': 'multipart/form-data'} }; 
     this.$axios.post('/api/user/photo', data,config).then((res) => {
       if (res.data.status === 1) {
         window.location.reload()

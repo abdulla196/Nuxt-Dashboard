@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/Notifications/create", {data:[{}],fetch:{},mutations:[]});

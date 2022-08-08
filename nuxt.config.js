@@ -35,7 +35,8 @@ export default {
     '~/plugins/fontawesome.js',
     '~/plugins/VuePhoneNumberInput.js',
     '~/plugins/validation-rules.js',
-    '~/plugins/CxltToastr.js'
+    '~/plugins/CxltToastr.js',
+    { src: '~/plugins/imageUpload.js', mode: 'client' }
 
   ],
   router: {
@@ -59,6 +60,7 @@ export default {
     'cookie-universal-nuxt',
     '@nuxtjs/i18n',
     '@nuxtjs/style-resources',
+    'vue-scrollto/nuxt',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

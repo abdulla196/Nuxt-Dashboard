@@ -2,6 +2,7 @@ const state = {
     loading: true,
     data: [],
     oneNotification: '',
+    length:0
 }
 
 const getters = {
@@ -12,6 +13,7 @@ const actions = {
     async getNotification({ state }) {
         await this.$axios.get('/api/notification').then((res) => {
             state.data = res.data
+            state.length = res.data.data.length
             state.loading = false
         })
     },

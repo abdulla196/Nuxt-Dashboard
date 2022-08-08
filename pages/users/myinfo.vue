@@ -199,7 +199,6 @@
 
                                 <v-expansion-panel-content>
 
-                                    <v-form ref="form" @submit="changepohtoFunction">
                                         <div class="form_account_body">
                                             <v-file-input
                                                 :rules="rulesImage"
@@ -207,15 +206,14 @@
                                                 placeholder="Pick an avatar"
                                                 prepend-icon="mdi-camera"
                                                 label="Change profile"
-                                                v-model="photodata.photo"
+                                                @change="onFileChanged"
                                             ></v-file-input>
                                             <v-btn color="success" class="sub"
-                                                @click="changepohtoFunction"
+                                                @click="onUpload"
                                                 type="submit">
                                                 change photo
                                             </v-btn>
                                         </div>
-                                    </v-form>
                                 </v-expansion-panel-content>
                             </v-expansion-panel>
                         </v-expansion-panels>
@@ -245,7 +243,8 @@ export default {
         showPasswordOld: false,
         showPassword: false,
         photodata:{
-            photo:''
+            photo:'',
+            selectedFile: null
         },
         passworddata: {
             valid: false,
@@ -312,12 +311,13 @@ export default {
       if (this.$refs.form.validate() === false) return false
       this.UpdateUserInfo(this.dataInfo)
     },
-    
-    changepohtoFunction(e) {
-        console.log(this.photodata)
-      e.preventDefault()
-      this.changeMyPhoto(this.photodata)
+     onFileChanged (event) { 
+        this.selectedFile = event
     },
+  onUpload() {
+     
+    this.changeMyPhoto(this.selectedFile,this.selectedFile.name)
+  },
 
     changePasswordFunction(e) {
       e.preventDefault()

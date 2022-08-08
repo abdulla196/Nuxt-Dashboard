@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app" id="app">
     <v-app>
       <Header />
       <div class="pages">
@@ -233,13 +233,13 @@ input.input-tel__input:lang(ar) {
   margin: 0px 5px;
 }
 @media (max-width: 1100px) {
-  .container_cc {
+  .container_cc,.container {
     padding: 0px 50px;
   }
 }
 
 @media (max-width: 768px) {
-  .container_cc {
+  .container_cc,.container {
     padding: 0px 20px;
   }
 }

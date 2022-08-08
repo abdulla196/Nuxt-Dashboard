@@ -42,11 +42,17 @@
                                         {{ icons.mdiEye }}
                                     </v-icon>
                                 </NuxtLink>
-                                <!-- <NuxtLink :to="localePath('/delete')">
-                                    <v-icon left>
-                                        {{ icons.mdiDelete }}
-                                    </v-icon>
-                                </NuxtLink> -->
+                                <v-btn
+                                    fab
+                                    dark
+                                    small
+                                    :rounded="false" 
+                                    @click="Delete(item._id)"
+                                    color="red"
+                                    text
+                                >
+                                    <v-icon>mdi-delete</v-icon>
+                                </v-btn>
                             </v-row>
                         </td>
                     </tr>
@@ -77,7 +83,12 @@ export default {
     ...mapGetters(['allMaidsList']),
   },
   methods:{
-    ...mapActions(['getMaids'])
+    ...mapActions(['getMaids','DeleteMids']),
+    
+     Delete(id) {
+      this.DeleteMids(id)
+    },
+
   },
    mounted() { 
     if(this.allMaidsList.data == ''){

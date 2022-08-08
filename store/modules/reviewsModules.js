@@ -2,6 +2,7 @@ const state = {
     loading: true,
     data: [],
     oneReviews: '',
+    length:0
 }
 
 const getters = {
@@ -12,6 +13,7 @@ const actions = {
     async getReviews({ state }) {
         await this.$axios.put('/api/review').then((res) => {
             state.data = res.data
+            state.length = res.data.data.length
             state.loading = false
         })
     },

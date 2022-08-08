@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/ar/account", {data:[{}],fetch:{},mutations:[]});

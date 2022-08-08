@@ -3,16 +3,16 @@
   <v-card-text>
     <v-container>
       <v-row>
-        <v-col cols="6">
+        <v-col class="col-md-6 col-12">
           <v-text-field label="phone" prefix="" outlined v-model="MaidsEdit.phone" required></v-text-field>
         </v-col>
-        <v-col cols="6">
+        <v-col class="col-md-6 col-12">
           <v-text-field label="location" v-model="MaidsEdit.location" required outlined></v-text-field>
         </v-col>
-        <v-col cols="6">
+        <v-col class="col-md-6 col-12">
           <v-text-field label="details" prefix="" outlined v-model="MaidsEdit.details" required></v-text-field>
         </v-col>
-        <v-col cols="6">
+        <v-col class="col-md-6 col-12">
             <v-menu
                 ref="menu"
                 v-model="menu"
@@ -40,16 +40,29 @@
                 ></v-date-picker>
           </v-menu>
         </v-col>
-        <v-col cols="6">
+        <v-col class="col-md-6 col-12">
           <v-text-field label="price" prefix="" outlined v-model="MaidsEdit.price" required></v-text-field>
         </v-col>
-        <v-col cols="6">
+        <v-col class="col-md-6 col-12">
           <v-text-field label="userName" v-model="MaidsEdit.userName" required outlined></v-text-field>
         </v-col>
 
-        <v-col cols="6">
+        <v-col class="col-md-6 col-12">
           <v-text-field label="email" v-model="MaidsEdit.email" required outlined></v-text-field>
         </v-col>
+        <div id="my-strictly-unique-vue-upload-multiple-image" style="display: flex; justify-content: center;" class="col-12">
+          <vue-upload-multiple-image
+              @upload-success="uploadImageSuccess"
+              @before-remove="beforeRemove"
+              :data-images="MaidsEdit.maid_paper"
+              dragText="drag image"
+              idUpload="myIdUpload"
+              browseText = 'select image'
+              primaryText ='images'
+              popupText = ""
+              markIsPrimaryText=""
+              ></vue-upload-multiple-image>
+          </div>
         <div class="col-12 text-center">
           <v-btn depressed color="primary" @click="UpdateMaid">
             save
@@ -63,12 +76,13 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-
+import VueUploadMultipleImage from 'vue-upload-multiple-image'
 export default {
   data: () => ({
     activePicker: null,
     menu: false,
     MaidsEdit: {
+      maid_paper: [],
       phone: '',
       location: '',
       details: '',
@@ -83,6 +97,9 @@ export default {
 
   },
   
+  components: {
+    VueUploadMultipleImage
+  },
   watch: {
     menu (val) {
       val && setTimeout(() => (this.activePicker = 'YEAR'))
@@ -90,6 +107,22 @@ export default {
   },
   methods: {
     ...mapActions(['updateMaids', 'getoneMaids']),
+    uploadImageSuccess(formData, index, fileList) {
+      console.log('data', formData, index, fileList)
+      this.MaidsEdit.maid_paper =fileList
+      // Upload image api
+      // axios.post('/api/user/'+this.$route.params.id, { data: formData }).then(response => {
+      //   console.log(response)
+      // })
+    },
+    beforeRemove (index, done, fileList) {
+      console.log('index', index, fileList)
+      var r = confirm("remove image")
+      if (r == true) {
+        done()
+      } else {
+      }
+    },
     save (date) {
         this.MaidsEdit.birthday = date
         this.$refs.menu.save(this.MaidsEdit.birthday)
@@ -99,11 +132,17 @@ export default {
       this.MaidsEdit.phone = this.allMaidsList.data.phone
       this.MaidsEdit.location = this.allMaidsList.data.location
       this.MaidsEdit.details = this.allMaidsList.data.details
-      this.MaidsEdit.birthday = this.allMaidsList.data.birthday
+      if(this.allUsersList.data.birthday == 'null'){
+        this.MaidsEdit.birthday = ''
+      }
+      else{
+        this.MaidsEdit.birthday = this.allUsersList.data.birthday
+      }
       this.MaidsEdit.price = this.allMaidsList.data.price
       this.MaidsEdit.userName = this.allMaidsList.data.userName
       this.MaidsEdit.email = this.allMaidsList.data.email
       this.MaidsEdit.id = this.$route.params.id
+      this.MaidsEdit.maid_paper = this.allMaidsList.data.maid_paper
     },
     UpdateMaid() {
       console.log(this.MaidsEdit)
@@ -125,4 +164,11 @@ export default {
 
 
 <style>
+#my-strictly-unique-vue-upload-multiple-image {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
 </style>

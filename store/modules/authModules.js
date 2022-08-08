@@ -12,7 +12,7 @@ const state = {
   errors: [],
   loadingupdate: false,
   sessionExpired: false,
-
+  errorMesage:'',
 }
 
 const getters = {
@@ -52,11 +52,7 @@ const actions = {
 
   Logout() {
     this.$cookies.remove('Authorization')
-    if (this.$i18n.locale === 'ar') {
-      window.location.href = '/login'
-    } else {
-      window.location.href = '/login'
-    }
+      window.location.href = '/'
   },
 
   registerAction({ state, dispatch }, arrayData) {
@@ -100,6 +96,8 @@ const actions = {
     })
       .catch((error) => {
         state.loading = false
+        console.log(error.message)
+        state.errorMesage  = error.message
       })
   },
 

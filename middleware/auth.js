@@ -17,8 +17,7 @@ export default function ({ route, store, redirect, app, i18n }) {
   }
   //  Invalid Access For Visitor
   if (!checkUser) {
-    if (i18n.locale === 'en') return redirect('/login')
-    else return redirect('/ar/login')
+    return redirect('')
   }
   
   //  Invalid Access For User
@@ -29,7 +28,6 @@ export default function ({ route, store, redirect, app, i18n }) {
       route.path
     )
   ) {
-    if (i18n.locale === 'en') return redirect('/')
-    else return redirect('/ar')
+    return redirect('')
   }
 }

@@ -12,7 +12,10 @@
                 <v-card  class="mb-2">
                     <v-card-text>
                         <div>comment : {{item.comment}}</div>
-                        <div>rate : {{item.rate}}</div>
+                        <div>rate :  
+                        <v-col cols="12" style="padding:0 0.5rem">
+                            <v-rating v-model="item.rate" icon-label="custom icon label text {0} of {1}"></v-rating>
+                        </v-col></div>
                         <div class="row">
                             <div class="col-6"  v-for="user in item.user" :key="user._id">
                                 user Name : {{user.userName}}
@@ -35,7 +38,7 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
     data: () => ({
-
+                rate: 0,
     }),
     computed: {
 

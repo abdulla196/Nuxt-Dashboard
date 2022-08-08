@@ -76,7 +76,7 @@
                                     <v-icon>mdi-delete</v-icon>
                                 </v-btn>
                                 
-                                <NuxtLink :to="localePath('/reviews/details/'+item._id)">
+                                <NuxtLink :to="localePath('/reviews/details/'+item.maid_id)">
                                     <v-icon left>
                                         {{ icons.mdiEye }}
                                     </v-icon>

@@ -10,6 +10,7 @@
       >
         <v-list-item>
           <div class="menu_head">
+            <p class="logo">halan</p>
             <v-app-bar-nav-icon
               class="menuBtn"
               @click.stop="onClose()"
@@ -171,7 +172,7 @@ export default {
           action: 'mdi-account-multiple',
           items: [
             { title: 'Users',href:'users' },
-            // { title: 'Create User',href:'users/create' }
+            { title: 'Create User',href:'register' }
           ],
           title: 'Users',
         },
@@ -209,9 +210,9 @@ export default {
         {
           action: 'mdi-account',
           items: [
-            { title: 'Sign Up',href:'register' },
+            { title: 'Create User',href:'register' },
           ],
-          title: 'Sign Up',
+          title: 'Create User',
         }
       ],
     }
@@ -267,7 +268,7 @@ export default {
 <style scoped>
 .menu_head {
   display: flex;
-  justify-content:flex-end;
+  justify-content:space-between;
     align-items: center;
   width: 100%;
   padding: 15px;
@@ -283,6 +284,10 @@ export default {
   width: 100px;
   height: 40px;
   margin: 0px;
+}
+.menu_head .logo{
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 .logo img {
   min-width: 47px;
