@@ -17,6 +17,7 @@
                     <v-list-item-content>
                       <div class = "unread"  v-if="is_read== false"> new</div>
                       <v-list-item-title v-text="maids.name" />
+                      <v-list-item-title v-text="maids.last_message" style="color:#9a9292"/>
                     </v-list-item-content>
                   </v-list-item>
                 </template>
@@ -200,6 +201,7 @@ export default {
                 "name":this.allUsersList.data.userName,
                 "id":this.allUsersList.data._id,
                 "time":newarray.time,
+                "last_message":newarray.text
               })
             }, 1500);
             if(newarray.from != 'admin'){

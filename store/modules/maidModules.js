@@ -4,7 +4,7 @@ const state = {
     data: [],
     maidInfo:[],
     maidreviews:[],
-    length:0
+    length:0,
   };
   
   const getters = {
@@ -46,7 +46,6 @@ async DeleteMids({ state, dispatch }, dataObj) {
             state.loading = false
         })
     },
-    
     async getMaidWothReview({ state }, id) {
         state.loading = true
 

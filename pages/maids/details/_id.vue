@@ -35,7 +35,7 @@
         <div v-for="items in allMaidsList.maidreviews" :key="items._id">
         <h3 class="text-h5 text-center mb-3">rate_average: {{items.rate_average}}</h3>
         <h3 class="text-h5 text-center mb-3">number of users reviews: {{items.reviews.length}}</h3>
-        <h3 class="text-h5 text-center mb-3">number of users favourite: {{allFavouriteList.user_length.length}}</h3>
+        <h3 class="text-h5 text-center mb-3">number of users favourite: {{allFavouriteList.num_user_fav}}</h3>
         <v-row >
             <v-col cols="12" sm="6" md="4" v-for="item in items.reviews" :key="item._id">
                 <v-card  class="mb-2">
@@ -75,7 +75,7 @@ export default {
 
 
     methods: {
-        ...mapActions(['getMaidWothReview','getFavourite']),
+        ...mapActions(['getMaidWothReview','getFavourite','getCountFavUser']),
     },
 
     computed: {
@@ -85,6 +85,7 @@ export default {
 
     mounted() {
         this.getMaidWothReview(this.$route.params.id)
+        this.getCountFavUser(this.$route.params.id)
         this.getFavourite(this.$route.params.id)
     },
 }

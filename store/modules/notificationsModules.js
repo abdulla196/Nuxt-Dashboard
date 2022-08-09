@@ -42,13 +42,14 @@ const actions = {
             is_clicked: Obj.is_clicked,
             content: Obj.content,
             subject: Obj.subject,
+            user_id: Obj.usersId,
         })
-        const config = { headers: { 'Content-Type': 'application/json' } }
-        this.$axios.put('/api/notification/' + Obj.id, data, config).then((res) => {
+        this.$axios.put('/api/notification/' + Obj.id, data).then((res) => {
             state.cart = res.data
             if (res.data.status === 1) {
                 state.data = res.data
-                this.$router.push('/Notifications')
+                setTimeout(function(){
+                  window.location.href = '/Notifications'})
             } else {
                 state.addressMSG = res.data.msg
             }
@@ -56,12 +57,15 @@ const actions = {
         })
     },
     Addnotification({ state, dispatch }, arrayData) {
-        var data = JSON.stringify({
-            "content":arrayData.content,
-            "subject":arrayData.subject,
-            "is_clicked":arrayData.is_clicked
-        });
-        this.$axios
+        console.log(arrayData)
+        for(var i =0 ; i < arrayData.usersId.length ; i++){
+            var data = JSON.stringify({
+                "content":arrayData.content,
+                "subject":arrayData.subject,
+                "is_clicked":arrayData.is_clicked,
+                "user_id":arrayData.usersId[i]
+            });
+            this.$axios
             .post('/api/notification/', data)
             .then((res) => {
                 state.loading = false
@@ -74,6 +78,7 @@ const actions = {
             .catch((error) => {
                 state.loading = false
             })
+        }
     },
 }
 

@@ -3,7 +3,8 @@ const state = {
     data: [],
     oneFavourite: '',
     length:0,
-    user_length:[]
+    user_length:[],
+    num_user_fav:0
 }
 
 const getters = {
@@ -21,6 +22,13 @@ const actions = {
                     state.user_length.push(fav[i].user_id)
                 }
             }
+            state.loading = false
+        })
+    },
+    
+    async getCountFavUser({ state }, id) {
+        await this.$axios.get('/api/favourite/countForOne/' + id).then((res) => {
+            state.num_user_fav = res.data.data
             state.loading = false
         })
     },

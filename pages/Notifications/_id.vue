@@ -17,6 +17,15 @@
                 :value="NotificationEdit.content"
               ></v-textarea>
             </v-col>
+            
+            <v-col cols="12"> 
+              <label>Select user</label>
+              <select v-model="NotificationEdit.usersId" outlined label="select user" required>
+                  <option value="" selected disabled>select user</option>
+                  <option v-for="item in allUsersList.data" :key="item._id" :value="item._id">
+                      {{ item.userName }}</option>
+              </select>
+            </v-col>
             <v-col cols="12">
               <v-checkbox v-model="NotificationEdit.is_clicked" label="is clicked ?"></v-checkbox>
             </v-col>
@@ -34,8 +43,6 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import LoadingP from '../../components/tools/loadingP.vue'
-import NoData from '../../components/tools/no-data.vue'
 export default {
   name: 'IndexPage',
   data() {
@@ -43,31 +50,38 @@ export default {
       NotificationEdit: {
         content: '',
         subject: '',
+        users:'please select',
+        usersId:'',
         is_clicked: false,
         id: this.$route.params.id,
       },
     }
   },
   methods: {
-    ...mapActions(['updateNotification','getoneNotification']),
+    ...mapActions(['updateNotification','getoneNotification','getUsers']),
 
     completeUserData() {
       console.log(this.allnotificationList)
       this.NotificationEdit.subject = this.allnotificationList.oneNotification.subject
       this.NotificationEdit.content = this.allnotificationList.oneNotification.content
       this.NotificationEdit.is_clicked = this.allnotificationList.oneNotification.is_clicked
+      this.NotificationEdit.usersId = this.allnotificationList.oneNotification.user_id
       this.NotificationEdit.id = this.$route.params.id
     },
+    
     UpdateUNotifi() {
       this.updateNotification(this.NotificationEdit);
     },
   },
   computed: {
-    ...mapGetters(['allnotificationList']),
+    ...mapGetters(['allnotificationList','allUsersList']),
   },
   mounted() {
     this.getoneNotification(this.$route.params.id)
     setTimeout(() => this.completeUserData(), 1000);
+    if(this.allUsersList.data == ''){
+        this.getUsers() 
+    }
   },
 }
 </script>
