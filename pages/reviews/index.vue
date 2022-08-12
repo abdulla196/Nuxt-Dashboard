@@ -64,17 +64,11 @@
                                         {{ icons.mdiPencil }}
                                     </v-icon>
                                 </NuxtLink>
-                                <v-btn
-                                    fab
-                                    dark
-                                    small
-                                    :rounded="false" 
+                                <v-icon 
                                     @click="Delete(item._id)"
-                                    color="red"
-                                    text
-                                >
-                                    <v-icon>mdi-delete</v-icon>
-                                </v-btn>
+                                    color="red">
+                                    {{ icons.mdiDelete }}
+                                </v-icon>
                                 
                                 <NuxtLink :to="localePath('/reviews/details/'+item.maid_id)">
                                     <v-icon left>

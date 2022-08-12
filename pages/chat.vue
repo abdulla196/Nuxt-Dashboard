@@ -26,7 +26,7 @@
           </v-responsive>
         </v-col>
         <v-col cols="auto" class="flex-grow-1 flex-shrink-0">
-          <v-responsive class="overflow-y-hidden fill-height" height="500">
+          <v-responsive class="overflow-y-hidden fill-height">
             <v-card flat class="fill-height" v-if="active == true">
               <v-card-text class="flex-grow-1 overflow-y-auto chat-container" ref="block">
                 <template>
@@ -221,7 +221,7 @@ export default {
   },
   created() {
     setInterval(() => {
-      this.clientData(this.client_id)
+      // this.clientData(this.client_id)
     }, 1000)
   },
   mounted() {

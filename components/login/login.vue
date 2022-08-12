@@ -49,6 +49,22 @@
             </v-form>
           </div>
         </div>
+        <v-snackbar
+      v-model="snackbar"
+    >
+      {{ this.$store.state.auth.errorMesage }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="pink"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
       </div>
     </div>
   </div>
@@ -76,6 +92,7 @@ export default {
   },
   data() {
     return {
+      snackbar: false,
       loading: false,
       valid: false,
       showPasswordLogin: false,
@@ -93,8 +110,9 @@ export default {
 
     OnLogin(e) {
       e.preventDefault()
-      if (this.$refs.form.validate() === false) return false
-      console.log(this.data);
+      if (this.$refs.form.validate() === false) return false 
+      
+      setTimeout(() => (this.snackbar = true))
       this.LoginAction(this.data)
     },
   },

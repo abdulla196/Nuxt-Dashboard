@@ -68,7 +68,6 @@
               primaryText ='images'
               popupText = ""
               markIsPrimaryText=""
-              maxImage="1"
               ></vue-upload-multiple-image>
           </div>
                     <div class="col-12 text-center">

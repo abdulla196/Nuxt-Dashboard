@@ -12,7 +12,7 @@ const state = {
   errors: [],
   loadingupdate: false,
   sessionExpired: false,
-  errorMesage:'',
+  errorMesage:'loading ...',
 }
 
 const getters = {
@@ -117,14 +117,11 @@ const actions = {
             path: '/',
             maxAge: 365 * 24 * 60 * 60,
           })
+          state.errorMesage = res.message
           dispatch('routerTo')
         } else {
-          dispatch('setMsg', { msg: '', errors: res.message, api: 'login', type: 'error' })
+          state.errorMesage = res.message
         }
-      })
-      .catch(function (error) {
-
-        state.loading = false
       })
   },
 

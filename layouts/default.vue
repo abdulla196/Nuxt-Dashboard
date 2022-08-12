@@ -85,6 +85,10 @@ a,
   color: #444;
   text-decoration: none;
 }
+.v-btn--fab.v-size--small{
+  height: inherit;
+  width: inherit;
+}
 img {
   max-width: 100%;
 }
