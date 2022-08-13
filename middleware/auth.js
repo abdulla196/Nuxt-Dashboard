@@ -3,12 +3,11 @@ export default function ({ route, store, redirect, app, i18n }) {
 
   if (app.$cookies.get('Authorization')) {
     store.state.auth.Authorization = app.$cookies.get('Authorization')
-  }
-  if (app.$cookies.get('Authorization')) {
     store.state.auth.checkAuth = true
   }
 
   const checkUser = store.state.auth.checkAuth
+  
   //---------------
   if (!checkUser && [
     "forgetPassword___en","forgetPassword___ar"

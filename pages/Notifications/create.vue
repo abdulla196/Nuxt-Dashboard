@@ -17,7 +17,13 @@
                 :value="notification.content"
               ></v-textarea>
             </v-col>
-            {{notification.usersId}}
+            <div class="form-field" cols="12">
+                <span class="ui-select-match-item btn btn-default btn-secondary btn-xs" v-for="items in notification.usersId" :key="items">
+                    <a class="close ui-select-match-close">&nbsp;×</a>
+                    <span> {{items}} </span>
+                    <input  type="hidden" :value="items">
+                </span>
+            </div>
             <v-col cols="12"> 
               <label>Select user</label>
               <select v-on:change="onCheck()" v-model="notification.users" outlined label="select user" required>
@@ -80,4 +86,22 @@ export default {
 </script>
 
 <style>
+.ui-select-match-item {
+    display: inline-block;
+    background: #086f8d;
+    color: #fff;
+    padding: 0 0.5rem 0 0;
+    margin: 0.5rem 0.5rem 0.5rem 0;
+}
+.ui-select-match-close {
+    display: inline-block;
+    padding: 0.5rem;
+    color: #fff;
+    text-align: center;
+    text-indent: -4px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff !important;
+    margin: 0 0.5rem 0 0;
+    cursor: pointer;
+}
 </style>

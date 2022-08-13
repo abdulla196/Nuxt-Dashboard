@@ -16,12 +16,13 @@ const actions = {
   async getUsers({state}) {
    await this.$axios.get("/api/user").then((res) => {
       const users = res.data.data;
+      state.length = users.length;
       for (let i=0; i < users.length; i++) {
         if(users[i].type =='user'){
           state.data.push(users[i])
         }
       } 
-      state.length = state.data.length;
+      state.length = users.length;
       state.loading = false;
     });
   },
