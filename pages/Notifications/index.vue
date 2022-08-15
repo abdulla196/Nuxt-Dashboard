@@ -35,12 +35,18 @@
                     <tr v-for="item in allnotificationList.data.data" :key="item._id">
                         <td class="text-center" v-if="item.priority == 'low'" style="background:yellow">{{ item._id }}</td>
                         <td class="text-center" v-if="item.priority == 'high'" style="background:red">{{ item._id }}</td>
-                        <td class="text-center">{{ item.subject }}</td>
-                        <td class="text-center">{{ item.content }}</td> 
-                        <td class="text-center">{{ item.is_clicked }}</td> 
-                        <td class="text-center" v-if="item.user_id.userName">{{ item.user_id.userName }}</td>
-                        <td class="text-center">{{ item.user_id._id }}</td>
-                        <td class="text-center">{{ item.priority }}</td> 
+                        <td class="text-center" v-if="item.priority == 'low'"  style="background:yellow">{{ item.subject }}</td>
+                        <td class="text-center" v-if="item.priority == 'high'"  style="background:red">{{ item.subject }}</td>
+                        <td class="text-center" v-if="item.priority == 'low'" style="background:yellow">{{ item.content }}</td> 
+                        <td class="text-center" v-if="item.priority == 'high'" style="background:red">{{ item.content }}</td> 
+                        <td class="text-center" v-if="item.priority == 'low'" style="background:yellow">{{ item.is_clicked }}</td> 
+                        <td class="text-center" v-if="item.priority == 'high'" style="background:red">{{ item.is_clicked }}</td> 
+                        <td class="text-center" v-if="item.user_id">{{ item.user_id.userName }}</td>
+                        <td v-else></td>
+                        <td class="text-center"  v-if="item.user_id">{{ item.user_id._id }}</td>
+                        <td v-else></td>
+                        <td class="text-center" v-if="item.priority == 'low'" style="background:yellow">{{ item.priority }}</td> 
+                        <td class="text-center" v-if="item.priority == 'high'" style="background:red">{{ item.priority }}</td> 
                         <td class="text-center">
                             <v-row justify="center">
                                 <NuxtLink :to="localePath('/Notifications/'+item._id)">

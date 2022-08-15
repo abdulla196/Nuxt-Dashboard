@@ -110,7 +110,6 @@ export default {
     async writeToFirestore() {
       const time = new Date()
       const documentID = time.getTime().toString()
-      console.log(documentID)
       const document = {
         text: this.messagesend,
         from: "admin",
@@ -139,7 +138,6 @@ export default {
     },
     async clientData(id) {
       if(id){ 
-        this.$refs.block.scrollTop = this.$refs.block.scrollHeight;
         this.client_id = id
       }
       const db = getFirestore()
@@ -171,7 +169,10 @@ export default {
       this.arraymessages = messages
       if (this.arraymessages != '') {
         this.active = true
-      }
+      };
+    },
+   async scrollDonw(){
+      this.$refs.block.scrollTop = this.$refs.block.scrollHeight
     },
     async Read(id,timeid){
       const washingtonRef =doc(db, `messages/${id}/${id}`, timeid);
@@ -221,6 +222,7 @@ export default {
   },
   created() {
     setInterval(() => {
+      this.scrollDonw()
       // this.clientData(this.client_id)
     }, 1000)
   },

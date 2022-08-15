@@ -15,7 +15,7 @@
         <ul>
           <li class="box_op_header">
             <NuxtLink :to="localePath('/')" class="logo">
-              HALAN
+              <img src="/images/logo.jpeg"/>
             </NuxtLink>
           </li>
         </ul>

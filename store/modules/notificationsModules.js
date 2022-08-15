@@ -47,16 +47,17 @@ const actions = {
         this.$axios.put('/api/notification/' + Obj.id, data).then((res) => {
             state.cart = res.data
             if (res.data.status === 1) {
+                alert('Notifcation added ' + res.data.message)
                 state.data = res.data
-                setTimeout(function(){
-                  window.location.href = '/Notifications'})
             } else {
                 state.addressMSG = res.data.msg
             }
             state.loading = false
+            setTimeout(function(){
+              window.location.href = '/Notifications'})
         })
     },
-    Addnotification({ state, dispatch }, arrayData) {
+    async Addnotification({ state, dispatch }, arrayData) {
         console.log(arrayData)
         for(var i =0 ; i < arrayData.usersId.length ; i++){
             var data = JSON.stringify({
@@ -70,7 +71,9 @@ const actions = {
             .then((res) => {
                 state.loading = false
                 if (res.data.status == 1) {
-                    dispatch('routerTo')
+                    alert('Notifcation added ' + res.data.message)
+                    setTimeout(function(){
+                      window.location.href = '/Notifications'})
                 } else {
                     alert('error')
                 }

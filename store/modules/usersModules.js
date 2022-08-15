@@ -15,6 +15,7 @@ const actions = {
 
   async getUsers({state}) {
    await this.$axios.get("/api/user").then((res) => {
+    state.data = [];
       const users = res.data.data;
       state.length = users.length;
       for (let i=0; i < users.length; i++) {

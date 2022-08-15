@@ -132,17 +132,18 @@ export default {
       this.MaidsEdit.phone = this.allMaidsList.data.phone
       this.MaidsEdit.location = this.allMaidsList.data.location
       this.MaidsEdit.details = this.allMaidsList.data.details
-      if(this.allUsersList.data.birthday == 'null'){
-        this.MaidsEdit.birthday = ''
-      }
-      else{
-        this.MaidsEdit.birthday = this.allUsersList.data.birthday
-      }
+      
       this.MaidsEdit.price = this.allMaidsList.data.price
       this.MaidsEdit.userName = this.allMaidsList.data.userName
       this.MaidsEdit.email = this.allMaidsList.data.email
       this.MaidsEdit.id = this.$route.params.id
       this.MaidsEdit.maid_paper = this.allMaidsList.data.maid_paper
+      if(this.allMaidsList.data.birthday == 'null'){
+        this.MaidsEdit.birthday = ''
+      }
+      else{
+        this.MaidsEdit.birthday = this.allMaidsList.data.birthday
+      }
     },
     UpdateMaid() {
       console.log(this.MaidsEdit)
@@ -157,7 +158,7 @@ export default {
 
   mounted() {
     this.getoneMaids(this.$route.params.id)
-    setTimeout(() => this.completeMaidsData(), 1000);
+    setTimeout(() => this.completeMaidsData(), 1500);
   },
 }
 </script>

@@ -283,9 +283,6 @@ export default {
         },
     },
     
-  mounted() {
-    this.complateData()
-  },
   methods: {
     ...mapActions(['changePassword','UpdateUserInfo','changeMyPhoto']),
     save (date) {
@@ -306,7 +303,6 @@ export default {
       this.passworddata.email = this.allAuth.user.email
     },
     changeInfoFunction(e) {
-        console.log(this.dataInfo)
       e.preventDefault()
       if (this.$refs.form.validate() === false) return false
       this.UpdateUserInfo(this.dataInfo)
@@ -325,7 +321,10 @@ export default {
       this.changePassword(this.passworddata)
     },
   },
-
+    
+  mounted() { 
+    this.complateData()
+  },
 };
 </script>
 

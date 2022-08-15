@@ -57,19 +57,20 @@
                     <v-col class="col-md-6 col-12">
                         <v-text-field label="details" v-model="user.details" required outlined></v-text-field>
                     </v-col>
-                    <div id="my-strictly-unique-vue-upload-multiple-image" style="display: flex; justify-content: center;" class="col-12">
-          <vue-upload-multiple-image
-              @upload-success="uploadImageSuccess"
-              @before-remove="beforeRemove"
-              :data-images="user.maid_paper"
-              dragText="drag image"
-              idUpload="myIdUpload"
-              browseText = 'select image'
-              primaryText ='images'
-              popupText = ""
-              markIsPrimaryText=""
-              ></vue-upload-multiple-image>
-          </div>
+                    <div id="my-strictly-unique-vue-upload-multiple-image" style="display: flex;justify-content: center;flex-direction: column;align-items: center;" class="col-12">
+                    <label> الصوره الشخصية - صورة الجواز - صورة الفيش</label>
+                        <vue-upload-multiple-image
+                        @upload-success="uploadImageSuccess"
+                        @before-remove="beforeRemove"
+                        :data-images="user.maid_paper"
+                        dragText="drag image"
+                        idUpload="myIdUpload"
+                        browseText = 'select image'
+                        primaryText ='images'
+                        popupText = ""
+                        markIsPrimaryText=""
+                        ></vue-upload-multiple-image>
+                    </div>
                     <div class="col-12 text-center">
                         <v-btn depressed color="primary" @click="AddUser">
                             save

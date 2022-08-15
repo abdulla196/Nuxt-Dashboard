@@ -79,10 +79,12 @@ const actions = {
             .then((res) => {
                 state.loading = false
                 if (res.data.status == 1) {
-                    this.$router.push('/favourite')
+                    alert('favourite added ' + res.data.message)
                 } else {
                     alert('error')
                 }
+                setTimeout(function(){
+                  window.location.href = '/favourite'})
             })
             .catch((error) => {
                 state.loading = false

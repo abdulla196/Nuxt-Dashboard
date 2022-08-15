@@ -106,6 +106,7 @@ const actions = {
       "userName":arrayData.userName,
       "password":arrayData.password
     });
+    state.errorMesage  = 'loading ... '
     state.loading = true
     const response = this.$axios
       .$post('/signin', data)
@@ -122,6 +123,12 @@ const actions = {
         } else {
           state.errorMesage = res.message
         }
+      })
+      
+      .catch((error) => {
+        state.loading = false
+        console.log(error.message)
+        state.errorMesage  = 'Invalid user name and password combination'
       })
   },
 

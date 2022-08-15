@@ -10,7 +10,8 @@
       >
         <v-list-item>
           <div class="menu_head">
-            <p class="logo">halan</p>
+            <p class="logo">
+              <img src="/images/logo.jpeg"/></p>
             <v-app-bar-nav-icon
               class="menuBtn"
               @click.stop="onClose()"

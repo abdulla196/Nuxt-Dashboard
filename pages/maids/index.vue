@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-simple-table>
+        <v-simple-table class="table100">
             <template v-slot:default>
                 <thead>
                     <tr>
@@ -102,4 +102,15 @@ export default {
 
 
 <style scoped>
+
+.table100 th {
+    color: #fff !important;
+    background-color: #6c7ae0;
+}
+.table100 td {
+    color: #808080;
+}
+.table100 tr:nth-child(even) {
+    background-color: #f8f6ff;
+}
 </style>
