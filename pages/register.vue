@@ -1,8 +1,8 @@
 <template>
         <v-card-text>
-            <h2 class="text-center mt-3">
-                Sign Up
-            </h2>
+            <div class="text-center my-3">
+                <h2>User Create</h2>
+            </div>
             <v-container>
                 <v-row class="mt-3">
                     <v-col class="col-md-6 col-12">

@@ -284,7 +284,7 @@ export default {
     },
     
   methods: {
-    ...mapActions(['changePassword','UpdateUserInfo','changeMyPhoto']),
+    ...mapActions(['myInfo','changePassword','UpdateUserInfo','changeMyPhoto']),
     save (date) {
         this.dataInfo.birthday = date
         this.$refs.menu.save(this.dataInfo.birthday)
@@ -301,6 +301,7 @@ export default {
       this.photodata.photo = this.allAuth.user.photo
       this.passworddata.id = this.allAuth.user._id
       this.passworddata.email = this.allAuth.user.email
+      console.log(this.dataInfo)
     },
     changeInfoFunction(e) {
       e.preventDefault()
@@ -322,8 +323,9 @@ export default {
     },
   },
     
-  mounted() { 
-    this.complateData()
+  mounted() {
+    this.myInfo()
+    setTimeout(() => this.complateData(), 3000);
   },
 };
 </script>

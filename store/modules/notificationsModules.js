@@ -47,7 +47,7 @@ const actions = {
         this.$axios.put('/api/notification/' + Obj.id, data).then((res) => {
             state.cart = res.data
             if (res.data.status === 1) {
-                alert('Notifcation added ' + res.data.message)
+                alert('Notifcation Updated ' + res.data.message)
                 state.data = res.data
             } else {
                 state.addressMSG = res.data.msg

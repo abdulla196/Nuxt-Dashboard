@@ -2,7 +2,7 @@
   <div class="Adress">
 
     <v-card>
-        <h2 class="text-h5 text-center">Add Notification</h2>
+        <h2 class="text-h5 text-center">Create Notification</h2>
       <v-card-text>
         <v-container>
           <v-row>
@@ -18,8 +18,8 @@
               ></v-textarea>
             </v-col>
             <div class="form-field" cols="12">
-                <span class="ui-select-match-item btn btn-default btn-secondary btn-xs" v-for="items in notification.usersId" :key="items">
-                    <a class="close ui-select-match-close">&nbsp;×</a>
+                <span class="ui-select-match-item btn btn-default btn-secondary btn-xs" v-for="items in notification.usersname" :key="items">
+                    
                     <span> {{items}} </span>
                     <input  type="hidden" :value="items">
                 </span>
@@ -28,7 +28,7 @@
               <label>Select user</label>
               <select v-on:change="onCheck()" v-model="notification.users" outlined label="select user" required>
                   <option value="" selected disabled>select user</option>
-                  <option v-for="item in allUsersList.data" :key="item._id" :value="item._id">
+                  <option v-for="item in allUsersList.data" :key="item._id" :value="{ id: item._id, text: item.userName }">
                       {{ item.userName }}</option>
               </select>
             </v-col>
@@ -60,6 +60,7 @@ export default {
         subject: '',
         users:'please select',
         usersId:[],
+        usersname:[],
         is_clicked: false
       },
     }
@@ -71,7 +72,9 @@ export default {
     ...mapActions(['Addnotification','getUsers']),
   
     onCheck(){ 
-      this.notification.usersId.push(this.notification.users)
+      console.log(this.notification.users)
+      this.notification.usersId.push(this.notification.users.id)
+      this.notification.usersname.push(this.notification.users.text)
     },
     OnAddNotification() {
       this.Addnotification(this.notification)
@@ -90,7 +93,7 @@ export default {
     display: inline-block;
     background: #086f8d;
     color: #fff;
-    padding: 0 0.5rem 0 0;
+    padding: 0.5rem ;
     margin: 0.5rem 0.5rem 0.5rem 0;
 }
 .ui-select-match-close {

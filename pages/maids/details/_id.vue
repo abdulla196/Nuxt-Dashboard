@@ -1,9 +1,10 @@
 
 <template>
 <v-container>
-    
+        <div class="text-center my-3">
+            <h2  class="text-h5 text-center">Maid details </h2>
+        </div>
     <div style="margin-bottom:5rem">
-        <h2 class="text-h5 text-center my-3"> review For maid</h2>
         <v-row>
             <div class="col-md-4 col-12">
                 userName : {{allMaidsList.maidInfo.userName}}

@@ -5,6 +5,7 @@ const state = {
     maidInfo:[],
     maidreviews:[],
     length:0,
+    onemaid:[]
   };
   
   const getters = {
@@ -15,13 +16,15 @@ const state = {
   
     async getMaids({state}) {
      await this.$axios.get("/api/user/filter/maid").then((res) => {
+       const allmaids =[]
         const maids = res.data.data;
         state.length = maids.length;
           for (let i=0; i < maids.length; i++) {
               if(maids[i].maid.type =='maid'){
-                state.data.push(maids[i].maid)
+                allmaids.push(maids[i].maid)
               }
           }
+          state.data = allmaids
           state.loading = false;
       });
     },
@@ -42,7 +45,8 @@ async DeleteMids({ state, dispatch }, dataObj) {
         state.loading = true
 
         await this.$axios.get('/api/user/' + id).then((res) => {
-            state.data = res.data.data
+            state.onemaid = res.data.data
+            console.log(state.onemaid,'res')
             state.loading = false
         })
     },

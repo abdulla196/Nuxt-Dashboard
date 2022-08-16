@@ -2,7 +2,7 @@
   <div class="Adress">
 
     <v-card>
-        <h2 class="text-h5 text-center">AdEdit Notification</h2>
+        <h2 class="text-h5 text-center">Edit Notification</h2>
       <v-card-text>
         <v-container>
           <v-row>

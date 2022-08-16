@@ -5,10 +5,11 @@
     <div style="margin-bottom:5rem">
         <h2 class="text-h5 text-center my-3"> review For maid</h2>
 
-        <div  v-for="items in allReviewsList.data" :key="items._id">
-        <h3 class="text-h5 text-center mb-3">rate_average: {{items.rate_average}}</h3>
+        <div  >
+        <h3 class="text-h5 text-center mb-3">rate_average: 
+            <v-rating v-model="allReviewsList.data.rate_average" icon-label="custom icon label text {0} of {1}"></v-rating></h3>
         <v-row >
-            <v-col cols="12" sm="6" md="4" v-for="item in items.reviews" :key="item._id">
+            <v-col cols="12" sm="6" md="4" v-for="item in allReviewsList.data.reviews" :key="item._id">
                 <v-card  class="mb-2">
                     <v-card-text>
                         <div>comment : {{item.comment}}</div>

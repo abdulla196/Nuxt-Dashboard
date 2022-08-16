@@ -1,5 +1,8 @@
 <template>
     <v-container class="mt-5">
+        <div class="text-center my-3">
+            <h2  class="text-h5 text-center">Notification List</h2>
+        </div>
         <v-simple-table
     class="elevation-1">
             <template v-slot:default>
@@ -33,19 +36,19 @@
                 </thead>
                 <tbody>
                     <tr v-for="item in allnotificationList.data.data" :key="item._id">
-                        <td class="text-center" v-if="item.priority == 'low'" style="background:yellow">{{ item._id }}</td>
+                        <td class="text-center" v-if="item.priority == 'low'" style="background:#95ff95">{{ item._id }}</td>
                         <td class="text-center" v-if="item.priority == 'high'" style="background:red">{{ item._id }}</td>
-                        <td class="text-center" v-if="item.priority == 'low'"  style="background:yellow">{{ item.subject }}</td>
+                        <td class="text-center" v-if="item.priority == 'low'"  style="background:#95ff95">{{ item.subject }}</td>
                         <td class="text-center" v-if="item.priority == 'high'"  style="background:red">{{ item.subject }}</td>
-                        <td class="text-center" v-if="item.priority == 'low'" style="background:yellow">{{ item.content }}</td> 
+                        <td class="text-center" v-if="item.priority == 'low'" style="background:#95ff95">{{ item.content }}</td> 
                         <td class="text-center" v-if="item.priority == 'high'" style="background:red">{{ item.content }}</td> 
-                        <td class="text-center" v-if="item.priority == 'low'" style="background:yellow">{{ item.is_clicked }}</td> 
+                        <td class="text-center" v-if="item.priority == 'low'" style="background:#95ff95">{{ item.is_clicked }}</td> 
                         <td class="text-center" v-if="item.priority == 'high'" style="background:red">{{ item.is_clicked }}</td> 
                         <td class="text-center" v-if="item.user_id">{{ item.user_id.userName }}</td>
                         <td v-else></td>
                         <td class="text-center"  v-if="item.user_id">{{ item.user_id._id }}</td>
                         <td v-else></td>
-                        <td class="text-center" v-if="item.priority == 'low'" style="background:yellow">{{ item.priority }}</td> 
+                        <td class="text-center" v-if="item.priority == 'low'" style="background:#95ff95">{{ item.priority }}</td> 
                         <td class="text-center" v-if="item.priority == 'high'" style="background:red">{{ item.priority }}</td> 
                         <td class="text-center">
                             <v-row justify="center">

@@ -1,8 +1,9 @@
 <template>
     <div class="">
-
+        <div class="text-center my-3">
+            <h2 class="text-h5 text-center">Edit Review</h2>
+        </div>
         <v-card>
-            <h2 class="text-h5 text-center">edit review</h2>
             <v-card-text>
                 <v-container>
                     <v-row>

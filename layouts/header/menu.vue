@@ -260,7 +260,7 @@ export default {
   mounted(){
     this.getUserfirebase()
     if(this.allAuth.checkAuth){
-    setTimeout(() => this.myInfo(), 1000);
+    this.myInfo();
     }
   }
 }

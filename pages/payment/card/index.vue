@@ -3,9 +3,19 @@
         <div class="card-form">
             <div class="card-form__inner">
                 <div class="card-input">
+                    <label for="UserName" class="card-input__label">user name</label>
+                    <input type="text" id="UserName" class="card-input__input" v-model="UserName"
+                         data-ref="UserName" autocomplete="off">
+                </div>
+                <div class="card-input">
+                    <label for="Email" class="card-input__label">Email</label>
+                    <input type="email" id="Email" class="card-input__input" v-model="Email"
+                         data-ref="Email" autocomplete="off">
+                </div>
+                <div class="card-input">
                     <label for="cardNumber" class="card-input__label">Card Number</label>
-                    <input type="text" id="cardNumber" class="card-input__input" v-model="cardNumber"
-                        v-on:focus="focusInput" maxlength="16" v-on:blur="blurInput" data-ref="cardNumber"
+                    <input type="text" id="cardNumber" class="card-input__input" v-model="cardNumber" @keyup='inputFormat()'
+                     @focus="focusInput" maxlength="19" @blur="blurInput" data-ref="cardNumber"
                         autocomplete="off">
                 </div>
                 <div class="card-input">
@@ -61,13 +71,23 @@ export default {
             cardMonth: "",
             cardYear: "",
             cardCvv: "",
+            UserName:'',
+            Email:'',
             minCardYear: new Date().getFullYear(),
             amexCardMask: "#### ###### #####",
             otherCardMask: "################",
             cardNumberTemp: "",
             isCardFlipped: false,
             focusElementStyle: null,
-            isInputFocused: false
+            isInputFocused: false,
+            regx: [
+                { name: 'Visa', logo: 'https://seeklogo.com/images/V/visa-logo-CF29426B98-seeklogo.com.png', re: '^4', },
+                { name: 'Hipercard', logo: 'https://cdn.worldvectorlogo.com/logos/hipercard.svg', re: /^(606282\d{10}(\d{3})?)|(3841\d{15})$/ },
+                { name: 'MasterCard', logo: 'https://logodownload.org/wp-content/uploads/2014/07/mastercard-logo-novo-3.png', re: /^(5[1-5]|677189)|^(222[1-9]|2[3-6]\d{2}|27[0-1]\d|2720)/ },
+                { name: 'Discover', logo: 'https://i.pinimg.com/originals/b3/d7/85/b3d7853a11dcc8c424866915ddd4d3e3.png', re: /^(6011|65|64[4-9]|622)/ },
+                { name: 'Elo', logo: 'https://seeklogo.com/images/E/elo-logo-0B17407ECC-seeklogo.com.png', re: /^(4011(78|79)|43(1274|8935)|45(1416|7393|763(1|2))|50(4175|6699|67[0-7][0-9]|9000)|627780|63(6297|6368)|650(03([^4])|04([0-9])|05(0|1)|4(0[5-9]|3[0-9]|8[5-9]|9[0-9])|5([0-2][0-9]|3[0-8])|9([2-6][0-9]|7[0-8])|541|700|720|901)|651652|655000|655021)/ },
+                { name: 'American Express', logo: 'https://ccard-generator.com/assets/images/cardmedium/american-express.png', re: /^3[47]\d{13,14}$/ }
+            ],
         };
     },
     mounted() {
@@ -75,25 +95,6 @@ export default {
         document.getElementById("cardNumber").focus();
     },
     computed: {
-        getCardType() {
-            let number = this.cardNumber;
-            let re = new RegExp("^4");
-            if (number.match(re) != null) return "visa";
-
-            re = new RegExp("^(34|37)");
-            if (number.match(re) != null) return "amex";
-
-            re = new RegExp("^5[1-5]");
-            if (number.match(re) != null) return "mastercard";
-
-            re = new RegExp("^6011");
-            if (number.match(re) != null) return "discover";
-
-            re = new RegExp('^9792')
-            if (number.match(re) != null) return 'troy'
-
-            return "visa"; // default type
-        },
         minCardMonth() {
             if (this.cardYear === this.minCardYear) return new Date().getMonth() + 1;
             return 1;
@@ -107,9 +108,74 @@ export default {
         }
     },
     methods: {
-        flipCard(status) {
-            this.isCardFlipped = status;
+    ...mapActions(['OnAddCard']),
+        OnAddCard(){
+
         },
+        
+        
+        inputFormat() {
+            let text = this.cardNumber.split(" ").join("")
+            //this.cardVdid is not formated in 4 spaces
+            this.cardVadid = text
+            if (text.length > 0) {
+                //regExp 4 in 4 number add an space between
+                text = text.match(new RegExp(/.{1,4}/, 'g')).join(" ")
+                                                //accept only numbers
+                    .replace(new RegExp(/[^\d]/, 'ig'), " ");
+            }
+            //this.cardNumber is formated on 4 spaces
+            this.cardNumber = text
+            //after formatd they callback cardType for choose a type of the card
+            this.GetCardType(this.cardVadid)
+        },
+        
+        GetCardType(number) {
+            this.regx.forEach((item) => {
+                if (number.match(item.re) != null) {
+                    this.cardType = item.logo
+                    //cClass add a class with the name of cardName to manipulate with css
+                    this.cClass = item.name.toLowerCase()
+                } else if (!number) {
+                    this.cardType = ''
+                    this.cClass = ''
+                }
+            })
+            //after choose a cardtype return the number for the luhn algorithm 
+            this.validCreditCard(number)
+        },
+                   validCreditCard(value) {
+                    let inputValidate = document.getElementById('cardNumber')
+                    // luhn algorithm
+                    let numCheck = 0,
+                        bEven = false;
+                    value = value.toString().replace(new RegExp(/\D/g, ""));
+                    for (let n = value.length - 1; n >= 0; n--) {
+                        let cDigit = value.charAt(n),
+                            digit = parseInt(cDigit, 10);
+
+                        if (bEven && (digit *= 2) > 9) digit -= 9;
+                        numCheck += digit;
+                        bEven = !bEven;
+                    }
+                    let len = value.length;
+                    //true: return valid number
+                    //this.cardType return true if have an valid number on regx array
+                    if (numCheck % 10 === 0 && len === 19 && this.cardType) {
+                        inputValidate.classList.remove('notValid')
+                        inputValidate.classList.add('valid')
+                    }
+                    //false: return not valid number
+                    else if (!numCheck % 10 === 0 && len === 19) {
+                        inputValidate.classList.remove('valid')
+                        inputValidate.classList.add('notValid')
+                        //if not have number on input
+                    } else {
+                        inputValidate.classList.remove('valid')
+                        inputValidate.classList.remove('notValid')
+                    }
+
+                },
         focusInput(e) {
             this.isInputFocused = true;
             let targetRef = e.target.dataset.ref;

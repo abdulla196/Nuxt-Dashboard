@@ -1,5 +1,8 @@
 <template>
     <v-container>
+        <div class="text-center my-3">
+            <h2  class="text-h5 text-center">Users List</h2>
+        </div>
         <v-simple-table class="table100">
             <template v-slot:default>
                 <thead>

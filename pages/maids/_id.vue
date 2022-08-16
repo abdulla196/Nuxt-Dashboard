@@ -2,6 +2,9 @@
 
   <v-card-text>
     <v-container>
+        <div class="text-center my-3">
+            <h2  class="text-h5 text-center">Edit miad</h2>
+        </div>
       <v-row>
         <v-col class="col-md-6 col-12">
           <v-text-field label="phone" prefix="" outlined v-model="MaidsEdit.phone" required></v-text-field>
@@ -50,7 +53,8 @@
         <v-col class="col-md-6 col-12">
           <v-text-field label="email" v-model="MaidsEdit.email" required outlined></v-text-field>
         </v-col>
-        <div id="my-strictly-unique-vue-upload-multiple-image" style="display: flex; justify-content: center;" class="col-12">
+        <div id="my-strictly-unique-vue-upload-multiple-image" style="display: flex;justify-content: center;flex-direction: column;align-items: center;" class="col-12">
+        <label> الصوره الشخصية - صورة الجواز - صورة الفيش</label>
           <vue-upload-multiple-image
               @upload-success="uploadImageSuccess"
               @before-remove="beforeRemove"
@@ -93,10 +97,6 @@ export default {
       id: ''
     },
   }),
-  computed: {
-
-  },
-  
   components: {
     VueUploadMultipleImage
   },
@@ -106,7 +106,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['updateMaids', 'getoneMaids']),
+    ...mapActions(['updateMaids', 'getoneMaids','completeMaidsData']),
     uploadImageSuccess(formData, index, fileList) {
       console.log('data', formData, index, fileList)
       this.MaidsEdit.maid_paper =fileList
@@ -128,25 +128,23 @@ export default {
         this.$refs.menu.save(this.MaidsEdit.birthday)
     },
     completeMaidsData() {
-      console.log(this.allMaidsList.data)
-      this.MaidsEdit.phone = this.allMaidsList.data.phone
-      this.MaidsEdit.location = this.allMaidsList.data.location
-      this.MaidsEdit.details = this.allMaidsList.data.details
+      this.MaidsEdit.phone = this.allMaidsList.onemaid.phone
+      this.MaidsEdit.location = this.allMaidsList.onemaid.location
+      this.MaidsEdit.details = this.allMaidsList.onemaid.details
       
-      this.MaidsEdit.price = this.allMaidsList.data.price
-      this.MaidsEdit.userName = this.allMaidsList.data.userName
-      this.MaidsEdit.email = this.allMaidsList.data.email
+      this.MaidsEdit.price = this.allMaidsList.onemaid.price
+      this.MaidsEdit.userName = this.allMaidsList.onemaid.userName
+      this.MaidsEdit.email = this.allMaidsList.onemaid.email
       this.MaidsEdit.id = this.$route.params.id
-      this.MaidsEdit.maid_paper = this.allMaidsList.data.maid_paper
-      if(this.allMaidsList.data.birthday == 'null'){
+      this.MaidsEdit.maid_paper = this.allMaidsList.onemaid.maid_paper
+      if(this.allMaidsList.onemaid.birthday == 'null'){
         this.MaidsEdit.birthday = ''
       }
       else{
-        this.MaidsEdit.birthday = this.allMaidsList.data.birthday
+        this.MaidsEdit.birthday = this.allMaidsList.onemaid.birthday
       }
     },
     UpdateMaid() {
-      console.log(this.MaidsEdit)
       this.updateMaids(this.MaidsEdit);
     },
   },
@@ -158,7 +156,7 @@ export default {
 
   mounted() {
     this.getoneMaids(this.$route.params.id)
-    setTimeout(() => this.completeMaidsData(), 1500);
+    setTimeout(() => this.completeMaidsData(), 2000);
   },
 }
 </script>

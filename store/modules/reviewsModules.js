@@ -41,7 +41,7 @@ const actions = {
         state.loading = true
 
         await this.$axios.get('/api/review/maid/' + id).then((res) => {
-            state.data = res.data.data
+            state.data = res.data.data[0]
             state.loading = false
         })
     },

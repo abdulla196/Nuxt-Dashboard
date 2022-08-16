@@ -1,5 +1,8 @@
 <template>
     <v-container>
+        <div class="text-center my-3">
+            <h2  class="text-h5 text-center">Maids List</h2>
+        </div>
         <v-simple-table class="table100">
             <template v-slot:default>
                 <thead>
@@ -65,7 +68,6 @@
 <script>
  import {mdiPencil,mdiDelete,mdiEye} from '@mdi/js'
 import { mapActions, mapGetters } from 'vuex'
-import Loading from '../../components/tools/loadingP.vue'
 export default {
     data() {
         return {
@@ -76,9 +78,6 @@ export default {
             }, 
         }
     },
-     components: {
-    Loading,
-  },
   computed: {
     ...mapGetters(['allMaidsList']),
   },
@@ -91,9 +90,7 @@ export default {
 
   },
    mounted() { 
-    if(this.allMaidsList.data == ''){
-        this.getMaids() 
-    }
+    this.getMaids()
   },
 
 }

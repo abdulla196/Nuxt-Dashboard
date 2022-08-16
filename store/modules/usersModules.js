@@ -56,8 +56,7 @@ async updateUsers({ state, dispatch }, Obj) {
       birthday: Obj.birthday,
       price: Obj.price,
       userName: Obj.userName,
-      email: Obj.email,
-      maid_paper:Obj.maid_paper
+      email: Obj.email
   })
   
   this.$axios.put('/api/user/' + Obj.id, data).then((res) => {
@@ -75,6 +74,7 @@ async updateUsers({ state, dispatch }, Obj) {
 },
 
 Signup({ state, dispatch }, arrayData) {
+  state.message = 'Loading';
   var data = JSON.stringify({
       "userName":arrayData.userName,
       "password":arrayData.password,
