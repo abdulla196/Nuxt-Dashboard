@@ -21,16 +21,15 @@
                         <v-col cols="12">
                             <v-rating v-model="ReviewEdit.rate" icon-label="custom icon label text {0} of {1}"></v-rating>
                         </v-col>
-
-                    </v-row>
-                </v-container>
-            </v-card-text>
-
             <div class="col-12 text-center">
                 <v-btn depressed color="primary" @click="UpdateReview">
                     save
                 </v-btn>
             </div>
+                    </v-row>
+                </v-container>
+            </v-card-text>
+
         </v-card>
     </div>
 </template>

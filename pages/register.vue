@@ -57,20 +57,6 @@
                     <v-col class="col-md-6 col-12">
                         <v-text-field label="details" v-model="user.details" required outlined></v-text-field>
                     </v-col>
-                    <div id="my-strictly-unique-vue-upload-multiple-image" style="display: flex;justify-content: center;flex-direction: column;align-items: center;" class="col-12">
-                    <label> الصوره الشخصية - صورة الجواز - صورة الفيش</label>
-                        <vue-upload-multiple-image
-                        @upload-success="uploadImageSuccess"
-                        @before-remove="beforeRemove"
-                        :data-images="user.maid_paper"
-                        dragText="drag image"
-                        idUpload="myIdUpload"
-                        browseText = 'select image'
-                        primaryText ='images'
-                        popupText = ""
-                        markIsPrimaryText=""
-                        ></vue-upload-multiple-image>
-                    </div>
                     <div class="col-12 text-center">
                         <v-btn depressed color="primary" @click="AddUser">
                             save
@@ -102,7 +88,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex' 
-import VueUploadMultipleImage from 'vue-upload-multiple-image'
 export default {
     data: () => ({
         snackbar: false,
@@ -118,37 +103,16 @@ export default {
             type: '',
             location: '',
             phone: '',
-            details: '',
-            maid_paper: [],
+            details: ''
         },
     }),
     computed: {
 
     },
  
-
-  components: {
-    VueUploadMultipleImage
-  },
     methods: {
         ...mapActions(['Signup']),
         
-        uploadImageSuccess(formData, index, fileList) {
-            console.log('data', formData, index, fileList)
-            this.user.maid_paper =fileList
-            // Upload image api
-            // axios.post('/api/user/'+this.$route.params.id, { data: formData }).then(response => {
-            //   console.log(response)
-            // })
-        },
-        beforeRemove (index, done, fileList) {
-            console.log('index', index, fileList)
-            var r = confirm("remove image")
-            if (r == true) {
-                done()
-            } else {
-            }
-        },
 
         AddUser() {
             this.Signup(this.user);

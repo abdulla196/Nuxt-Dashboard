@@ -35,15 +35,15 @@
             <v-col cols="12">
               <v-checkbox v-model="notification.is_clicked" label="is clicked ?"></v-checkbox>
             </v-col>
-          </v-row>
-        </v-container>
-      </v-card-text>
-
       <div class="col-12 text-center">
         <v-btn depressed color="primary" @click="OnAddNotification">
           save
         </v-btn>
       </div>
+          </v-row>
+        </v-container>
+      </v-card-text>
+
     </v-card>
   </div>
 </template>

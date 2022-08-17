@@ -83,8 +83,7 @@ Signup({ state, dispatch }, arrayData) {
       "type":arrayData.type,
       "location":arrayData.location,
       "phone":arrayData.phone,
-      "details":arrayData.details,
-      "maid_paper":arrayData.maid_paper
+      "details":arrayData.details
   });
   this.$axios
       .post('/signup', data)
