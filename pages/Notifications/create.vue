@@ -2,10 +2,10 @@
   <div class="Adress">
 
     <v-card>
-        <h2 class="text-h5 text-center">Create Notification</h2>
+        <h2 class="title-head text-center">Create Notification</h2>
       <v-card-text>
         <v-container>
-          <v-row>
+          <v-row id="form">
             <v-col cols="12">
               <v-text-field v-model="notification.subject" label="subject" outlined required></v-text-field>
             </v-col>

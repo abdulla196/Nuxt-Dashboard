@@ -74,9 +74,12 @@ export default {
 <style scoped>
 .header {
   z-index: 99;
-  background: #f6ad08;
+  background: #f68c28;
   width: 100%;
   position: fixed;
+}
+.v-btn > .v-btn__content .v-icon{
+  color: #fff !important;
 }
 .headerFixed {
   position: fixed;
@@ -152,8 +155,8 @@ a.nuxt-link-exact-active.login_ {
   font-weight: bold;
 }
 .logo img {
-  min-width: 47px;
-  height: 40px;
+  min-width: 80px;
+  height: 63px;
   align-items: center;
   display: flex;
 }

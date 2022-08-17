@@ -3,9 +3,9 @@
   <v-card-text>
     <v-container>
         <div class="text-center my-3">
-            <h2  class="text-h5 text-center">Edit miad</h2>
+            <h2  class="title-head text-center">Edit miad</h2>
         </div>
-      <v-row>
+      <v-row id="form">
         <v-col class="col-md-6 col-12">
           <v-text-field label="phone" prefix="" outlined v-model="MaidsEdit.phone" required></v-text-field>
         </v-col>

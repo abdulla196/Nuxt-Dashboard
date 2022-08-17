@@ -1,7 +1,7 @@
 <template>
     <div class="">
         <div class="text-center my-3">
-            <h2  class="text-h5 text-center">User Create</h2>
+            <h2  class="title-head text-center">User Create</h2>
         </div>
         <v-card>
             <v-card-title>

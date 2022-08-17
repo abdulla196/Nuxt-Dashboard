@@ -2,10 +2,11 @@
 
   <v-card-text>
     <v-container>
-        <div class="text-center my-3">
-            <h2 class="text-h5 text-center">Edit User</h2>
+        <div class="text-center my-5">
+            <h2  class=" text-center" style="font-size:37px;color:#403c3c">Edit User</h2>
+            <br/>
         </div>
-      <v-row>
+      <v-row id="form">
         
         <v-col class="col-md-6 col-12">
           <v-text-field label="userName" v-model="UserEdit.userName" required outlined></v-text-field>
@@ -60,8 +61,8 @@
           <v-text-field label="price" prefix="" outlined v-model="UserEdit.price" required></v-text-field>
         </v-col>
         <div class="col-12 text-center">
-          <v-btn depressed color="primary" @click="updateuser">
-            save
+          <v-btn depressed color="#f68c28" style="color:#fff" @click="updateuser">
+            <b>save</b>
           </v-btn>
         </div>
       </v-row>
@@ -167,7 +168,7 @@ export default {
 
   mounted() {
     this.getoneUser(this.$route.params.id)
-    setTimeout(() => this.completeMaidsData(), 2000);
+    setTimeout(() => this.completeMaidsData(), 3000);
   },
 }
 </script>

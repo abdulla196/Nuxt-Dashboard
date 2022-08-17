@@ -2,10 +2,10 @@
   <div class="Adress">
 
     <v-card>
-      <h2 class="text-h5 text-center">Create favourite</h2>
+      <h2 class="title-head text-center">Create favourite</h2>
       <v-card-text>
         <v-container>
-          <v-row>
+          <v-row id="form">
             <v-col cols="12" class="my-3">
               <label>Select user</label>
               <select v-model="Favourite.users" outlined label="select user" required>
@@ -21,15 +21,15 @@
                 </option>
               </select>
             </v-col>
+            <div class="col-12 text-center">
+              <v-btn depressed color="primary" @click="OnAddFavourite">
+                save
+              </v-btn>
+            </div>
           </v-row>
         </v-container>
       </v-card-text>
 
-      <div class="col-12 text-center">
-        <v-btn depressed color="primary" @click="OnAddFavourite">
-          save
-        </v-btn>
-      </div>
     </v-card>
   </div>
 </template>

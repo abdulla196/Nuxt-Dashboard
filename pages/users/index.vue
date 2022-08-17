@@ -1,7 +1,7 @@
 <template>
     <v-container>
-        <div class="text-center my-3">
-            <h2  class="text-h5 text-center">Users List</h2>
+        <div class="text-center my-5">
+            <h2  class="title-head text-center">Users List</h2>
         </div>
         <v-simple-table class="table100">
             <template v-slot:default>
@@ -35,7 +35,7 @@
                         <td class="text-center">
                             <v-row justify="center">
                                 <NuxtLink :to="localePath('/users/'+item._id)">
-                                    <v-icon left>
+                                    <v-icon color="#ff9f3b" left>
                                         {{ icons.mdiPencil }}
                                     </v-icon>
                                 </NuxtLink>
@@ -86,16 +86,3 @@ export default {
 </script>
 
 
-
-<style scoped>
-.table100 th {
-    color: #fff !important;
-    background-color: #6c7ae0;
-}
-.table100 td {
-    color: #808080;
-}
-.table100 tr:nth-child(even) {
-    background-color: #f8f6ff;
-}
-</style>

@@ -3,11 +3,12 @@
 <v-container>
     
     <div style="margin-bottom:5rem">
-        <h2 class="text-h5 text-center my-3"> review For maid</h2>
+        <h2 class="title-head text-center my-3"> review For maid</h2>
 
         <div  >
-        <h3 class="text-h5 text-center mb-3">rate_average: 
-            <v-rating v-model="allReviewsList.data.rate_average" icon-label="custom icon label text {0} of {1}"></v-rating></h3>
+            
+        <h3 class="text-h5 text-center mb-3"> <span  class="infomaid">Rate Average</span> 
+                            <v-rating :value="allReviewsList.data.rate_average"  readonly></v-rating> </h3>
         <v-row >
             <v-col cols="12" sm="6" md="4" v-for="item in allReviewsList.data.reviews" :key="item._id">
                 <v-card  class="mb-2">

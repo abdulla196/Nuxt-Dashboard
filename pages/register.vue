@@ -1,10 +1,10 @@
 <template>
         <v-card-text>
             <div class="text-center my-3">
-                <h2>User Create</h2>
+                <h2 class="title-head my-3">User Create</h2>
             </div>
             <v-container>
-                <v-row class="mt-3">
+                <v-row class="mt-3" id="form">
                     <v-col class="col-md-6 col-12">
                         <v-text-field label="userName" prefix="" outlined v-model="user.userName" required></v-text-field>
                     </v-col>

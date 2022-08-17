@@ -73,7 +73,7 @@
               link
             >
             
-                <NuxtLink style="width:100%" :to="localePath('/'+child.href)" v-text="child.title"></NuxtLink>
+                <NuxtLink :to="localePath('/'+child.href)" v-text="child.title"></NuxtLink>
             </v-list-item>
             
           </v-list-group>
@@ -295,10 +295,15 @@ export default {
   height: 40px;
   position: absolute;
 }
+.v-list-group--no-action  .v-list-item{
+  background: transparent !important;
+}
+.v-list-group--active .v-list-item{
   
+  background: #f68c28 !important;
+}
 a.nuxt-link-exact-active {
-  color: #bf804b;
-  padding-bottom: 10px;
+  color: #fff;
 }
 
 .menuBtn {
@@ -342,6 +347,8 @@ a.nuxt-link-exact-active {
     padding: 0 3px !important;
   }
 }
+
+
 .number{
     height: 30px;
     width: 50px;

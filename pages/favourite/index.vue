@@ -1,7 +1,9 @@
 <template>
     <v-container class="mt-5">
-        <v-simple-table
-    class="elevation-1" dark>
+        <div class="text-center my-5">
+            <h2  class="title-head text-center">Favourite List</h2>
+        </div>
+        <v-simple-table class="table100">
             <template v-slot:default>
                 <thead>
                     <tr>
@@ -15,9 +17,6 @@
                             user_id
                         </th>
                         <th class="text-center">
-                            V
-                        </th>
-                        <th class="text-center">
                             action
                         </th>
                     </tr>
@@ -27,11 +26,10 @@
                         <td class="text-center">{{ item._id }}</td>
                         <td class="text-center">{{ item.maid_id }}</td>
                         <td class="text-center">{{ item.user_id }}</td> 
-                        <td class="text-center">{{ item.__v }}</td> 
                         <td class="text-center">
                             <v-row justify="center">
                                 <NuxtLink :to="localePath('/favourite/'+item._id)">
-                                    <v-icon left>
+                                    <v-icon color="#ff9f3b" left>
                                         {{ icons.mdiPencil }}
                                     </v-icon>
                                 </NuxtLink>

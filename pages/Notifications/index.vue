@@ -1,10 +1,9 @@
 <template>
     <v-container class="mt-5">
         <div class="text-center my-3">
-            <h2  class="text-h5 text-center">Notification List</h2>
+            <h2  class="title-head text-center">Notification List</h2>
         </div>
-        <v-simple-table
-    class="elevation-1">
+        <v-simple-table class="table100">
             <template v-slot:default>
                 <thead>
                     <tr>
@@ -53,7 +52,7 @@
                         <td class="text-center">
                             <v-row justify="center">
                                 <NuxtLink :to="localePath('/Notifications/'+item._id)">
-                                    <v-icon left>
+                                    <v-icon color="#ff9f3b" left>
                                         {{ icons.mdiPencil }}
                                     </v-icon>
                                 </NuxtLink>

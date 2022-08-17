@@ -66,7 +66,7 @@
               </v-card-text>
               <v-card-text class="d-flex  flex-shrink-1">
                 <v-text-field v-model="messagesend" label="type a message" type="text" no- outlined />
-                <v-btn depressed color="error"  @keyup.enter="writeToFirestore()" @click="writeToFirestore()" >
+                <v-btn depressed color="#f68c28"  @keyup.enter="writeToFirestore()" @click="writeToFirestore()" >
                   Send now
                 </v-btn>
               </v-card-text>

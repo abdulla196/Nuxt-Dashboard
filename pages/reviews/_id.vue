@@ -1,12 +1,12 @@
 <template>
     <div class="">
         <div class="text-center my-3">
-            <h2 class="text-h5 text-center">Edit Review</h2>
+            <h2 class="title-head text-center">Edit Review</h2>
         </div>
         <v-card>
             <v-card-text>
                 <v-container>
-                    <v-row>
+                    <v-row id="form">
                         <v-col cols="12">
                             <v-text-field v-model="ReviewEdit.user_id" disabled label="User id" outlined required></v-text-field>
                         </v-col>

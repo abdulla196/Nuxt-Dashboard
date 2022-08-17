@@ -125,7 +125,10 @@ img {
 }
 
 /* vuetify */
-
+.title-head{
+  font-size:37px !important;
+  color:#403c3c !important
+}
 .v-overlay {
     z-index: 100;
 }
@@ -137,6 +140,19 @@ img {
   max-width: 100%;
 }
 
+.table100{
+    border: 1px solid #ddd;
+}
+.table100 th {
+    color: #fff !important;
+    background-color: #797a7b;
+}
+.table100 td {
+    color: #808080;
+}
+.table100 tr:nth-child(even) {
+    background-color: #fcc86d1f;
+}
 .v-image__image--cover {
   background-size: 100% 100%;
 }
@@ -160,6 +176,18 @@ p {
 
 .v-card__actions {
   margin-top: 30px;
+}
+#form{
+  border: 1px solid #ddd;
+  padding: 2rem;
+  box-shadow: 5px 5px 5px #ddd;
+}
+#form .theme--light.v-btn{
+  background: #f68c28 !important;
+  min-width: 98px !important;
+  font-weight: bold !important;
+  height: 45px;
+  font-size: 16px !important;
 }
 .v-application ul,
 .v-application ol {
