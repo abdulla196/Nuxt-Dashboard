@@ -38,7 +38,7 @@
               <NuxtLink :to="localePath('/forgetpassword')">Forget Password</NuxtLink>
               <v-btn
                 :disabled="!valid"
-                color="#30c88d"
+                color="#f68c28"
                 class="button_login"
                 @click="OnLogin"
                 :loading="allAuth.loading"

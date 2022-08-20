@@ -125,7 +125,6 @@ Signup({ state, dispatch }, arrayData) {
   },
   
   async forgetpass({ state }, arrayData) {
-    console.log(arrayData)
     var data = JSON.stringify({
       "email":arrayData.email
   });

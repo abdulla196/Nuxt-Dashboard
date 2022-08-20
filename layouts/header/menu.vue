@@ -259,9 +259,6 @@ export default {
   },
   mounted(){
     this.getUserfirebase()
-    if(this.allAuth.checkAuth){
-    this.myInfo();
-    }
   }
 }
 </script>

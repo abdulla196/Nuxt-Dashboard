@@ -22,10 +22,14 @@ const getters = {
 const actions = {
   async setApi({ state, dispatch }, data) {
     await this.$axios.setHeader('lang', this.$i18n.locale)
-    if (this.$cookies.get('Authorization'))
+    if (this.$cookies.get('Authorization')){  
+      state.Authorization = this.$cookies.get('Authorization')
+      state.checkAuth = true
+    }
+    if (!state.checkAuth) {
+      this.$router.push('/login')
+    }
       await this.$axios.setHeader('Authorization', this.$cookies.get('Authorization'))
-
-
   },
   
   async myInfo({state}){
@@ -112,7 +116,6 @@ const actions = {
       .$post('/signin', data)
       .then((res) => {
         state.loading = false
-        console.log(res.msg)
         if (res.status == 1) {
           this.$cookies.set('Authorization', 'Bearer '+ res.data.token, {
             path: '/',

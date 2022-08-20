@@ -22,6 +22,7 @@ import { mapActions } from 'vuex'
 import { uuid } from 'vue-uuid'
 
 export default {
+  
   head() {
     return this.$nuxtI18nHead({ addSeoAttributes: true })
   },
@@ -37,9 +38,8 @@ export default {
   },
 
   async mounted() {
-    await this.setApi(
-      uuid.v5(navigator.userAgent, '65f9af5d-f23f-4065-ac85-da725569fdcd')
-    )
+    this.setApi()
+    
   },
   methods: {
     ...mapActions(['setApi']),

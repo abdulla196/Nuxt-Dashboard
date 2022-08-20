@@ -124,7 +124,7 @@
                                             </v-menu>
                                         <v-btn
                                             :disabled="!dataInfo.valid"
-                                            color="success"
+                                            color="#f68c28"
                                             class="sub"
                                             @click="changeInfoFunction"
                                             :loading="allAuth.loading"
@@ -181,7 +181,7 @@
                                                         passworddata.new_password
                                                     ),
                                                 ]" outlined dense></v-text-field>
-                                            <v-btn :disabled="!passworddata.valid" color="success" class="sub"
+                                            <v-btn :disabled="!passworddata.valid" color="#f68c28" class="sub"
                                                 @click="changePasswordFunction" :loading="allAuth.loading"
                                                 type="submit">
                                                 {{ $t('Change Password') }}
@@ -208,7 +208,7 @@
                                                 label="Change profile"
                                                 @change="onFileChanged"
                                             ></v-file-input>
-                                            <v-btn color="success" class="sub"
+                                            <v-btn color="#f68c28" class="sub"
                                                 @click="onUpload"
                                                 type="submit">
                                                 change photo

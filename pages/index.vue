@@ -1,8 +1,5 @@
 <template>
-<div  v-if="!this.$store.state.auth.checkAuth">
-  <Login />
-</div>
-<div class="my-5" v-else>
+<div class="my-5">
   <br/>
   <h1 class="text-center my-3" style="font-size:37px;color: #403c3c; ">Welcome Dashboard</h1>
   <br/>
@@ -45,29 +42,26 @@
 
 
 <script>
-import Login from '../components/login/login.vue'
 import { mapActions, mapGetters } from 'vuex'
 export default {
    data: () => ({
 
   }),
   components: {
-    Login,
   },
   computed: {
     ...mapGetters(['allUsersList','allMaidsList','allnotificationList','allReviewsList','allFavouriteList']),
   },
   methods:{
-    ...mapActions(['getUsers','getMaids','getNotification','getReviews','getFavourite'])
+    ...mapActions(['getUsers','myInfo','getMaids','getNotification','getReviews','getFavourite'])
   },
   mounted(){
-    this.getUsers()
-    if(this.allMaidsList.data == ''){
-        this.getMaids() 
-    }
+    this.myInfo();
     this.getNotification()
     this.getReviews()
     this.getFavourite()
+    this.getUsers()
+    this.getMaids()
 },
 
   components: {

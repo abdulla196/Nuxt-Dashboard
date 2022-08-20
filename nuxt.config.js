@@ -1,6 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   target: 'static',
+  ssr: true,
   head: {
     title: 'dashboard',
     htmlAttrs: {
@@ -39,9 +40,7 @@ export default {
     { src: '~/plugins/imageUpload.js', mode: 'client' }
 
   ],
-  router: {
-    middleware: ['auth'],
-  },
+
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

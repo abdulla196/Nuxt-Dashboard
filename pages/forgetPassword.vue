@@ -13,7 +13,7 @@
         </v-container>
       </v-card-text>
       <div class="col-12 text-center">
-        <v-btn depressed color="primary" @click="AddForgetPassword">
+        <v-btn depressed color="#f68c28" @click="AddForgetPassword">
           save
         </v-btn>
       </div>
