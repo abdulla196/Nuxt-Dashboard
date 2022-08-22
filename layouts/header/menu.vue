@@ -33,9 +33,9 @@
         </v-list-item-avatar>
 
         <v-list-item-content v-if="allAuth.user">
-          <v-list-item-title v-text="allAuth.user.userName"></v-list-item-title>
+          <v-list-item-title v-text="username"></v-list-item-title>
 
-          <v-list-item-subtitle v-text="allAuth.user.email"></v-list-item-subtitle>
+          <v-list-item-subtitle v-text="email"></v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
       <NuxtLink :to="localePath('/')"  v-if="allAuth.checkAuth">
@@ -193,6 +193,9 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
+      
+      username:'',
+      email:'',
       drawer: false,
       is_read:true,
        items: [
@@ -239,7 +242,11 @@ export default {
     onClose() {
       this.changeMenuHeader(false)
     },
-    
+    mydata(){
+      const info = this.$cookies.get('myInfo')
+        this.username = info.user.userName
+        this.email = info.user.email
+      },
     
     async getUserfirebase() {
       const querySnapshot = await getDocs(collection(db, "messages"));
@@ -272,7 +279,7 @@ export default {
   },
   mounted(){
     this.getUserfirebase()
-    this.myInfo()
+    this.mydata()
   }
 }
 </script>
