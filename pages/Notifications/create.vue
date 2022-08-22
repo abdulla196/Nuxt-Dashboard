@@ -19,7 +19,7 @@
             </v-col>
             <div class="form-field" cols="12">
                 <span class="ui-select-match-item btn btn-default btn-secondary btn-xs" v-for="items in notification.usersname" :key="items">
-                    
+                    <span class="close ui-select-match-close" @click="removearray(items)">&nbsp;×</span>
                     <span> {{items}} </span>
                     <input  type="hidden" :value="items">
                 </span>
@@ -31,6 +31,22 @@
                   <option v-for="item in allUsersList.data" :key="item._id" :value="{ id: item._id, text: item.userName }">
                       {{ item.userName }}</option>
               </select>
+            </v-col>
+            <v-col cols="12">
+              
+              <v-radio-group
+                v-model="notification.priority"
+                row
+              >
+                <v-radio
+                  label="low"
+                  value="low"
+                ></v-radio>
+                <v-radio
+                  label="high"
+                  value="high"
+                ></v-radio>
+              </v-radio-group>
             </v-col>
             <v-col cols="12">
               <v-checkbox v-model="notification.is_clicked" label="is clicked ?"></v-checkbox>
@@ -45,6 +61,27 @@
       </v-card-text>
 
     </v-card>
+    <v-snackbar
+          v-model="snackbar"
+          absolute
+          right
+          color="#f68c28"
+          rounded="pill"
+          centered
+    >
+      {{ allnotificationList.message }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="pink"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -54,10 +91,12 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
+        snackbar: false,
       items: [],
       notification: {
         content: '',
         subject: '',
+        priority:null,
         users:'please select',
         usersId:[],
         usersname:[],
@@ -71,14 +110,23 @@ export default {
   methods: {
     ...mapActions(['Addnotification','getUsers']),
   
-    onCheck(){ 
-      console.log(this.notification.users)
-      this.notification.usersId.push(this.notification.users.id)
-      this.notification.usersname.push(this.notification.users.text)
+    onCheck(){
+      if(!this.notification.usersId.includes(this.notification.users.id)){
+        this.notification.usersId.push(this.notification.users.id)
+        this.notification.usersname.push(this.notification.users.text)
+      }
     },
     OnAddNotification() {
+            this.snackbar = true
       this.Addnotification(this.notification)
     },
+    
+    removearray(user){
+      const index = this.notification.usersname.indexOf(user);
+      if (index > -1) {
+        this.notification.usersname.splice(index, 1);
+      }
+    }
   },
   mounted() {
     if(this.allUsersList.data == ''){
@@ -93,7 +141,7 @@ export default {
     display: inline-block;
     background: #086f8d;
     color: #fff;
-    padding: 0.5rem ;
+    padding: 0 0.5rem  0 0;
     margin: 0.5rem 0.5rem 0.5rem 0;
 }
 .ui-select-match-close {
@@ -106,5 +154,8 @@ export default {
     color: #fff !important;
     margin: 0 0.5rem 0 0;
     cursor: pointer;
+}
+select {
+  border: 1px solid rgba(0, 0, 0, 0.42) !important;
 }
 </style>

@@ -188,6 +188,7 @@ p {
   font-weight: bold !important;
   height: 45px;
   font-size: 16px !important;
+  color: #fff;
 }
 .v-application ul,
 .v-application ol {
@@ -263,6 +264,22 @@ input.input-tel__input:lang(ar) {
 .fa {
   font-size: 15px;
   margin: 0px 5px;
+}
+.btn-table{
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  min-width: inherit !important;
+}
+.btn-table:hover{
+  background: transparent !important;
+}
+.v-label ,.v-label.primary--text, .v-label--active{
+  color: #f68c28 !important;
+}
+.mdi-star::before{
+  color: goldenrod !important;
 }
 @media (max-width: 1100px) {
   .container_cc,.container {

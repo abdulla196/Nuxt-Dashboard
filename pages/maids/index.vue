@@ -3,65 +3,78 @@
         <div class="text-center my-3">
             <h2  class="title-head text-center">Maids List</h2>
         </div>
-        <v-simple-table class="table100">
-            <template v-slot:default>
-                <thead>
-                    <tr>
-                        <th class="text-center">
-                            Name
-                        </th>
-                        <th class="text-center">
-                            Phone
-                        </th>
-                        <th class="text-center">
-                            email
-                        </th> 
-                        <th class="text-center">details</th>
-                        <th class="text-center">location</th>
-                        <th class="text-center">type</th>
-                        <th class="text-center">
-                            action
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="item in allMaidsList.data" :key="item._id">
-                        <td class="text-center">{{ item.userName }}</td>
-                        <td class="text-center">{{ item.phone }}</td>
-                        <td class="text-center">{{ item.email }}</td>
-                        <td class="text-center">{{ item.details }}</td>
-                        <td class="text-center">{{ item.location }}</td>
-                        <td class="text-center">{{ item.type }}</td>
-                        <td class="text-center">
-                            <v-row justify="center">
-                                <NuxtLink :to="localePath('/maids/'+item._id)">
-                                    <v-icon color="#ff9f3b" left>
-                                        {{ icons.mdiPencil }}
-                                    </v-icon>
-                                </NuxtLink>
-                                
-                                <NuxtLink :to="localePath('/maids/details/'+item._id)">
-                                    <v-icon left>
-                                        {{ icons.mdiEye }}
-                                    </v-icon>
-                                </NuxtLink>
-                                <v-btn
-                                    fab
-                                    dark
-                                    small
-                                    :rounded="false" 
-                                    @click="Delete(item._id)"
-                                    color="red"
-                                    text
-                                >
-                                    <v-icon>mdi-delete</v-icon>
-                                </v-btn>
-                            </v-row>
-                        </td>
-                    </tr>
-                </tbody>
+        
+        
+    <v-card-title>
+      Maids Search
+      <v-spacer></v-spacer>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+      ></v-text-field>
+    </v-card-title>
+        <v-data-table :items="allMaidsList.data"
+      :search="search" :headers="headers" 
+      item-key="userName"
+             class="table100">
+            <template #item.userName="{ value }">
+                {{ value }}
             </template>
-        </v-simple-table>
+            <template #item.phone="{ value }">
+                {{ value }}
+            </template>
+            <template #item.email="{ value }">
+                {{ value }}
+            </template>
+            <template #item.details="{ value }">
+                {{ value }}
+            </template>
+            <template #item.location="{ value }">
+                {{ value }}
+            </template>
+            <template #item.type="{ value }">
+                {{ value }}
+            </template>
+            <template #item.actions="{ item }">
+                <td @click.stop class="non-clickable">
+                    <v-btn :to="`/maids/${item._id}`" class="btn-table">
+                        <v-icon color="#ff9f3b">
+                            {{ icons.mdiPencil }}
+                        </v-icon>
+                    </v-btn>
+                    <v-btn :to="`/maids/details/${item._id}`" class="btn-table">
+                        <v-icon color="#555">
+                            {{ icons.mdiEye }}
+                        </v-icon>
+                    </v-btn>
+                    <v-icon @click="Delete(item._id)" color="red">
+                        {{ icons.mdiDelete }}
+                    </v-icon>
+                </td>
+            </template>
+        </v-data-table>
+        <v-snackbar
+          v-model="snackbar"
+          absolute
+          right
+          color="#f68c28"
+          rounded="pill"
+          centered
+    >
+      {{ allMaidsList.message }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="pink"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
     </v-container>
 </template>
 
@@ -71,11 +84,22 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
     data() {
         return {
+        snackbar: false,
             icons: {
                 mdiPencil,
                 mdiDelete,
                 mdiEye
             }, 
+            search: '',
+            headers: [
+                { text: 'Name', value: 'userName' },
+                { text: 'phone', value: 'phone' },
+                { text: 'Email', value: 'email' },
+                { text: 'details', value: 'details' },
+                { text: 'location', value: 'location' },
+                { text: 'type', value: 'type' },
+                { text: 'Actions', value: 'actions', sortable: false},
+            ],
         }
     },
   computed: {
@@ -83,10 +107,11 @@ export default {
   },
   methods:{
     ...mapActions(['getMaids','DeleteMids']),
-    
      Delete(id) {
+            this.snackbar = true
       this.DeleteMids(id)
     },
+    
 
   },
    mounted() { 

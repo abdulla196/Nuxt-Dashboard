@@ -3,7 +3,7 @@
     <div class="login">
       <h1>{{ $t('Login') }}</h1>
 
-      <div class="form_login_cc">
+      <div class="form_login_cc" id="form">
         <div class="form_login">
           <div class="form_title">
             <div class="mb-5">
@@ -50,13 +50,18 @@
           </div>
         </div>
         <v-snackbar
-      v-model="snackbar"
-    >
+          v-model="snackbar"
+          absolute
+          right
+          color="#f68c28"
+          rounded="pill"
+          centered
+        >
       {{ this.$store.state.auth.errorMesage }}
 
       <template v-slot:action="{ attrs }">
         <v-btn
-          color="pink"
+          color="#fff"
           text
           v-bind="attrs"
           @click="snackbar = false"

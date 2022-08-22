@@ -47,16 +47,12 @@ const actions = {
   },
 
   routerTo() {
-    if (this.$i18n.locale === 'en') {
       window.location.href = '/'
-    } else {
-      window.location.href = '/ar'
-    }
   },
 
   Logout() {
     this.$cookies.remove('Authorization')
-      window.location.href = '/'
+      window.location.href = '/login'
   },
 
   registerAction({ state, dispatch }, arrayData) {
@@ -116,15 +112,21 @@ const actions = {
       .$post('/signin', data)
       .then((res) => {
         state.loading = false
-        if (res.status == 1) {
-          this.$cookies.set('Authorization', 'Bearer '+ res.data.token, {
-            path: '/',
-            maxAge: 365 * 24 * 60 * 60,
-          })
-          state.errorMesage = res.message
-          dispatch('routerTo')
-        } else {
-          state.errorMesage = res.message
+        if(res.data.user.type == 'admin'){
+          if (res.status == 1) {
+            this.$cookies.set('Authorization', 'Bearer '+ res.data.token, {
+              path: '/',
+              maxAge: 365 * 24 * 60 * 60,
+            })
+            this.$cookies.set('myInfo', res.data)
+            state.errorMesage = res.message
+            dispatch('routerTo')
+          } else {
+            state.errorMesage = res.message
+          }
+        }
+        else{
+          state.errorMesage = "you don't have access"
         }
       })
       

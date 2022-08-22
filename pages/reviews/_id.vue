@@ -19,7 +19,7 @@
                             </v-textarea>
                         </v-col>
                         <v-col cols="12">
-                            <v-rating v-model="ReviewEdit.rate" icon-label="custom icon label text {0} of {1}"></v-rating>
+                            <v-rating v-model="ReviewEdit.rate" color="gold" icon-label="custom icon label text {0} of {1}"></v-rating>
                         </v-col>
             <div class="col-12 text-center">
                 <v-btn depressed color="primary" @click="UpdateReview">
@@ -30,7 +30,27 @@
                 </v-container>
             </v-card-text>
 
-        </v-card>
+        </v-card><v-snackbar
+          v-model="snackbar"
+          absolute
+          right
+          color="#f68c28"
+          rounded="pill"
+          centered
+    >
+      {{ allReviewsList.message }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="pink"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
     </div>
 </template>
 
@@ -39,6 +59,7 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data: () => ({
+        snackbar: false,
     ReviewEdit: {
         comment: '',
         rate: 0,
@@ -64,7 +85,7 @@ export default {
         this.ReviewEdit.id = this.$route.params.id
     },
     UpdateReview() {
-        console.log(this.ReviewEdit)
+            this.snackbar = true
         this.updateReviews(this.ReviewEdit);
     },
   },
@@ -102,6 +123,9 @@ select {
     border-radius: 3px;
 }
 
+select {
+  border: 1px solid rgba(0, 0, 0, 0.42) !important;
+}
 select {
     -webkit-appearance: none;
     -moz-appearance: none;

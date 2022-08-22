@@ -41,7 +41,27 @@
                 </v-container>
             </v-card-text>
 
-        </v-card>
+        </v-card><v-snackbar
+          v-model="snackbar"
+          absolute
+          right
+          color="#f68c28"
+          rounded="pill"
+          centered
+    >
+      {{ this.$store.state.Reviews.message }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="pink"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
     </div>
 </template>
 
@@ -51,6 +71,7 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
     data() {
         return {
+        snackbar: false,
             Review: {
                 users: '',
                 maids: '',
@@ -66,6 +87,7 @@ export default {
         ...mapActions(['AddReview', 'getUsers', 'getMaids']),
 
         OnAddReview() {
+            this.snackbar = true
             this.AddReview(this.Review)
         },
     },
@@ -94,6 +116,9 @@ select {
     border-radius: 3px;
 }
 
+select {
+  border: 1px solid rgba(0, 0, 0, 0.42) !important;
+}
 select {
     -webkit-appearance: none;
     -moz-appearance: none;

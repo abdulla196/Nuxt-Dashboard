@@ -3,7 +3,8 @@
         <div class="text-center my-3">
             <h2  class="title-head text-center">Review List</h2>
         </div>
-        <template>
+        
+        <!-- <template>
             <div class="">
 
                 <v-card>
@@ -34,55 +35,67 @@
                     
                 </v-card>
             </div>
-        </template>
-
-        <v-simple-table  class="table100">
-            <template v-slot:default>
-                <thead>
-                    <tr>
-                        <th class="text-center">
-                            id
-                        </th>
-                        <th class="text-center">
-                            comment
-                        </th>
-                        <th class="text-center">
-                            rate
-                        </th>
-                        <th class="text-center">
-                            action
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="item in allReviewsList.data.data" :key="item._id">
-                        <td class="text-center">{{ item._id }}</td>
-                        <td class="text-center">{{ item.comment }}</td>
-                        <td class="text-center">{{ item.rate }}</td> 
-                        <td class="text-center">
-                            <v-row justify="center">
-                                <NuxtLink :to="localePath('/reviews/'+item._id)">
-                                    <v-icon color="#ff9f3b" left>
-                                        {{ icons.mdiPencil }}
-                                    </v-icon>
-                                </NuxtLink>
-                                <v-icon 
-                                    @click="Delete(item._id)"
-                                    color="red">
-                                    {{ icons.mdiDelete }}
-                                </v-icon>
-                                
-                                <NuxtLink :to="localePath('/reviews/details/'+item.maid_id)">
-                                    <v-icon left>
-                                        {{ icons.mdiEye }}
-                                    </v-icon>
-                                </NuxtLink>
-                            </v-row>
-                        </td>
-                    </tr>
-                </tbody>
+        </template> -->
+    <v-card-title>
+      Reviews Search
+      <v-spacer></v-spacer>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+      ></v-text-field>
+    </v-card-title>
+        <v-data-table :items="allReviewsList.data.data"
+      :search="search" :headers="headers" 
+             class="table100">
+            <template #item._id="{ value }">
+                {{ value }}
             </template>
-        </v-simple-table>
+            <template #item.comment="{ value }">
+                {{ value }}
+            </template>
+            <template #item.rate="{ value }">
+                {{ value }}
+            </template>
+            <template #item.actions="{ item }">
+                <td @click.stop class="non-clickable">
+                    <v-btn :to="`/reviews/${item._id}`" class="btn-table">
+                        <v-icon color="#ff9f3b" left>
+                            {{ icons.mdiPencil }}
+                        </v-icon>
+                    </v-btn>
+                    <!-- <v-btn :to="`/reviews/details/${item.maid_id}`" class="btn-table">
+                        <v-icon color="#555">
+                            {{ icons.mdiEye }}
+                        </v-icon>
+                    </v-btn> -->
+                    <v-icon @click="Delete(item._id)" color="red">
+                        {{ icons.mdiDelete }}
+                    </v-icon>
+                </td>
+            </template>
+        </v-data-table>
+        <v-snackbar
+          v-model="snackbar"
+          absolute
+          right
+          color="#f68c28"
+          rounded="pill"
+          centered
+    >
+      {{ allReviewsList.message }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="pink"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
     </v-container>
 </template>
 
@@ -92,6 +105,7 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
     data() {
         return {
+        snackbar: false,
             Review:{
                 maids:''
             },
@@ -99,7 +113,14 @@ export default {
                 mdiPencil,
                 mdiDelete,
                 mdiEye
-            }, 
+            },
+            search: '',
+            headers: [
+                { text: 'id', value: '_id' },
+                { text: 'comment', value: 'comment' },
+                { text: 'rate', value: 'rate' },
+                { text: 'Actions', value: 'actions', sortable: false},
+            ],
         }
     },
   computed: {
@@ -108,6 +129,7 @@ export default {
   methods:{
     ...mapActions(['getReviews', 'DeleteReviews','getMaids','GetforMaid']),
     Delete(id) {
+            this.snackbar = true
       this.DeleteReviews(id)
     },
      OnAddReview() {

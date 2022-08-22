@@ -18,10 +18,11 @@ const actions = {
         })
     },
     async DeleteReviews({ state, dispatch }, dataObj) {
+        state.message='Loading ....'
         this.$axios
             .delete('/api/review/' + dataObj)
             .then(function (res) {
-                alert('Reviews deteled ' + res.data.message)
+                state.message=res.data.message
                 dispatch('getReviews')
             })
             .catch(function (error) {
@@ -59,6 +60,7 @@ const actions = {
     },
     
     async updateReviews({ state, dispatch }, Obj) {
+        state.message='Loading ....'
         state.loading = true
         var data = JSON.stringify({
             "rate":Obj.rate,
@@ -70,8 +72,10 @@ const actions = {
         this.$axios.put('/api/review/' + Obj.id, data, config).then((res) => {
             state.cart = res.data
             if (res.data.status === 1) {
+                state.message=res.data.message
                 state.data = res.data
                 this.$router.push('/reviews')
+                dispatch('getReviews')
             } else {
                 state.addressMSG = res.data.msg
             }
@@ -79,6 +83,7 @@ const actions = {
         })
     },
     AddReview({ state, dispatch }, arrayData) {
+        state.message='Loading ....'
         var data = JSON.stringify({
             "users":arrayData.users,
             "maids":arrayData.maids,
@@ -88,9 +93,11 @@ const actions = {
         this.$axios
             .post('/api/review/', data)
             .then((res) => {
+                state.message=res.data.message
                 state.loading = false
                 if (res.data.status == 1) {
                     this.$router.push('/reviews')
+                    dispatch('getReviews')
                 } else {
                     alert('error')
                 }

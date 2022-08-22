@@ -27,6 +27,22 @@
               </select>
             </v-col>
             <v-col cols="12">
+              
+              <v-radio-group
+                v-model="NotificationEdit.priority"
+                row
+              >
+                <v-radio
+                  label="low"
+                  value="low"
+                ></v-radio>
+                <v-radio
+                  label="high"
+                  value="high"
+                ></v-radio>
+              </v-radio-group>
+            </v-col>
+            <v-col cols="12">
               <v-checkbox v-model="NotificationEdit.is_clicked" label="is clicked ?"></v-checkbox>
             </v-col>
       <div class="col-12 text-center">
@@ -38,7 +54,28 @@
         </v-container>
       </v-card-text>
 
-    </v-card>
+    </v-card>       
+     <v-snackbar
+          v-model="snackbar"
+          absolute
+          right
+          color="#f68c28"
+          rounded="pill"
+          centered
+    >
+      {{ allnotificationList.message }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="pink"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 <script>
@@ -47,9 +84,11 @@ export default {
   name: 'IndexPage',
   data() {
     return {
+        snackbar: false,
       NotificationEdit: {
         content: '',
         subject: '',
+        priority:null,
         users:'please select',
         usersId:'',
         is_clicked: false,
@@ -66,12 +105,20 @@ export default {
       this.NotificationEdit.content = this.allnotificationList.oneNotification.content
       this.NotificationEdit.is_clicked = this.allnotificationList.oneNotification.is_clicked
       this.NotificationEdit.usersId = this.allnotificationList.oneNotification.user_id
+      this.NotificationEdit.priority = this.allnotificationList.oneNotification.priority
       this.NotificationEdit.id = this.$route.params.id
     },
     
     UpdateUNotifi() {
+            this.snackbar = true
       this.updateNotification(this.NotificationEdit);
     },
+    removearray(){
+      const index = array.indexOf(user);
+      if (index > -1) {
+        array.splice(index, 1);
+      }
+    }
   },
   computed: {
     ...mapGetters(['allnotificationList','allUsersList']),
@@ -87,6 +134,9 @@ export default {
 </script>
 
 <style scoped>
+select {
+  border: 1px solid rgba(0, 0, 0, 0.42) !important;
+}
 .subCat_ {
   border: 1px solid #ededed;
   border-radius: 4px;

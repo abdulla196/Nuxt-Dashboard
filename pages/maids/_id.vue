@@ -74,6 +74,33 @@
         </div>
       </v-row>
     </v-container>
+    <v-overlay :value="overlay">
+      <v-progress-circular
+        indeterminate
+        size="100"
+      ></v-progress-circular>
+    </v-overlay>
+        <v-snackbar
+          v-model="snackbar"
+          absolute
+          right
+          color="#f68c28"
+          rounded="pill"
+          centered
+    >
+      {{ allMaidsList.message }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="pink"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-card-text>
   
 </template>
@@ -83,6 +110,8 @@ import { mapActions, mapGetters } from 'vuex'
 import VueUploadMultipleImage from 'vue-upload-multiple-image'
 export default {
   data: () => ({
+        snackbar: false,
+    overlay:false,
     activePicker: null,
     menu: false,
     MaidsEdit: {
@@ -97,16 +126,21 @@ export default {
       id: ''
     },
   }),
-  components: {
-    VueUploadMultipleImage
-  },
   watch: {
     menu (val) {
       val && setTimeout(() => (this.activePicker = 'YEAR'))
     },
+    overlay (val) {
+      val && setTimeout(() => {
+        this.overlay = false
+      }, 3000)
+    },
+  },
+  created () {
+    this.completeMaidsData()
   },
   methods: {
-    ...mapActions(['updateMaids', 'getoneMaids','completeMaidsData']),
+    ...mapActions(['updateMaids','completeMaidsData']),
     uploadImageSuccess(formData, index, fileList) {
       console.log('data', formData, index, fileList)
       this.MaidsEdit.maid_paper =fileList
@@ -127,36 +161,50 @@ export default {
         this.MaidsEdit.birthday = date
         this.$refs.menu.save(this.MaidsEdit.birthday)
     },
-    completeMaidsData() {
-      this.MaidsEdit.phone = this.allMaidsList.onemaid.phone
-      this.MaidsEdit.location = this.allMaidsList.onemaid.location
-      this.MaidsEdit.details = this.allMaidsList.onemaid.details
-      
-      this.MaidsEdit.price = this.allMaidsList.onemaid.price
-      this.MaidsEdit.userName = this.allMaidsList.onemaid.userName
-      this.MaidsEdit.email = this.allMaidsList.onemaid.email
-      this.MaidsEdit.id = this.$route.params.id
-      this.MaidsEdit.maid_paper = this.allMaidsList.onemaid.maid_paper
-      if(this.allMaidsList.onemaid.birthday == 'null'){
-        this.MaidsEdit.birthday = ''
-      }
-      else{
-        this.MaidsEdit.birthday = this.allMaidsList.onemaid.birthday
-      }
+    async completeMaidsData () {
+      this.overlay = true
+      const userIdPromise = await fetch(`http://66.29.155.80:5003/api/user/${this.$route.params.id}`, {
+          method: 'GET',
+          headers: {
+            'Accept': "application/json",
+              'Content-Type': 'multipart/form-data',
+              'Vary':'X-HTTP-Method-Override',
+              'Content-Type': 'application/json',
+              'Authorization':this.$cookies.get('Authorization'),
+          }
+        })
+        const userIdJson = userIdPromise.json()
+        userIdJson.then((res) => {
+          this.MaidsEdit.phone = res.data.phone
+          this.MaidsEdit.location = res.data.location
+          this.MaidsEdit.details = res.data.details
+          
+          this.MaidsEdit.price = res.data.price
+          this.MaidsEdit.userName = res.data.userName
+          this.MaidsEdit.email = res.data.email
+          this.MaidsEdit.id = this.$route.params.id
+          this.MaidsEdit.maid_paper = res.data.maid_paper
+          if(res.data.birthday == 'null'){
+            this.MaidsEdit.birthday = ''
+          }
+          else{
+            this.MaidsEdit.birthday = res.data.birthday
+          }
+      })
+      setTimeout(function(){
+      this.overlay = false
+      },6000)
     },
     UpdateMaid() {
+      this.snackbar = true
       this.updateMaids(this.MaidsEdit);
     },
   },
-
+  components: {
+    VueUploadMultipleImage
+  },
   computed: {
     ...mapGetters(['allMaidsList']),
-  },
-
-
-  mounted() {
-    this.getoneMaids(this.$route.params.id)
-    setTimeout(() => this.completeMaidsData(), 2000);
   },
 }
 </script>

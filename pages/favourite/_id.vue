@@ -31,6 +31,27 @@
       </v-card-text>
 
     </v-card>
+        <v-snackbar
+          v-model="snackbar"
+          absolute
+          right
+          color="#f68c28"
+          rounded="pill"
+          centered
+    >
+      {{ allFavouriteList.message }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="pink"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 <script>
@@ -38,6 +59,7 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data: () => ({
+        snackbar: false,
     FavouriteEdit: {
         user_id:'',
         maid_id:'',
@@ -58,6 +80,7 @@ export default {
       this.FavouriteEdit.id = this.$route.params.id
     },
     UpdateReview() {
+            this.snackbar = true
         this.updateFavourite(this.FavouriteEdit);
     },
   },
@@ -82,4 +105,8 @@ export default {
 
 
 <style>
+
+select {
+  border: 1px solid rgba(0, 0, 0, 0.42) !important;
+}
 </style>

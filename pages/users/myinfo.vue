@@ -25,8 +25,23 @@
                         <h2>{{ allAuth.user.userName }}</h2>
                         <p class="email">{{ allAuth.user.email }}</p>
                         <p class="phone">{{ allAuth.user.phone }}</p>
-
+                        <div class="form_account_body">
+                        <v-file-input
+                            :rules="rulesImage"
+                            accept="image/png, image/jpeg, image/bmp"
+                            placeholder="Pick an avatar"
+                            prepend-icon="mdi-camera"
+                            label="Change profile"
+                            @change="onFileChanged"
+                        ></v-file-input>
+                        <v-btn color="#f68c28" class="sub"
+                            @click="onUpload"
+                            type="submit">
+                            change photo
+                        </v-btn>
                     </div>
+                    </div>
+                     
                 </template>
             </v-col>
 
@@ -76,22 +91,8 @@
                                             dense
                                         ></v-text-field>
                                         <v-text-field
-                                            v-model="dataInfo.details"
-                                            label="details"
-                                            required
-                                            outlined
-                                            dense
-                                        ></v-text-field>
-                                        <v-text-field
                                             v-model="dataInfo.location"
                                             label="location"
-                                            required
-                                            outlined
-                                            dense
-                                        ></v-text-field>
-                                        <v-text-field
-                                            v-model="dataInfo.price"
-                                            label="price"
                                             required
                                             outlined
                                             dense
@@ -166,7 +167,7 @@
                                             <v-text-field v-model="passworddata.new_password"
                                                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                                                 :rules="[$rules.required, $rules.password]"
-                                                :type="showPassword ? 'text' : 'password'" :label="$t('Password')"
+                                                :type="showPassword ? 'text' : 'password'" label="New Password"
                                                 @click:append="showPassword = !showPassword" outlined required dense>
                                             </v-text-field>
 
@@ -188,32 +189,6 @@
                                             </v-btn>
                                         </div>
                                     </v-form>
-                                </v-expansion-panel-content>
-                            </v-expansion-panel>
-<v-expansion-panel>
-                                <v-expansion-panel-header>
-                                    <template>
-                                        <v-row no-gutters> Change Photo </v-row>
-                                    </template>
-                                </v-expansion-panel-header>
-
-                                <v-expansion-panel-content>
-
-                                        <div class="form_account_body">
-                                            <v-file-input
-                                                :rules="rulesImage"
-                                                accept="image/png, image/jpeg, image/bmp"
-                                                placeholder="Pick an avatar"
-                                                prepend-icon="mdi-camera"
-                                                label="Change profile"
-                                                @change="onFileChanged"
-                                            ></v-file-input>
-                                            <v-btn color="#f68c28" class="sub"
-                                                @click="onUpload"
-                                                type="submit">
-                                                change photo
-                                            </v-btn>
-                                        </div>
                                 </v-expansion-panel-content>
                             </v-expansion-panel>
                         </v-expansion-panels>
@@ -301,7 +276,6 @@ export default {
       this.photodata.photo = this.allAuth.user.photo
       this.passworddata.id = this.allAuth.user._id
       this.passworddata.email = this.allAuth.user.email
-      console.log(this.dataInfo)
     },
     changeInfoFunction(e) {
       e.preventDefault()
@@ -325,7 +299,7 @@ export default {
     
   mounted() {
     this.myInfo()
-    setTimeout(() => this.complateData(), 3000);
+    setTimeout(() => this.complateData(), 4000);
   },
 };
 </script>

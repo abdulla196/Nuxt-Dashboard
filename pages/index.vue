@@ -53,10 +53,9 @@ export default {
     ...mapGetters(['allUsersList','allMaidsList','allnotificationList','allReviewsList','allFavouriteList']),
   },
   methods:{
-    ...mapActions(['getUsers','myInfo','getMaids','getNotification','getReviews','getFavourite'])
+    ...mapActions(['getUsers','getMaids','getNotification','getReviews','getFavourite'])
   },
   mounted(){
-    this.myInfo();
     this.getNotification()
     this.getReviews()
     this.getFavourite()

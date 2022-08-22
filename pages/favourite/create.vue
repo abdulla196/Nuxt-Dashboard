@@ -31,6 +31,27 @@
       </v-card-text>
 
     </v-card>
+        <v-snackbar
+          v-model="snackbar"
+          absolute
+          right
+          color="#f68c28"
+          rounded="pill"
+          centered
+    >
+      {{ allFavouriteList.message }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="pink"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -40,6 +61,7 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
+        snackbar: false,
       Favourite: {
         users: '',
         maids: ''
@@ -53,7 +75,7 @@ export default {
     ...mapActions(['AddFavourite', 'getUsers', 'getMaids']),
 
     OnAddFavourite() {
-      console.log(this.Favourite)
+            this.snackbar = true
       this.AddFavourite(this.Favourite)
     },
   },
@@ -80,6 +102,9 @@ select {
   cursor: pointer;
   border: 1px solid black;
   border-radius: 3px;
+}
+select {
+  border: 1px solid rgba(0, 0, 0, 0.42) !important;
 }
 
 select {

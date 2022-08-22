@@ -66,8 +66,14 @@
           </v-btn>
         </div>
       </v-row>
-      <v-snackbar v-model="snackbar">
-        {{ this.$store.state.Users.message }}
+      <v-snackbar 
+          v-model="snackbar"
+          absolute
+          right
+          color="#f68c28"
+          rounded="pill"
+          centered>
+        {{ allUsersList.message }}
 
         <template v-slot:action="{ attrs }">
           <v-btn
