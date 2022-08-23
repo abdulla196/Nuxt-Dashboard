@@ -244,9 +244,11 @@ export default {
     },
     mydata(){
       const info = this.$cookies.get('myInfo')
+      if(info){
         this.username = info.user.userName
         this.email = info.user.email
-      },
+      }
+    },
     
     async getUserfirebase() {
       const querySnapshot = await getDocs(collection(db, "messages"));

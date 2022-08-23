@@ -5,15 +5,20 @@
         <div class="text-center my-3">
             <h2  class="title-head text-center">Edit miad</h2>
         </div>
+        <v-form ref="form" v-model="valid">
       <v-row id="form">
         <v-col class="col-md-6 col-12">
-          <v-text-field label="phone" prefix="" outlined v-model="MaidsEdit.phone" required></v-text-field>
+          <v-text-field label="phone" outlined v-model="MaidsEdit.phone" :rules="[
+                    $rules.required,
+                    $rules.number]" required></v-text-field>
         </v-col>
         <v-col class="col-md-6 col-12">
-          <v-text-field label="location" v-model="MaidsEdit.location" required outlined></v-text-field>
+          <v-text-field label="location" v-model="MaidsEdit.location" :rules="[
+                    $rules.required,
+                    $rules.select]" required outlined></v-text-field>
         </v-col>
         <v-col class="col-md-6 col-12">
-          <v-text-field label="details" prefix="" outlined v-model="MaidsEdit.details" required></v-text-field>
+          <v-text-field label="details"  outlined v-model="MaidsEdit.details" required></v-text-field>
         </v-col>
         <v-col class="col-md-6 col-12">
             <v-menu
@@ -44,14 +49,18 @@
           </v-menu>
         </v-col>
         <v-col class="col-md-6 col-12">
-          <v-text-field label="price" prefix="" outlined v-model="MaidsEdit.price" required></v-text-field>
+          <v-text-field label="price"  outlined v-model="MaidsEdit.price" required></v-text-field>
         </v-col>
         <v-col class="col-md-6 col-12">
-          <v-text-field label="userName" v-model="MaidsEdit.userName" required outlined></v-text-field>
+          <v-text-field label="userName" v-model="MaidsEdit.userName" :rules="[
+                    $rules.required,
+                    $rules.name]" required outlined></v-text-field>
         </v-col>
 
         <v-col class="col-md-6 col-12">
-          <v-text-field label="email" v-model="MaidsEdit.email" required outlined></v-text-field>
+          <v-text-field label="email" v-model="MaidsEdit.email" :rules="[
+                    $rules.required,
+                    $rules.email]" required outlined></v-text-field>
         </v-col>
         <div id="my-strictly-unique-vue-upload-multiple-image" style="display: flex;justify-content: center;flex-direction: column;align-items: center;" class="col-12">
         <label> الصوره الشخصية - صورة الجواز - صورة الفيش</label>
@@ -68,11 +77,12 @@
               ></vue-upload-multiple-image>
           </div>
         <div class="col-12 text-center">
-          <v-btn depressed color="primary" @click="UpdateMaid">
+          <v-btn depressed color="primary" :disabled="!valid" @click="UpdateMaid">
             save
           </v-btn>
         </div>
       </v-row>
+      </v-form>
     </v-container>
     <v-overlay :value="overlay">
       <v-progress-circular
@@ -110,7 +120,8 @@ import { mapActions, mapGetters } from 'vuex'
 import VueUploadMultipleImage from 'vue-upload-multiple-image'
 export default {
   data: () => ({
-        snackbar: false,
+    valid:true,
+    snackbar: false,
     overlay:false,
     activePicker: null,
     menu: false,

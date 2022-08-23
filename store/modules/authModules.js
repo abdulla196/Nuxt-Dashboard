@@ -52,6 +52,7 @@ const actions = {
 
   Logout() {
     this.$cookies.remove('Authorization')
+    this.$cookies.remove('myInfo')
       window.location.href = '/login'
   },
 

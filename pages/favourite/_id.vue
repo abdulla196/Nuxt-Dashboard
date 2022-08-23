@@ -6,20 +6,17 @@
       <v-card-text>
         <v-container>
           <v-row id="form">
-            <v-col cols="12" class="my-3">
-              <label>Select user</label>
-              <select v-model="FavouriteEdit.user_id" outlined label="select user" required>
-                <option selected disabled>select user</option>
-                <option v-for="item in allUsersList.data" :key="item._id" s v-bind:value="item._id" v-bind:selected="item._id == FavouriteEdit.user_id">{{ item.userName }}</option>
-              </select>
+            <v-col cols="12" class="my-3"> 
+              <v-select  v-model="FavouriteEdit.user_id"
+                  :items="allUsersList.data"
+                  item-text="userName"
+                  item-value="_id" :rules="[ $rules.required, $rules.select]" label="Select user"></v-select>
             </v-col>
-            <v-col cols="12" class="my-3">
-              <label>Select maids  </label>
-              <select v-model="FavouriteEdit.maid_id" outlined label="select user" required>
-                <option value="" selected disabled>select maids</option>
-                <option v-for="maids in allMaidsList.data" :key="maids._id" v-bind:value="maids._id" v-bind:selected="maids._id == FavouriteEdit.maid_id">{{ maids.userName }}
-                </option>
-              </select>
+            <v-col cols="12" class="my-3"> 
+              <v-select  v-model="FavouriteEdit.maid_id"
+                  :items="allMaidsList.data"
+                  item-text="userName"
+                  item-value="_id" :rules="[ $rules.required, $rules.select]" label="Select maids"></v-select>
             </v-col>
       <div class="col-12 text-center">
         <v-btn depressed color="primary" @click="UpdateReview">
@@ -102,11 +99,3 @@ export default {
   },
 }
 </script>
-
-
-<style>
-
-select {
-  border: 1px solid rgba(0, 0, 0, 0.42) !important;
-}
-</style>

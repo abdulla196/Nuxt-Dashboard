@@ -6,23 +6,33 @@
             <h2  class=" text-center" style="font-size:37px;color:#403c3c">Edit User</h2>
             <br/>
         </div>
+        <v-form ref="form" v-model="valid">
       <v-row id="form">
         
         <v-col class="col-md-6 col-12">
-          <v-text-field label="userName" v-model="UserEdit.userName" required outlined></v-text-field>
+          <v-text-field label="userName" v-model="UserEdit.userName" :rules="[
+                    $rules.required,
+                    $rules.name]" required outlined></v-text-field>
         </v-col>
 
         <v-col class="col-md-6 col-12">
-          <v-text-field label="email" v-model="UserEdit.email" required outlined></v-text-field>
+          <v-text-field label="email" v-model="UserEdit.email" :rules="[
+                    $rules.required,
+                    $rules.email]" required outlined></v-text-field>
         </v-col>
         <v-col class="col-md-6 col-12">
-          <v-text-field label="phone" prefix="" outlined v-model="UserEdit.phone" required></v-text-field>
+          <v-text-field label="phone" prefix="" outlined :rules="[
+                    $rules.required,
+                    $rules.number]" v-model="UserEdit.phone" required></v-text-field>
         </v-col>
         <v-col class="col-md-6 col-12">
           <v-select
           :items="countries"
           required
           v-model="UserEdit.location"
+          :rules="[
+            $rules.required,
+            $rules.select]"
           label="location"
           ></v-select>
         </v-col>
@@ -61,11 +71,12 @@
           <v-text-field label="price" prefix="" outlined v-model="UserEdit.price" required></v-text-field>
         </v-col>
         <div class="col-12 text-center">
-          <v-btn depressed color="#f68c28" style="color:#fff" @click="updateuser">
+          <v-btn depressed color="#f68c28" :disabled="!valid" style="color:#fff" @click="updateuser">
             <b>save</b>
           </v-btn>
         </div>
       </v-row>
+      </v-form>
       <v-snackbar 
           v-model="snackbar"
           absolute
@@ -96,6 +107,7 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data: () => ({
+    valid:true,
     snackbar: false,
     activePicker: null,
     menu: false,

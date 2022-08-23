@@ -138,6 +138,7 @@ export default {
     },
     async clientData(id) {
       if(id){ 
+        this.scrollDonw()
         this.client_id = id
       }
       const db = getFirestore()
@@ -222,8 +223,7 @@ export default {
   },
   created() {
     setInterval(() => {
-      this.scrollDonw()
-      // this.clientData(this.client_id)
+      this.clientData(this.client_id)
     }, 1000)
   },
   mounted() {

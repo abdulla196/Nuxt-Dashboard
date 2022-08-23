@@ -63,20 +63,20 @@ const actions = {
     },
     async Addnotification({ state, dispatch }, arrayData) {
         state.message='Loading ....'
-        for(var i =0 ; i < arrayData.usersId.length ; i++){
+        for(var i =0 ; i < arrayData.users.length ; i++){
             var data = JSON.stringify({
                 "content":arrayData.content,
                 "subject":arrayData.subject,
                 "is_clicked":arrayData.is_clicked,
                 "priority":arrayData.priority,
-                "user_id":arrayData.usersId[i]
+                "user_id":arrayData.users[i]
             });
             this.$axios
             .post('/api/notification/', data)
             .then((res) => {
                 state.loading = false
                 if (res.data.status == 1) {
-                    if(arrayData.usersId.length < 0)
+                    if(arrayData.users.length < 0)
                     state.message=res.data.message
                     setTimeout(function(){
                       window.location.href = '/Notifications'})

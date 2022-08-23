@@ -74,8 +74,8 @@ const actions = {
             if (res.data.status === 1) {
                 state.message=res.data.message
                 state.data = res.data
-                this.$router.push('/reviews')
-                dispatch('getReviews')
+                setTimeout(function(){
+                  window.location.href = '/reviews'}) 
             } else {
                 state.addressMSG = res.data.msg
             }

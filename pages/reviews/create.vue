@@ -6,22 +6,19 @@
         <v-card>
             <v-card-text>
                 <v-container>
+        <v-form ref="form" v-model="valid">
                     <v-row id="form">
-                        <v-col cols="12" class="my-3">
-                            <label>Select user</label>
-                            <select v-model="Review.users" outlined label="select user" required>
-                                <option value="" selected disabled>select user</option>
-                                <option v-for="item in allUsersList.data" :key="item._id" :value="item._id">
-                                    {{ item.userName }}</option>
-                            </select>
+                        <v-col cols="12" class="my-3"> 
+                            <v-select  v-model="Review.users"
+                  :items="allUsersList.data"
+                  item-text="userName" item-value="_id" :rules="[ $rules.required, $rules.select]" label="Select user" attach chips></v-select>
+              
                         </v-col>
-                        <v-col cols="12" class="my-3">
-                            <label>Select maids</label>
-                            <select v-model="Review.maids" outlined label="select user" required>
-                                <option value="" selected disabled>select maids</option>
-                                <option v-for="maids in allMaidsList.data" :key="maids._id" :value="maids._id">
-                                    {{ maids.userName }}</option>
-                            </select>
+                        <v-col cols="12" class="my-3"> 
+                            <v-select  v-model="Review.maids"
+                  :items="allMaidsList.data"
+                  item-text="userName" item-value="_id" :rules="[ $rules.required, $rules.select]" label="Select maids" attach chips></v-select>
+              
                         </v-col>
 
                         <v-col cols="12" class="mt-3">
@@ -29,15 +26,16 @@
                             </v-textarea>
                         </v-col>
                         <v-col cols="12" style="padding:0 0.5rem">
-                            <v-rating v-model="Review.rate" icon-label="custom icon label text {0} of {1}"></v-rating>
+                            <v-rating v-model="Review.rate" :rules="[ $rules.required]" icon-label="custom icon label text {0} of {1}"></v-rating>
                         </v-col>
 
             <div class="col-12 text-center">
-                <v-btn depressed color="primary" @click="OnAddReview">
+                <v-btn depressed :disabled="!valid" color="primary" @click="OnAddReview">
                     save
                 </v-btn>
             </div>
                     </v-row>
+                    </v-form>
                 </v-container>
             </v-card-text>
 
@@ -71,6 +69,7 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
     data() {
         return {
+            valid:true,
         snackbar: false,
             Review: {
                 users: '',
@@ -103,42 +102,5 @@ export default {
 </script>
 
 <style>
-select {
-    appearance: none;
-    outline: 0;
-    background: #fff;
-    background-image: none;
-    width: 100%;
-    height: 100%;
-    color: black;
-    cursor: pointer;
-    border: 1px solid black;
-    border-radius: 3px;
-}
 
-select {
-  border: 1px solid rgba(0, 0, 0, 0.42) !important;
-}
-select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    -ms-appearance: none;
-    appearance: none;
-    outline: 0;
-    background-image: none;
-    border: 1px solid black;
-}
-
-select {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0 0 0 .5em;
-    color: #000;
-    cursor: pointer;
-}
-
-select::-ms-expand {
-    display: none;
-}
 </style>
