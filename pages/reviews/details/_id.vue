@@ -7,7 +7,7 @@
 
         <div  >
             
-        <h3 class="text-h5 text-center mb-3"> <span  class="infomaid">Rate Average</span> 
+        <h3 class="text-h5 text-center mb-3" v-if="allReviewsList.data.rate_average"> <span  class="infomaid">Rate Average</span> 
                             <v-rating :value="allReviewsList.data.rate_average"  readonly></v-rating> </h3>
         <v-row >
             <v-col cols="12" sm="6" md="4" v-for="item in allReviewsList.data.reviews" :key="item._id">

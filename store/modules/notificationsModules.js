@@ -2,7 +2,8 @@ const state = {
     loading: true,
     data: [],
     oneNotification: '',
-    length:0
+    length:0,
+    message:'Loading ....'
 }
 
 const getters = {
@@ -18,10 +19,11 @@ const actions = {
         })
     },
     async DeleteNotification({ state, dispatch }, dataObj) {
+        state.message='Loading ....'
         this.$axios
             .delete('/api/notification/' + dataObj)
             .then(function (res) {
-                alert('Notifcation deteled ' + res.data.message)
+                state.message=res.data.message
                 dispatch('getNotification')
             })
             .catch(function (error) {
@@ -37,17 +39,19 @@ const actions = {
         })
     },
     async updateNotification({ state, dispatch }, Obj) {
+        state.message='Loading ....'
         state.loading = true
         var data = JSON.stringify({
-            is_clicked: Obj.is_clicked,
-            content: Obj.content,
-            subject: Obj.subject,
-            user_id: Obj.usersId,
+            "is_clicked": Obj.is_clicked,
+            "content": Obj.content,
+            "subject": Obj.subject,
+            "user_id": Obj.usersId,
+            "priority":Obj.priority,
         })
         this.$axios.put('/api/notification/' + Obj.id, data).then((res) => {
             state.cart = res.data
             if (res.data.status === 1) {
-                alert('Notifcation Updated ' + res.data.message)
+                state.message=res.data.message
                 state.data = res.data
             } else {
                 state.addressMSG = res.data.msg
@@ -58,20 +62,22 @@ const actions = {
         })
     },
     async Addnotification({ state, dispatch }, arrayData) {
-        console.log(arrayData)
-        for(var i =0 ; i < arrayData.usersId.length ; i++){
+        state.message='Loading ....'
+        for(var i =0 ; i < arrayData.users.length ; i++){
             var data = JSON.stringify({
                 "content":arrayData.content,
                 "subject":arrayData.subject,
                 "is_clicked":arrayData.is_clicked,
-                "user_id":arrayData.usersId[i]
+                "priority":arrayData.priority,
+                "user_id":arrayData.users[i]
             });
             this.$axios
             .post('/api/notification/', data)
             .then((res) => {
                 state.loading = false
                 if (res.data.status == 1) {
-                    alert('Notifcation added ' + res.data.message)
+                    if(arrayData.users.length < 0)
+                    state.message=res.data.message
                     setTimeout(function(){
                       window.location.href = '/Notifications'})
                 } else {

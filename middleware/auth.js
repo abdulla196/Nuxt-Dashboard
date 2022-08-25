@@ -15,9 +15,7 @@ export default function ({ route, store, redirect, app, i18n }) {
     return false
   }
   //  Invalid Access For Visitor
-  if (!checkUser) {
-    return redirect('')
-  }
+  
   
   //  Invalid Access For User
 

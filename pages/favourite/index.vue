@@ -3,47 +3,59 @@
         <div class="text-center my-5">
             <h2  class="title-head text-center">Favourite List</h2>
         </div>
-        <v-simple-table class="table100">
-            <template v-slot:default>
-                <thead>
-                    <tr>
-                        <th class="text-center">
-                            id
-                        </th>
-                        <th class="text-center">
-                            maid_id
-                        </th>
-                        <th class="text-center">
-                            user_id
-                        </th>
-                        <th class="text-center">
-                            action
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="item in allFavouriteList.data.data" :key="item._id">
-                        <td class="text-center">{{ item._id }}</td>
-                        <td class="text-center">{{ item.maid_id }}</td>
-                        <td class="text-center">{{ item.user_id }}</td> 
-                        <td class="text-center">
-                            <v-row justify="center">
-                                <NuxtLink :to="localePath('/favourite/'+item._id)">
-                                    <v-icon color="#ff9f3b" left>
-                                        {{ icons.mdiPencil }}
-                                    </v-icon>
-                                </NuxtLink>
-                                <v-icon 
-                                    @click="Delete(item._id)"
-                                    color="red">
-                                    {{ icons.mdiDelete }}
-                                </v-icon>
-                            </v-row>
-                        </td>
-                    </tr>
-                </tbody>
+        
+    <v-card-title>
+      Favourite Search
+      <v-spacer></v-spacer>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+      ></v-text-field>
+    </v-card-title>
+        <v-data-table :items="allFavouriteList.data.data"
+      :search="search" :headers="headers" 
+             class="table100">
+            <template #item.maid_id="{ value }">
+                {{ value }}
             </template>
-        </v-simple-table>
+            <template #item.user_id="{ value }">
+                {{ value }}
+            </template>
+            <template #item.actions="{ item }">
+                <td @click.stop class="non-clickable">
+                    <v-btn :to="`/favourite/${item._id}`" class="btn-table">
+                        <v-icon color="#ff9f3b" left>
+                            {{ icons.mdiPencil }}
+                        </v-icon>
+                    </v-btn>
+                    <v-icon @click="Delete(item._id)" color="red">
+                        {{ icons.mdiDelete }}
+                    </v-icon>
+                </td>
+            </template>
+        </v-data-table>
+        <v-snackbar
+          v-model="snackbar"
+          absolute
+          right
+          color="#f68c28"
+          rounded="pill"
+          centered
+    >
+      {{ allFavouriteList.message }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="pink"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
     </v-container>
 </template>
 
@@ -53,10 +65,17 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
     data() {
         return {
+        snackbar: false,
             icons: {
                 mdiPencil,
                 mdiDelete,
-            }, 
+            },
+        search: '',
+            headers: [
+                { text: 'Maid Id', value: 'maid_id' },
+                { text: 'User Id', value: 'user_id' },
+                { text: 'Actions', value: 'actions', sortable: false},
+            ],
         }
     },
   computed: {
@@ -65,6 +84,7 @@ export default {
   methods:{
     ...mapActions(['getFavourite', 'DeleteFavourite']),
     Delete(id) {
+            this.snackbar = true
       this.DeleteFavourite(id)
     },
   },

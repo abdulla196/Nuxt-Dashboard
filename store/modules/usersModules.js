@@ -3,7 +3,7 @@ const state = {
   loading:true,
   data: [],
   myInfo:[],
-  message:'loading',
+  message:'loading ... ',
   length:0
 };
 
@@ -37,10 +37,11 @@ const actions = {
     })
 },
 async DeleteUser({ state, dispatch }, dataObj) {
+        state.message='Loading ....'
   this.$axios
       .delete('/api/user/' + dataObj)
       .then(function (res) {
-          alert('User deteled ' + res.data.message)
+                state.message=res.data.message
           dispatch('getUsers')
       })
       .catch(function (error) {
@@ -48,6 +49,7 @@ async DeleteUser({ state, dispatch }, dataObj) {
       })
 },
 async updateUsers({ state, dispatch }, Obj) {
+        state.message='Loading ....'
   state.loading = true
   var data = JSON.stringify({
       phone: Obj.phone,
@@ -63,7 +65,7 @@ async updateUsers({ state, dispatch }, Obj) {
       state.cart = res.data
       if (res.data.status === 1) {
           state.data = res.data
-            state.message = res.data.message
+                state.message=res.data.message
             setTimeout(function(){
               window.location.href = '/users'})
       } else {
@@ -125,7 +127,6 @@ Signup({ state, dispatch }, arrayData) {
   },
   
   async forgetpass({ state }, arrayData) {
-    console.log(arrayData)
     var data = JSON.stringify({
       "email":arrayData.email
   });
@@ -165,9 +166,7 @@ Signup({ state, dispatch }, arrayData) {
       "email":arrayData.email,
       "phone":arrayData.phone,
       "birthday":arrayData.birthday,
-      "details":arrayData.details,
       "location":arrayData.location,
-      "price":arrayData.price
     });
     state.loading = true
     this.$axios.$put('/api/user/'+arrayData.id, data).then((res) => {

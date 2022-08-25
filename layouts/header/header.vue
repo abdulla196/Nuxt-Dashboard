@@ -2,7 +2,7 @@
   <header class="header container_cc headerFixed">
     
     <div class="header_p">
-      <v-app-bar-nav-icon
+      <v-app-bar-nav-icon v-if="allAuth.checkAuth" 
         class="menuBtn"
         @click.stop="showDrawer()"
       ></v-app-bar-nav-icon>
@@ -13,10 +13,12 @@
       </div>
       <nav class="menu">
         <ul>
-          <li class="box_op_header">
-            <NuxtLink :to="localePath('/')" class="logo">
+          <li class="box_op_header logo">
+            
+            <NuxtLink v-if="allAuth.checkAuth" :to="localePath('/')" >
               <img src="/images/logo.jpeg"/>
             </NuxtLink>
+            <img v-else src="/images/logo.jpeg"/>
           </li>
         </ul>
       </nav>

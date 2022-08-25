@@ -5,7 +5,8 @@ const state = {
     maidInfo:[],
     maidreviews:[],
     length:0,
-    onemaid:[]
+    onemaid:[],
+    message:'Loading ....'
   };
   
   const getters = {
@@ -16,43 +17,38 @@ const state = {
   
     async getMaids({state}) {
      await this.$axios.get("/api/user/filter/maid").then((res) => {
-       const allmaids =[]
+      state.data =[]
         const maids = res.data.data;
         state.length = maids.length;
           for (let i=0; i < maids.length; i++) {
               if(maids[i].maid.type =='maid'){
-                allmaids.push(maids[i].maid)
+                state.data.push(maids[i].maid)
               }
           }
-          state.data = allmaids
           state.loading = false;
       });
     },
     
 async DeleteMids({ state, dispatch }, dataObj) {
+        state.message='Loading ....'
   this.$axios
       .delete('/api/user/' + dataObj)
       .then(function (res) {
-          alert('Maids deteled ' + res.data.message)
+        state.message=res.data.message
           state.data = []
           dispatch('getMaids')
       })
       .catch(function (error) {
-          console.log(error)
+        state.message=res.data.error
       })
 },
-    async getoneMaids({ state }, id) {
-        state.loading = true
-
-        await this.$axios.get('/api/user/' + id).then((res) => {
-            state.onemaid = res.data.data
-            console.log(state.onemaid,'res')
-            state.loading = false
-        })
+    async getoneMaids({ state }) {
+      setTimeout(function(){
+        state.loading = false
+      },3000)
     },
     async getMaidWothReview({ state }, id) {
         state.loading = true
-
         await this.$axios.get('/api/user/filter/maidwithreview/'+id).then((res) => {
             state.maidInfo = res.data.data.maid
             state.maidreviews = res.data.data.reviews
@@ -60,7 +56,7 @@ async DeleteMids({ state, dispatch }, dataObj) {
         })
     },
     async updateMaids({ state, dispatch }, Obj) {
-      console.log(Obj)
+        state.message='Loading ....'
         state.loading = true
         var data = JSON.stringify({
             phone: Obj.phone,
@@ -72,7 +68,6 @@ async DeleteMids({ state, dispatch }, dataObj) {
             email: Obj.email,
             maid_paper:Obj.maid_paper
         })
-        console.log(data)
         this.$axios.put('/api/user/' + Obj.id, data).then((res) => {
             state.cart = res.data
             if (res.data.status === 1) {
@@ -80,7 +75,7 @@ async DeleteMids({ state, dispatch }, dataObj) {
                 setTimeout(function(){
                   window.location.href = '/maids'})
             } else {
-                state.addressMSG = res.data.message
+                state.message=res.data.message
             }
             state.loading = false
         })

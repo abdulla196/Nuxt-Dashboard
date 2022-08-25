@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-sheet class="overflow-hidden menu_header">
+    <v-sheet class="overflow-hidden menu_header" >
       <v-navigation-drawer
         v-model="allUsers.menuHeader"
         absolute
@@ -33,9 +33,9 @@
         </v-list-item-avatar>
 
         <v-list-item-content v-if="allAuth.user">
-          <v-list-item-title v-text="allAuth.user.userName"></v-list-item-title>
+          <v-list-item-title v-text="username"></v-list-item-title>
 
-          <v-list-item-subtitle v-text="allAuth.user.email"></v-list-item-subtitle>
+          <v-list-item-subtitle v-text="email"></v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
       <NuxtLink :to="localePath('/')"  v-if="allAuth.checkAuth">
@@ -79,7 +79,34 @@
           </v-list-group>
         </v-list>
         
-              <NuxtLink :to="localePath('/chat')" v-if="allAuth.checkAuth" style="position: relative;display: block;">
+              <NuxtLink :to="localePath('/maids')">
+                
+                <v-list-item link>
+                  <v-list-item-icon>
+                    <font-awesome-icon icon="users" class="fa" />
+                  </v-list-item-icon>
+
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      <span>Maids</span></v-list-item-title
+                    >
+                  </v-list-item-content>
+                </v-list-item>
+              </NuxtLink><NuxtLink :to="localePath('/createUser')">
+                
+                <v-list-item link>
+                  <v-list-item-icon>
+                    <font-awesome-icon icon="user" class="fa" />
+                  </v-list-item-icon>
+
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      <span class="">Create User</span></v-list-item-title
+                    >
+                  </v-list-item-content>
+                </v-list-item>
+              </NuxtLink>
+              <NuxtLink :to="localePath('/chat')" style="position: relative;display: block;">
                 
                 <v-list-item link>
                   <v-list-item-icon>
@@ -94,7 +121,7 @@
                   </v-list-item-content>
                 </v-list-item>
               </NuxtLink>
-        <NuxtLink :to="localePath('/users/myinfo')" v-if="allAuth.checkAuth">
+        <NuxtLink :to="localePath('/users/myinfo')">
           <v-list-item link>
             <v-list-item-icon>
               <font-awesome-icon icon="user" class="fa" />
@@ -166,6 +193,9 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
+      
+      username:'',
+      email:'',
       drawer: false,
       is_read:true,
        items: [
@@ -173,16 +203,9 @@ export default {
           action: 'mdi-account-multiple',
           items: [
             { title: 'Users',href:'users' },
-            { title: 'Create User',href:'register' }
+            { title: 'Create User',href:'createUser' }
           ],
           title: 'Users',
-        },
-        {
-          action: 'mdi-account-multiple',
-          items: [
-            { title: 'Maids',href:'maids' },
-          ],
-          title: 'Maids',
         },
         {
           action: 'mdi-notification-clear-all',
@@ -207,13 +230,6 @@ export default {
             { title: 'Create Favourite',href:'favourite/create' }
           ],
           title: 'Favourite',
-        },
-        {
-          action: 'mdi-account',
-          items: [
-            { title: 'Create User',href:'register' },
-          ],
-          title: 'Create User',
         }
       ],
     }
@@ -226,7 +242,13 @@ export default {
     onClose() {
       this.changeMenuHeader(false)
     },
-    
+    mydata(){
+      const info = this.$cookies.get('myInfo')
+      if(info){
+        this.username = info.user.userName
+        this.email = info.user.email
+      }
+    },
     
     async getUserfirebase() {
       const querySnapshot = await getDocs(collection(db, "messages"));
@@ -259,9 +281,7 @@ export default {
   },
   mounted(){
     this.getUserfirebase()
-    if(this.allAuth.checkAuth){
-    this.myInfo();
-    }
+    this.mydata()
   }
 }
 </script>

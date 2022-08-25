@@ -22,6 +22,7 @@ import { mapActions } from 'vuex'
 import { uuid } from 'vue-uuid'
 
 export default {
+  
   head() {
     return this.$nuxtI18nHead({ addSeoAttributes: true })
   },
@@ -37,9 +38,8 @@ export default {
   },
 
   async mounted() {
-    await this.setApi(
-      uuid.v5(navigator.userAgent, '65f9af5d-f23f-4065-ac85-da725569fdcd')
-    )
+    this.setApi()
+    
   },
   methods: {
     ...mapActions(['setApi']),
@@ -188,6 +188,7 @@ p {
   font-weight: bold !important;
   height: 45px;
   font-size: 16px !important;
+  color: #fff;
 }
 .v-application ul,
 .v-application ol {
@@ -263,6 +264,22 @@ input.input-tel__input:lang(ar) {
 .fa {
   font-size: 15px;
   margin: 0px 5px;
+}
+.btn-table{
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  min-width: inherit !important;
+}
+.btn-table:hover{
+  background: transparent !important;
+}
+.v-label ,.v-label.primary--text, .v-label--active{
+  color: #f68c28 !important;
+}
+.mdi-star::before{
+  color: goldenrod !important;
 }
 @media (max-width: 1100px) {
   .container_cc,.container {

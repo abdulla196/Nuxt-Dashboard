@@ -310,7 +310,7 @@ body {
     &__button {
         width: 100%;
         height: 55px;
-        background: #2364d2;
+        background: #f68c28;
         border: none;
         border-radius: 5px;
         font-size: 22px;

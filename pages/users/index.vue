@@ -1,86 +1,119 @@
 <template>
     <v-container>
         <div class="text-center my-5">
-            <h2  class="title-head text-center">Users List</h2>
+            <h2 class="title-head text-center">Users List</h2>
         </div>
-        <v-simple-table class="table100">
-            <template v-slot:default>
-                <thead>
-                    <tr>
-                        <th class="text-center">
-                            Name
-                        </th>
-                        <th class="text-center">
-                            Phone
-                        </th>
-                        <th class="text-center">
-                            email
-                        </th> 
-                        <th class="text-center">details</th>
-                        <th class="text-center">location</th>
-                        <th class="text-center">type</th>
-                        <th class="text-center">
-                            action
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="item in allUsersList.data" :key="item._id">
-                        <td class="text-center">{{ item.userName }}</td>
-                        <td class="text-center">{{ item.phone }}</td>
-                        <td class="text-center">{{ item.email }}</td>
-                        <td class="text-center">{{ item.details }}</td>
-                        <td class="text-center">{{ item.location }}</td>
-                        <td class="text-center">{{ item.type }}</td>
-                        <td class="text-center">
-                            <v-row justify="center">
-                                <NuxtLink :to="localePath('/users/'+item._id)">
-                                    <v-icon color="#ff9f3b" left>
-                                        {{ icons.mdiPencil }}
-                                    </v-icon>
-                                </NuxtLink>
-                                <v-icon 
-                                    @click="Delete(item._id)"
-                                    color="red">
-                                    {{ icons.mdiDelete }}
-                                </v-icon>
-                            </v-row>
-                        </td>
-                    </tr>
-                </tbody>
+        
+    <v-card-title>
+      Users Search
+      <v-spacer></v-spacer>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+      ></v-text-field>
+    </v-card-title>
+        <v-data-table :items="allUsersList.data"
+      :search="search" :headers="headers" 
+      item-key="userName"
+             class="table100">
+            <template #item.userName="{ value }">
+                {{ value }}
             </template>
-        </v-simple-table>
+            <template #item.phone="{ value }">
+                {{ value }}
+            </template>
+            <template #item.email="{ value }">
+                {{ value }}
+            </template>
+            <template #item.details="{ value }">
+                {{ value }}
+            </template>
+            <template #item.location="{ value }">
+                {{ value }}
+            </template>
+            <template #item.type="{ value }">
+                {{ value }}
+            </template>
+            <template #item.actions="{ item }">
+                <td @click.stop class="non-clickable">
+                    <v-btn :to="`/users/${item._id}`" class="btn-table">
+                        <v-icon color="#ff9f3b" left>
+                            {{ icons.mdiPencil }}
+                        </v-icon>
+                    </v-btn>
+                    <v-icon @click="Delete(item._id)" color="red">
+                        {{ icons.mdiDelete }}
+                    </v-icon>
+                </td>
+            </template>
+        </v-data-table>       
+         <v-snackbar
+          v-model="snackbar"
+          absolute
+          right
+          color="#f68c28"
+          rounded="pill"
+          centered
+    >
+      {{ allUsersList.message }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="pink"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
     </v-container>
 </template>
 
 <script>
- import {mdiPencil,mdiDelete} from '@mdi/js'
+import { mdiPencil, mdiDelete } from '@mdi/js'
 import { mapActions, mapGetters } from 'vuex'
 import Loading from '../../components/tools/loadingP.vue'
 export default {
     data() {
         return {
+        snackbar: false,
             icons: {
                 mdiPencil,
                 mdiDelete,
-            }, 
+            },
+        search: '',
+            headers: [
+                { text: 'Name', value: 'userName' },
+                { text: 'phone', value: 'phone' },
+                { text: 'Email', value: 'email' },
+                { text: 'details', value: 'details' },
+                { text: 'location', value: 'location' },
+                { text: 'type', value: 'type' },
+                { text: 'Actions', value: 'actions', sortable: false},
+            ],
         }
     },
-     components: {
-    Loading,
-  },
-  computed: {
-    ...mapGetters(['allUsersList']),
-  },
-  methods:{
-    ...mapActions(['getUsers','DeleteUser']),
-     Delete(id) {
-      this.DeleteUser(id)
+    components: {
+        Loading,
     },
-  },
-   mounted() { 
-    this.getUsers()
-  },
+    computed: {
+        ...mapGetters(['allUsersList']),
+
+
+    },
+    methods: {
+        ...mapActions(['getUsers', 'DeleteUser']),
+        Delete(id) {
+            this.snackbar = true
+            this.DeleteUser(id)
+        },
+    },
+    mounted() {
+        this.getUsers()
+    },
 
 }
 </script>

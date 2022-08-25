@@ -5,15 +5,20 @@
         <div class="text-center my-3">
             <h2  class="title-head text-center">Edit miad</h2>
         </div>
+        <v-form ref="form" v-model="valid">
       <v-row id="form">
         <v-col class="col-md-6 col-12">
-          <v-text-field label="phone" prefix="" outlined v-model="MaidsEdit.phone" required></v-text-field>
+          <v-text-field label="phone" outlined v-model="MaidsEdit.phone" :rules="[
+                    $rules.required,
+                    $rules.number]" required></v-text-field>
         </v-col>
         <v-col class="col-md-6 col-12">
-          <v-text-field label="location" v-model="MaidsEdit.location" required outlined></v-text-field>
+          <v-text-field label="location" v-model="MaidsEdit.location" :rules="[
+                    $rules.required,
+                    $rules.select]" required outlined></v-text-field>
         </v-col>
         <v-col class="col-md-6 col-12">
-          <v-text-field label="details" prefix="" outlined v-model="MaidsEdit.details" required></v-text-field>
+          <v-text-field label="details"  outlined v-model="MaidsEdit.details" required></v-text-field>
         </v-col>
         <v-col class="col-md-6 col-12">
             <v-menu
@@ -44,14 +49,18 @@
           </v-menu>
         </v-col>
         <v-col class="col-md-6 col-12">
-          <v-text-field label="price" prefix="" outlined v-model="MaidsEdit.price" required></v-text-field>
+          <v-text-field label="price"  outlined v-model="MaidsEdit.price" required></v-text-field>
         </v-col>
         <v-col class="col-md-6 col-12">
-          <v-text-field label="userName" v-model="MaidsEdit.userName" required outlined></v-text-field>
+          <v-text-field label="userName" v-model="MaidsEdit.userName" :rules="[
+                    $rules.required,
+                    $rules.name]" required outlined></v-text-field>
         </v-col>
 
         <v-col class="col-md-6 col-12">
-          <v-text-field label="email" v-model="MaidsEdit.email" required outlined></v-text-field>
+          <v-text-field label="email" v-model="MaidsEdit.email" :rules="[
+                    $rules.required,
+                    $rules.email]" required outlined></v-text-field>
         </v-col>
         <div id="my-strictly-unique-vue-upload-multiple-image" style="display: flex;justify-content: center;flex-direction: column;align-items: center;" class="col-12">
         <label> الصوره الشخصية - صورة الجواز - صورة الفيش</label>
@@ -68,12 +77,40 @@
               ></vue-upload-multiple-image>
           </div>
         <div class="col-12 text-center">
-          <v-btn depressed color="primary" @click="UpdateMaid">
+          <v-btn depressed color="primary" :disabled="!valid" @click="UpdateMaid">
             save
           </v-btn>
         </div>
       </v-row>
+      </v-form>
     </v-container>
+    <v-overlay :value="overlay">
+      <v-progress-circular
+        indeterminate
+        size="100"
+      ></v-progress-circular>
+    </v-overlay>
+        <v-snackbar
+          v-model="snackbar"
+          absolute
+          right
+          color="#f68c28"
+          rounded="pill"
+          centered
+    >
+      {{ allMaidsList.message }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="pink"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-card-text>
   
 </template>
@@ -83,6 +120,9 @@ import { mapActions, mapGetters } from 'vuex'
 import VueUploadMultipleImage from 'vue-upload-multiple-image'
 export default {
   data: () => ({
+    valid:true,
+    snackbar: false,
+    overlay:false,
     activePicker: null,
     menu: false,
     MaidsEdit: {
@@ -97,16 +137,21 @@ export default {
       id: ''
     },
   }),
-  components: {
-    VueUploadMultipleImage
-  },
   watch: {
     menu (val) {
       val && setTimeout(() => (this.activePicker = 'YEAR'))
     },
+    overlay (val) {
+      val && setTimeout(() => {
+        this.overlay = false
+      }, 3000)
+    },
+  },
+  created () {
+    this.completeMaidsData()
   },
   methods: {
-    ...mapActions(['updateMaids', 'getoneMaids','completeMaidsData']),
+    ...mapActions(['updateMaids','completeMaidsData']),
     uploadImageSuccess(formData, index, fileList) {
       console.log('data', formData, index, fileList)
       this.MaidsEdit.maid_paper =fileList
@@ -127,36 +172,50 @@ export default {
         this.MaidsEdit.birthday = date
         this.$refs.menu.save(this.MaidsEdit.birthday)
     },
-    completeMaidsData() {
-      this.MaidsEdit.phone = this.allMaidsList.onemaid.phone
-      this.MaidsEdit.location = this.allMaidsList.onemaid.location
-      this.MaidsEdit.details = this.allMaidsList.onemaid.details
-      
-      this.MaidsEdit.price = this.allMaidsList.onemaid.price
-      this.MaidsEdit.userName = this.allMaidsList.onemaid.userName
-      this.MaidsEdit.email = this.allMaidsList.onemaid.email
-      this.MaidsEdit.id = this.$route.params.id
-      this.MaidsEdit.maid_paper = this.allMaidsList.onemaid.maid_paper
-      if(this.allMaidsList.onemaid.birthday == 'null'){
-        this.MaidsEdit.birthday = ''
-      }
-      else{
-        this.MaidsEdit.birthday = this.allMaidsList.onemaid.birthday
-      }
+    async completeMaidsData () {
+      this.overlay = true
+      const userIdPromise = await fetch(`http://66.29.155.80:5003/api/user/${this.$route.params.id}`, {
+          method: 'GET',
+          headers: {
+            'Accept': "application/json",
+              'Content-Type': 'multipart/form-data',
+              'Vary':'X-HTTP-Method-Override',
+              'Content-Type': 'application/json',
+              'Authorization':this.$cookies.get('Authorization'),
+          }
+        })
+        const userIdJson = userIdPromise.json()
+        userIdJson.then((res) => {
+          this.MaidsEdit.phone = res.data.phone
+          this.MaidsEdit.location = res.data.location
+          this.MaidsEdit.details = res.data.details
+          
+          this.MaidsEdit.price = res.data.price
+          this.MaidsEdit.userName = res.data.userName
+          this.MaidsEdit.email = res.data.email
+          this.MaidsEdit.id = this.$route.params.id
+          this.MaidsEdit.maid_paper = res.data.maid_paper
+          if(res.data.birthday == 'null'){
+            this.MaidsEdit.birthday = ''
+          }
+          else{
+            this.MaidsEdit.birthday = res.data.birthday
+          }
+      })
+      setTimeout(function(){
+      this.overlay = false
+      },6000)
     },
     UpdateMaid() {
+      this.snackbar = true
       this.updateMaids(this.MaidsEdit);
     },
   },
-
+  components: {
+    VueUploadMultipleImage
+  },
   computed: {
     ...mapGetters(['allMaidsList']),
-  },
-
-
-  mounted() {
-    this.getoneMaids(this.$route.params.id)
-    setTimeout(() => this.completeMaidsData(), 2000);
   },
 }
 </script>
