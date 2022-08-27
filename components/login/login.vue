@@ -21,7 +21,7 @@
                 outlined
                 dense
               ></v-text-field>
-<!-- $rules.number -->
+              <!-- $rules.number -->
               <v-text-field
                 v-model="data.password"
                 :append-icon="showPasswordLogin ? 'mdi-eye' : 'mdi-eye-off'"
@@ -34,8 +34,10 @@
                 dense
               ></v-text-field>
 
-              <Msg api="login"/>
-              <NuxtLink :to="localePath('/forgetpassword')">Forget Password</NuxtLink>
+              <Msg api="login" />
+              <NuxtLink :to="localePath('/forgetpassword')"
+                >Forget Password</NuxtLink
+              >
               <v-btn
                 :disabled="!valid"
                 color="#f68c28"
@@ -48,28 +50,41 @@
               </v-btn>
             </v-form>
           </div>
-        </div>
-        <v-snackbar
-          v-model="snackbar"
-          absolute
-          right
-          color="#f68c28"
-          rounded="pill"
-          centered
-        >
-      {{ this.$store.state.auth.errorMesage }}
 
-      <template v-slot:action="{ attrs }">
-        <v-btn
-          color="#fff"
-          text
-          v-bind="attrs"
-          @click="snackbar = false"
-        >
-          Close
-        </v-btn>
-      </template>
-    </v-snackbar>
+          <v-snackbar
+            v-if="this.$store.state.auth.login_flag"
+            v-model="snackbar"
+            absolute
+            bottom
+            color="#139f5d"
+            rounded="pill"
+            centered
+          >
+            {{ this.$store.state.auth.errorMesage }}
+            <template v-slot:action="{ attrs }">
+              <v-btn color="#fff" text v-bind="attrs" @click="snackbar = false">
+                <b>X</b>
+              </v-btn>
+            </template>
+          </v-snackbar>
+          <v-snackbar
+            v-else
+            v-model="snackbar"
+            absolute
+            bottom
+            color="#cf2e2e"
+            rounded="pill"
+            centered
+          >
+            {{ this.$store.state.auth.errorMesage }}
+
+            <template v-slot:action="{ attrs }">
+              <v-btn color="#fff" text v-bind="attrs" @click="snackbar = false">
+                <b>X</b>
+              </v-btn>
+            </template>
+          </v-snackbar>
+        </div>
       </div>
     </div>
   </div>
@@ -97,6 +112,7 @@ export default {
   },
   data() {
     return {
+      login_flag: true,
       snackbar: false,
       loading: false,
       valid: false,
@@ -115,8 +131,8 @@ export default {
 
     OnLogin(e) {
       e.preventDefault()
-      if (this.$refs.form.validate() === false) return false 
-      
+      if (this.$refs.form.validate() === false) return false
+
       setTimeout(() => (this.snackbar = true))
       this.LoginAction(this.data)
     },

@@ -1,10 +1,10 @@
 <template>
-    <v-container class="mt-5">
-        <div class="text-center my-3">
-            <h2  class="title-head text-center">Review List</h2>
-        </div>
-        
-        <!-- <template>
+  <v-container class="mt-5">
+    <div class="text-center my-3">
+      <h2 class="title-head text-center">Review List</h2>
+    </div>
+
+    <!-- <template>
             <div class="">
 
                 <v-card>
@@ -23,7 +23,7 @@
                                     </select>
                                 </v-col>
                                 <v-col>
-                                    <v-btn 
+                                    <v-btn
   elevation="2" text @click="OnAddReview">
                        filter
                     </v-btn>
@@ -32,7 +32,7 @@
                         </v-container>
                     </v-card-text>
 
-                    
+
                 </v-card>
             </div>
         </template> -->
@@ -45,108 +45,139 @@
         label="Search"
       ></v-text-field>
     </v-card-title>
-        <v-data-table :items="allReviewsList.data.data"
-      :search="search" :headers="headers" 
-             class="table100">
-            <template #item._id="{ value }">
-                {{ value }}
-            </template>
-            <template #item.comment="{ value }">
-                {{ value }}
-            </template>
-            <template #item.rate="{ value }">
-                {{ value }}
-            </template>
-            <template #item.actions="{ item }">
-                <td @click.stop class="non-clickable">
-                    <v-btn :to="`/reviews/${item._id}`" class="btn-table">
-                        <v-icon color="#ff9f3b" left>
-                            {{ icons.mdiPencil }}
-                        </v-icon>
-                    </v-btn>
-                    <!-- <v-btn :to="`/reviews/details/${item.maid_id}`" class="btn-table">
+    <v-data-table
+      :items="allReviewsList.data.data"
+      :search="search"
+      :headers="headers"
+      class="table100"
+    >
+      <template #item._id="{ value }">
+        {{ value }}
+      </template>
+      <template #item.comment="{ value }">
+        {{ value }}
+      </template>
+      <template #item.rate="{ value }">
+        {{ value }}
+      </template>
+      <template #item.actions="{ item }">
+        <td @click.stop class="non-clickable">
+          <v-btn :to="`/reviews/${item._id}`" class="btn-table">
+            <v-icon color="#ff9f3b" left>
+              {{ icons.mdiPencil }}
+            </v-icon>
+          </v-btn>
+          <!-- <v-btn :to="`/reviews/details/${item.maid_id}`" class="btn-table">
                         <v-icon color="#555">
                             {{ icons.mdiEye }}
                         </v-icon>
                     </v-btn> -->
-                    <v-icon @click="Delete(item._id)" color="red">
-                        {{ icons.mdiDelete }}
-                    </v-icon>
-                </td>
-            </template>
-        </v-data-table>
-        <v-snackbar
-          v-model="snackbar"
-          absolute
-          right
-          color="#f68c28"
-          rounded="pill"
-          centered
-    >
-      {{ allReviewsList.message }}
+          <v-icon @click="Delete(item._id)" color="red">
+            {{ icons.mdiDelete }}
+          </v-icon>
+        </td>
+      </template>
+    </v-data-table>
 
+    <v-snackbar
+      v-if="allReviewsList.flag == 'success'"
+      v-model="snackbar"
+      absolute
+      bottom
+      color="#139f5d"
+      rounded="pill"
+      centered
+    >
+      Successfully Deleted
       <template v-slot:action="{ attrs }">
-        <v-btn
-          color="pink"
-          text
-          v-bind="attrs"
-          @click="snackbar = false"
-        >
-          Close
+        <v-btn color="#fff" text v-bind="attrs" @click="snackbar = false">
+          <b>X</b>
         </v-btn>
       </template>
     </v-snackbar>
-    </v-container>
+
+    <v-snackbar
+      v-else-if="allReviewsList.flag == 'fail'"
+      v-model="snackbar"
+      absolute
+      bottom
+      color="#cf2e2e"
+      rounded="pill"
+      centered
+    >
+      Cant Delete This Record
+
+      <template v-slot:action="{ attrs }">
+        <v-btn color="#fff" text v-bind="attrs" @click="snackbar = false">
+          <b>X</b>
+        </v-btn>
+      </template>
+    </v-snackbar>
+
+    <v-snackbar
+      v-else
+      v-model="snackbar"
+      absolute
+      bottom
+      color="#cf942e"
+      rounded="pill"
+      centered
+    >
+      Loading
+
+      <template v-slot:action="{ attrs }">
+        <v-btn color="#fff" text v-bind="attrs" @click="snackbar = false">
+          <b>X</b>
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </v-container>
 </template>
 
 <script>
-import {mdiPencil,mdiDelete,mdiEye } from '@mdi/js'
+import { mdiPencil, mdiDelete, mdiEye } from '@mdi/js'
 import { mapActions, mapGetters } from 'vuex'
 export default {
-    data() {
-        return {
-        snackbar: false,
-            Review:{
-                maids:''
-            },
-            icons: {
-                mdiPencil,
-                mdiDelete,
-                mdiEye
-            },
-            search: '',
-            headers: [
-                { text: 'id', value: '_id' },
-                { text: 'comment', value: 'comment' },
-                { text: 'rate', value: 'rate' },
-                { text: 'Actions', value: 'actions', sortable: false},
-            ],
-        }
-    },
-  computed: {
-    ...mapGetters(['allReviewsList','allMaidsList']),
-  },
-  methods:{
-    ...mapActions(['getReviews', 'DeleteReviews','getMaids','GetforMaid']),
-    Delete(id) {
-            this.snackbar = true
-      this.DeleteReviews(id)
-    },
-     OnAddReview() {
-        this.GetforMaid(this.Review)
-    },
-  },
-   mounted() { 
-    this.getReviews()
-    if(this.allMaidsList.data == ''){
-        this.getMaids() 
+  data() {
+    return {
+      snackbar: false,
+      Review: {
+        maids: '',
+      },
+      icons: {
+        mdiPencil,
+        mdiDelete,
+        mdiEye,
+      },
+      search: '',
+      headers: [
+        { text: 'id', value: '_id' },
+        { text: 'comment', value: 'comment' },
+        { text: 'rate', value: 'rate' },
+        { text: 'Actions', value: 'actions', sortable: false },
+      ],
     }
   },
-
+  computed: {
+    ...mapGetters(['allReviewsList', 'allMaidsList']),
+  },
+  methods: {
+    ...mapActions(['getReviews', 'DeleteReviews', 'getMaids', 'GetforMaid']),
+    Delete(id) {
+      this.snackbar = true
+      this.DeleteReviews(id)
+    },
+    OnAddReview() {
+      this.GetforMaid(this.Review)
+    },
+  },
+  mounted() {
+    this.getReviews()
+    if (this.allMaidsList.data == '') {
+      this.getMaids()
+    }
+  },
 }
 </script>
 
-
-
-<style scoped>
-</style>
+<style scoped></style>
