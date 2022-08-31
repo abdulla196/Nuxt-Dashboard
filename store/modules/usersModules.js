@@ -146,14 +146,21 @@ Signup({ state, dispatch }, arrayData) {
   },
   
   async changeMyPhoto({ state, dispatch }, Obj) {
-
-
+    console.log(Obj)
     var data = new FormData()
-    data.append('image', Obj,Obj.name)
+    data.append('image',Obj.selectedFile)
+    console.log(data)
     var config = { headers: {'Content-Type': 'multipart/form-data'} }; 
     this.$axios.post('/api/user/photo', data,config).then((res) => {
       if (res.data.status === 1) {
-        window.location.reload()
+        var photo = JSON.stringify({
+          "photo": 'http://66.29.155.80:5003/uploads/'+res.data.data.name,
+        });
+        this.$axios.$put('/api/user/'+Obj.id,photo).then((res) => {
+          state.loading = false
+          if (res.status === 1) {
+          }
+        }) 
       } else {
         state.loadingOptions = false
       }

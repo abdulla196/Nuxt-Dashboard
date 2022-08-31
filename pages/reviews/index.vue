@@ -48,9 +48,6 @@
         <v-data-table :items="allReviewsList.data.data"
       :search="search" :headers="headers" 
              class="table100">
-            <template #item._id="{ value }">
-                {{ value }}
-            </template>
             <template #item.comment="{ value }">
                 {{ value }}
             </template>
@@ -116,7 +113,6 @@ export default {
             },
             search: '',
             headers: [
-                { text: 'id', value: '_id' },
                 { text: 'comment', value: 'comment' },
                 { text: 'rate', value: 'rate' },
                 { text: 'Actions', value: 'actions', sortable: false},

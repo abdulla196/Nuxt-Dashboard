@@ -6,17 +6,20 @@
       <v-card-text>
         <v-container>
           <v-row id="form">
+            
             <v-col cols="12" class="my-3"> 
-              <v-select  v-model="FavouriteEdit.user_id"
+            <v-select  v-model="FavouriteEdit.user_id"
                   :items="allUsersList.data"
                   item-text="userName"
                   item-value="_id" :rules="[ $rules.required, $rules.select]" label="Select user"></v-select>
             </v-col>
             <v-col cols="12" class="my-3"> 
+              
               <v-select  v-model="FavouriteEdit.maid_id"
                   :items="allMaidsList.data"
                   item-text="userName"
                   item-value="_id" :rules="[ $rules.required, $rules.select]" label="Select maids"></v-select>
+              
             </v-col>
       <div class="col-12 text-center">
         <v-btn depressed color="primary" @click="UpdateReview">

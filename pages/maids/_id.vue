@@ -117,7 +117,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import VueUploadMultipleImage from 'vue-upload-multiple-image'
 export default {
   data: () => ({
     valid:true,
@@ -210,9 +209,6 @@ export default {
       this.snackbar = true
       this.updateMaids(this.MaidsEdit);
     },
-  },
-  components: {
-    VueUploadMultipleImage
   },
   computed: {
     ...mapGetters(['allMaidsList']),

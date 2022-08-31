@@ -29,7 +29,10 @@ const actions = {
     if (!state.checkAuth) {
       this.$router.push('/login')
     }
-      await this.$axios.setHeader('Authorization', this.$cookies.get('Authorization'))
+    if(this.$router.currentRoute.path == '/login' && state.checkAuth){
+      this.$router.push('/')
+    }
+    await this.$axios.setHeader('Authorization', this.$cookies.get('Authorization'))
   },
   
   async myInfo({state}){

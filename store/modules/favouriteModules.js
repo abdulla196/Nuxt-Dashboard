@@ -66,8 +66,8 @@ const actions = {
             if (res.data.status === 1) {
                 state.data = res.data
                 state.message=res.data.message
-                this.$router.push('/favourite')
-                dispatch('getFavourite')
+                setTimeout(function(){
+                  window.location.href = '/favourite'})
             } else {
                 state.message=res.data.message
             }
