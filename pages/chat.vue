@@ -28,7 +28,7 @@
         <v-col cols="auto" class="flex-grow-1 flex-shrink-0">
           <v-responsive class="overflow-y-hidden fill-height">
             <v-card flat class="fill-height" v-if="active == true">
-              <v-card-text class="flex-grow-1 overflow-y-auto chat-container" ref="block">
+              <v-card-text class="flex-grow-1 overflow-y-auto chat-container">
                 <template>
                   <div v-for="(msg , i) in arraymessages" :key="i" >
                     <v-menu offset-y>
@@ -62,11 +62,16 @@
                       </v-list> -->
                     </v-menu>
                   </div>
+                    <div ref="scrollable"></div>
                 </template>
               </v-card-text>
               <v-card-text class="d-flex  flex-shrink-1">
                 <v-text-field v-model="messagesend" label="type a message" type="text" no- outlined />
-                <v-btn depressed color="#f68c28"  @keyup.enter="writeToFirestore()" @click="writeToFirestore()" >
+                <v-btn depressed color="#f68c28" v-if="messagesend == ''" disabled>
+                  Send now
+                </v-btn>
+                
+                <v-btn depressed color="#f68c28" v-else  @keyup.enter="writeToFirestore()" @click="writeToFirestore()" >
                   Send now
                 </v-btn>
               </v-card-text>
@@ -137,8 +142,8 @@ export default {
       this.arraymessages.push(document2)
     },
     async clientData(id) {
-      if(id){ 
         this.scrollDonw()
+      if(id){ 
         this.client_id = id
       }
       const db = getFirestore()
@@ -173,7 +178,8 @@ export default {
       };
     },
    async scrollDonw(){
-      this.$refs.block.scrollTop = this.$refs.block.scrollHeight
+    
+    this.$refs['scrollable'].scrollIntoView({ behavior: 'smooth' })
     },
     async Read(id,timeid){
       const washingtonRef =doc(db, `messages/${id}/${id}`, timeid);
@@ -184,6 +190,7 @@ export default {
     },
     async getUserfirebase() {
       const querySnapshot = await getDocs(collection(db, "messages"));
+      console.log(querySnapshot)
       querySnapshot.forEach((doc) => {
           this.ReadOrNotRead(doc.id)
       });
