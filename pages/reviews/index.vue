@@ -48,6 +48,9 @@
         <v-data-table :items="allReviewsList.data.data"
       :search="search" :headers="headers" 
              class="table100">
+            <template v-slot:item.="{item,index}">
+                {{ index + 1 }}
+            </template>
             <template #item.comment="{ value }">
                 {{ value }}
             </template>
@@ -113,6 +116,7 @@ export default {
             },
             search: '',
             headers: [
+                { text: 'index', value:'' },
                 { text: 'comment', value: 'comment' },
                 { text: 'rate', value: 'rate' },
                 { text: 'Actions', value: 'actions', sortable: false},

@@ -17,6 +17,9 @@
       :search="search" :headers="headers" 
       item-key="userName"
              class="table100">
+            <template v-slot:item.="{item,index}">
+                {{ index + 1 }}
+            </template>
             <template #item.userName="{ value }">
                 {{ value }}
             </template>
@@ -86,6 +89,7 @@ export default {
             },
         search: '',
             headers: [
+                { text: 'index', value:'' },
                 { text: 'Name', value: 'userName' },
                 { text: 'phone', value: 'phone' },
                 { text: 'Email', value: 'email' },

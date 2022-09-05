@@ -16,6 +16,9 @@
         <v-data-table :items="allFavouriteList.data.data"
       :search="search" :headers="headers" 
              class="table100">
+            <template v-slot:item.="{item,index}">
+                {{ index + 1 }}
+            </template>
             <template #item.maid_id="{ value }">
                 {{ value }}
             </template>
@@ -72,6 +75,7 @@ export default {
             },
         search: '',
             headers: [
+                { text: 'index', value:'' },
                 { text: 'Maid Id', value: 'maid_id' },
                 { text: 'User Id', value: 'user_id' },
                 { text: 'Actions', value: 'actions', sortable: false},

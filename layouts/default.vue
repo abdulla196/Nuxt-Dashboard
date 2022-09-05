@@ -37,12 +37,18 @@ export default {
     this.$vuetify.rtl = this.$i18n.locale === 'ar' ? true : false
   },
 
-  async mounted() {
+  created() {
+    setInterval(() => {
+      this.setApi(this.client_id)
+    }, 500)
+  },
+  mounted() {
     this.setApi()
     
   },
   methods: {
     ...mapActions(['setApi']),
+ 
   },
 }
 </script>

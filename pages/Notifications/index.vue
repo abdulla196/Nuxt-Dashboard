@@ -15,6 +15,9 @@
         <v-data-table :items="allnotificationList.data.data"
       :search="search" :headers="headers" 
              class="table100">
+            <template v-slot:item.="{item,index}">
+                {{ index + 1 }}
+            </template>
             <template #item.subject="{ value }">
                 {{ value }}
             </template>
@@ -83,6 +86,7 @@ export default {
             }, 
             search: '',
             headers: [
+                { text: 'index', value:'' },
                 { text: 'subject', value: 'subject' },
                 { text: 'content', value: 'content' },
                 { text: 'is_clicked', value: 'is_clicked' },

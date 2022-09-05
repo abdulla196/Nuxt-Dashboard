@@ -93,7 +93,8 @@ Signup({ state, dispatch }, arrayData) {
         console.log(res)
           state.loading = false
           if (res.data.status == 1) {
-             dispatch('routerTo')
+            setTimeout(function(){
+              window.location.href = '/users'})
           } else {
               alert('error')
           }

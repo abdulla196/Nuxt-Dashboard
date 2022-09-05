@@ -33,13 +33,15 @@
                 row
                 :rules="[ $rules.required]"
               >
-                <v-radio
+                <v-radio class="low"
                   label="low"
                   value="low"
+                  color="green"
                 ></v-radio>
                 <v-radio
                   label="high"
-                  value="high"
+                  value="high" class="high"
+                color="#f00"
                 ></v-radio>
               </v-radio-group>
             </v-col>
@@ -130,4 +132,11 @@ export default {
 </script>
 
 <style scoped>
+  
+.v-radio.high label {
+ color: #f00 !important;
+}
+.v-radio.low label {
+ color: green !important;
+}
 </style>

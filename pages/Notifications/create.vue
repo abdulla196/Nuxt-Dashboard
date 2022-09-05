@@ -33,11 +33,13 @@
                 row
                 :rules="[ $rules.required]"
               >
-                <v-radio
+                <v-radio class="low"
                   label="low"
                   value="low"
+                  color="green"
                 ></v-radio>
-                <v-radio
+                <v-radio class="high"
+                color="#f00"
                   label="high"
                   value="high"
                 ></v-radio>
@@ -64,6 +66,7 @@
           color="#f68c28"
           rounded="pill"
           centered
+          timeout="10000"
     >
       {{ allnotificationList.message }}
 
@@ -120,5 +123,10 @@ export default {
 </script>
 
 <style>
-
+.v-radio.high label {
+ color: #f00 !important;
+}
+.v-radio.low label {
+ color: green !important;
+}
 </style>
