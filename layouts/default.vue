@@ -287,6 +287,9 @@ input.input-tel__input:lang(ar) {
 .mdi-star::before{
   color: goldenrod !important;
 }
+.mdi-heart::before{
+  color: #f00 !important;
+}
 @media (max-width: 1100px) {
   .container_cc,.container {
     padding: 0px 50px;

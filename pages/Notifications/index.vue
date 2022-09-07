@@ -33,8 +33,14 @@
             <template #item.user_id="{ value }">
                 {{ value }}
             </template>
-            <template #item.priority="{ value }">
-                {{ value }}
+            <template   #item.priority="{ value }">
+              <p style="background: #f00;height: 75%;display: flex;align-items: center;justify-content: center;color: #fff;" v-if="value== 'high'">
+                {{value}}
+              </p>
+              
+              <p style="background: green;height: 75%;display: flex;align-items: center;justify-content: center;color: #fff;" v-else>
+                {{value}}
+              </p>
             </template>
             <template #item.actions="{ item }">
                 <td @click.stop class="non-clickable">

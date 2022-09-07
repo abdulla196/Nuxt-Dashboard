@@ -244,9 +244,10 @@ export default {
     },
     mydata(){
       const info = this.$cookies.get('myInfo')
+      console.log(info)
       if(info){
-        this.username = info.data.userName
-        this.email = info.data.email
+        this.username = info.userName
+        this.email = info.email
       }
       else{
         this.myInfo()

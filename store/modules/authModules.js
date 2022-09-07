@@ -38,6 +38,7 @@ const actions = {
   async myInfo({state}){
     await this.$axios.get("/api/user/get/myinfo").then((res) => {
       state.user = res.data.data;
+      console.log(state.user)
       this.$cookies.set('myInfo', res.data)
       state.loading = false;
     });
@@ -122,7 +123,7 @@ const actions = {
               path: '/',
               maxAge: 365 * 24 * 60 * 60,
             })
-            this.$cookies.set('myInfo', res.data)
+            this.$cookies.set('myInfo', res.data.user)
             state.errorMesage = res.message
             dispatch('routerTo')
           } else {

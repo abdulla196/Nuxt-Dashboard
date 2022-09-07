@@ -55,7 +55,8 @@
                 {{ value }}
             </template>
             <template #item.rate="{ value }">
-                {{ value }}
+                
+                <v-rating v-model="value"  readonly></v-rating>
             </template>
             <template #item.actions="{ item }">
                 <td @click.stop class="non-clickable">
