@@ -2,7 +2,8 @@ const state = {
     loading: true,
     data: [],
     oneReviews: '',
-    length:0
+    length: 0,
+    flag: 'loading',
 }
 
 const getters = {
@@ -18,15 +19,18 @@ const actions = {
         })
     },
     async DeleteReviews({ state, dispatch }, dataObj) {
-        state.message='Loading ....'
+        state.flag = 'loading'
+        state.message = 'Loading ....'
         this.$axios
             .delete('/api/review/' + dataObj)
-            .then(function (res) {
-                state.message=res.data.message
+            .then(function(res) {
+                state.message = res.data.message
+                state.flag = 'success'
                 dispatch('getReviews')
             })
-            .catch(function (error) {
+            .catch(function(error) {
                 console.log(error)
+                state.flag = 'fail'
             })
     },
     async getoneReviews({ state }, id) {
@@ -37,7 +41,7 @@ const actions = {
             state.loading = false
         })
     },
-    
+
     async getReviewsForMaid({ state }, id) {
         state.loading = true
 
@@ -46,59 +50,66 @@ const actions = {
             state.loading = false
         })
     },
-    async GetforMaid({ state,dispatch }, id) {
+    async GetforMaid({ state, dispatch }, id) {
         state.loading = true
         console.log(id.maids)
-        await this.$axios.get('/api/review/maid/'+ id.maids).then((res) => {
+        await this.$axios.get('/api/review/maid/' + id.maids).then((res) => {
             state.data = res.data.data
-            if(res.data.status == 1){
+            if (res.data.status == 1) {
                 console.log()
-                window.location.href = '/reviews/details/'+id.maids
+                window.location.href = '/reviews/details/' + id.maids
             }
             state.loading = false
         })
     },
-    
+
     async updateReviews({ state, dispatch }, Obj) {
-        state.message='Loading ....'
+        state.message = 'Loading ....'
+        state.flag = 'loading'
         state.loading = true
         var data = JSON.stringify({
-            "rate":Obj.rate,
-            "comment":Obj.comment,
-            "user_id":Obj.user_id,
-            "maid_id":Obj.maid_id,
+            rate: Obj.rate,
+            comment: Obj.comment,
+            user_id: Obj.user_id,
+            maid_id: Obj.maid_id,
         })
         const config = { headers: { 'Content-Type': 'application/json' } }
         this.$axios.put('/api/review/' + Obj.id, data, config).then((res) => {
             state.cart = res.data
             if (res.data.status === 1) {
-                state.message=res.data.message
+                state.message = res.data.message
                 state.data = res.data
-                setTimeout(function(){
-                  window.location.href = '/reviews'}) 
+                setTimeout(function() {
+                    window.location.href = '/reviews'
+                })
+                state.flag = 'success'
             } else {
                 state.addressMSG = res.data.msg
+                state.flag = 'fail'
             }
             state.loading = false
         })
     },
     AddReview({ state, dispatch }, arrayData) {
-        state.message='Loading ....'
+        state.message = 'Loading ....'
+        state.flag = 'loading'
         var data = JSON.stringify({
-            "users":arrayData.users,
-            "maids":arrayData.maids,
-            "rate":arrayData.rate,
-            "comment":arrayData.comment,
-        });
+            users: arrayData.users,
+            maids: arrayData.maids,
+            rate: arrayData.rate,
+            comment: arrayData.comment,
+        })
         this.$axios
             .post('/api/review/', data)
             .then((res) => {
-                state.message=res.data.message
+                state.message = res.data.message
                 state.loading = false
                 if (res.data.status == 1) {
                     this.$router.push('/reviews')
+                    state.flag = 'success'
                     dispatch('getReviews')
                 } else {
+                    state.flag = 'fail'
                     alert('error')
                 }
             })

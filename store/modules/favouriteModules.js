@@ -2,10 +2,11 @@ const state = {
     loading: true,
     data: [],
     oneFavourite: '',
-    length:0,
-    user_length:[],
-    num_user_fav:0,
-    message:'Loading ....'
+    length: 0,
+    user_length: [],
+    num_user_fav: 0,
+    message: 'Loading ....',
+    flag: 'loading',
 }
 
 const getters = {
@@ -13,20 +14,20 @@ const getters = {
 }
 
 const actions = {
-    async getFavourite({ state },id) {
+    async getFavourite({ state }, id) {
         await this.$axios.get('/api/favourite').then((res) => {
             state.data = res.data
-            state.length = res.data.data.length;
+            state.length = res.data.data.length
             var fav = res.data.data
-            for (let i=0; i < fav.length; i++) {
-                if(fav[i].maid_id == id){
+            for (let i = 0; i < fav.length; i++) {
+                if (fav[i].maid_id == id) {
                     state.user_length.push(fav[i].user_id)
                 }
             }
             state.loading = false
         })
     },
-    
+
     async getCountFavUser({ state }, id) {
         await this.$axios.get('/api/favourite/countForOne/' + id).then((res) => {
             state.num_user_fav = res.data.data
@@ -34,15 +35,18 @@ const actions = {
         })
     },
     async DeleteFavourite({ state, dispatch }, dataObj) {
-        state.message='Loading ....'
+        state.flag = 'loading'
+        state.message = 'Loading ....'
         this.$axios
             .delete('/api/favourite/' + dataObj)
-            .then(function (res) {
-                state.message=res.data.message
+            .then(function(res) {
+                state.message = res.data.message
+                state.flag = 'success'
                 dispatch('getFavourite')
             })
-            .catch(function (error) {
-                state.message=error
+            .catch(function(error) {
+                state.flag = 'fail'
+                state.message = error
             })
     },
     async getoneFavourite({ state }, id) {
@@ -54,46 +58,52 @@ const actions = {
         })
     },
     async updateFavourite({ state, dispatch }, Obj) {
-        state.message='Loading ....'
+        state.flag = 'loading'
+        state.message = 'Loading ....'
         state.loading = true
         var data = JSON.stringify({
-            "user_id": Obj.user_id,
-            "maid_id": Obj.maid_id
+            user_id: Obj.user_id,
+            maid_id: Obj.maid_id,
         })
         const config = { headers: { 'Content-Type': 'application/json' } }
         this.$axios.put('/api/favourite/' + Obj.id, data, config).then((res) => {
             state.cart = res.data
             if (res.data.status === 1) {
                 state.data = res.data
-                state.message=res.data.message
+                state.message = res.data.message
+                state.flag = 'success'
                 this.$router.push('/favourite')
                 dispatch('getFavourite')
             } else {
-                state.message=res.data.message
+                state.flag = 'fail'
+                state.message = res.data.message
             }
             state.loading = false
         })
     },
     AddFavourite({ state, dispatch }, arrayData) {
-        state.message='Loading ....'
+        state.message = 'Loading ....'
+        state.flag = 'loading'
         var data = JSON.stringify({
-            "user_id":arrayData.users,
-            "maid_id":arrayData.maids
-        });
+            user_id: arrayData.users,
+            maid_id: arrayData.maids,
+        })
         this.$axios
             .post('/api/favourite/', data)
             .then((res) => {
                 state.loading = false
                 if (res.data.status == 1) {
-                    state.message=res.data.message
+                    state.flag = 'success'
+                    state.message = res.data.message
                 } else {
-                    
-                state.message=res.data.message
+                    state.flag = 'fail'
+                    state.message = res.data.message
                 }
                 this.$router.push('/favourite')
                 dispatch('getFavourite')
             })
             .catch((error) => {
+                state.flag = 'fail'
                 state.loading = false
             })
     },

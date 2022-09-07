@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-sheet class="overflow-hidden menu_header" >
+    <v-sheet class="overflow-hidden menu_header">
       <v-navigation-drawer
         v-model="allUsers.menuHeader"
         absolute
@@ -11,49 +11,55 @@
         <v-list-item>
           <div class="menu_head">
             <p class="logo">
-              <img src="/images/logo.jpeg"/></p>
+              <img src="/images/logo.jpeg" />
+            </p>
             <v-app-bar-nav-icon
               class="menuBtn"
               @click.stop="onClose()"
             ></v-app-bar-nav-icon>
-
           </div>
         </v-list-item>
 
         <v-divider></v-divider>
-        
-        <v-list-item v-if="allAuth.checkAuth" >
-        <v-list-item-avatar>
-          <v-icon
-            class="grey lighten-1"
-            dark
-          >
-            mdi-account
-          </v-icon>
-        </v-list-item-avatar>
 
-        <v-list-item-content v-if="allAuth.user">
-          <v-list-item-title v-text="username"></v-list-item-title>
+        <v-list-item v-if="allAuth.checkAuth">
+          <v-list-item-avatar>
+            <v-icon class="grey lighten-1" dark> mdi-account </v-icon>
+          </v-list-item-avatar>
 
-          <v-list-item-subtitle v-text="email"></v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-      <NuxtLink :to="localePath('/')"  v-if="allAuth.checkAuth">
-        <v-list-item link>
-          <v-list-item-icon>
-            <font-awesome-icon icon="house" class="fa" />
-          </v-list-item-icon>
+          <v-list-item-content v-if="allAuth.user">
+            <v-list-item-title v-text="username"></v-list-item-title>
 
-          <v-list-item-content>
-            <v-list-item-title>
-              <span class="navM_">{{ $t('Home') }}</span></v-list-item-title
-            >
+            <v-list-item-subtitle v-text="email"></v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
-      </NuxtLink>
+        <NuxtLink :to="localePath('/')" v-if="allAuth.checkAuth">
+          <v-list-item link>
+            <v-list-item-icon>
+              <font-awesome-icon icon="house" class="fa" />
+            </v-list-item-icon>
 
+            <v-list-item-content>
+              <v-list-item-title>
+                <span class="navM_">{{ $t('Home') }}</span></v-list-item-title
+              >
+            </v-list-item-content>
+          </v-list-item>
+        </NuxtLink>
 
-        <v-list  v-if="allAuth.checkAuth">
+        <NuxtLink :to="localePath('/users')" v-if="allAuth.checkAuth">
+          <v-list-item link>
+            <v-list-item-icon>
+              <font-awesome-icon icon="users" class="fa" />
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title> <span>Users</span></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </NuxtLink>
+
+        <v-list v-if="allAuth.checkAuth">
           <v-list-group
             v-for="item in items"
             :key="item.title"
@@ -67,60 +73,55 @@
               </v-list-item-content>
             </template>
 
-            <v-list-item
-              v-for="child in item.items"
-              :key="child.title"
-              link
-            >
-            
-                <NuxtLink :to="localePath('/'+child.href)" v-text="child.title"></NuxtLink>
+            <v-list-item v-for="child in item.items" :key="child.title" link>
+              <NuxtLink
+                :to="localePath('/' + child.href)"
+                v-text="child.title"
+              ></NuxtLink>
             </v-list-item>
-            
           </v-list-group>
         </v-list>
-        
-              <NuxtLink :to="localePath('/maids')">
-                
-                <v-list-item link>
-                  <v-list-item-icon>
-                    <font-awesome-icon icon="users" class="fa" />
-                  </v-list-item-icon>
 
-                  <v-list-item-content>
-                    <v-list-item-title>
-                      <span>Maids</span></v-list-item-title
-                    >
-                  </v-list-item-content>
-                </v-list-item>
-              </NuxtLink><NuxtLink :to="localePath('/createUser')">
-                
-                <v-list-item link>
-                  <v-list-item-icon>
-                    <font-awesome-icon icon="user" class="fa" />
-                  </v-list-item-icon>
+        <NuxtLink :to="localePath('/maids')">
+          <v-list-item link>
+            <v-list-item-icon>
+              <font-awesome-icon icon="users" class="fa" />
+            </v-list-item-icon>
 
-                  <v-list-item-content>
-                    <v-list-item-title>
-                      <span class="">Create User</span></v-list-item-title
-                    >
-                  </v-list-item-content>
-                </v-list-item>
-              </NuxtLink>
-              <NuxtLink :to="localePath('/chat')" style="position: relative;display: block;">
-                
-                <v-list-item link>
-                  <v-list-item-icon>
-                    <font-awesome-icon icon="message" class="fa" />
-                  </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title> <span>Maids</span></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item> </NuxtLink
+        ><NuxtLink :to="localePath('/createUser')">
+          <v-list-item link>
+            <v-list-item-icon>
+              <font-awesome-icon icon="user" class="fa" />
+            </v-list-item-icon>
 
-                  <v-list-item-content>
-                    <v-list-item-title>
-                      <div class = "number"  v-if="is_read = false">new</div>
-                      <span class="navM_">chat</span></v-list-item-title
-                    >
-                  </v-list-item-content>
-                </v-list-item>
-              </NuxtLink>
+            <v-list-item-content>
+              <v-list-item-title>
+                <span class="">Create User</span></v-list-item-title
+              >
+            </v-list-item-content>
+          </v-list-item>
+        </NuxtLink>
+        <NuxtLink
+          :to="localePath('/chat')"
+          style="position: relative; display: block"
+        >
+          <v-list-item link>
+            <v-list-item-icon>
+              <font-awesome-icon icon="message" class="fa" />
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>
+                <div class="number" v-if="(is_read = false)">new</div>
+                <span class="navM_">chat</span></v-list-item-title
+              >
+            </v-list-item-content>
+          </v-list-item>
+        </NuxtLink>
         <NuxtLink :to="localePath('/users/myinfo')">
           <v-list-item link>
             <v-list-item-icon>
@@ -186,111 +187,103 @@
     <v-overlay :value="allUsers.menuHeader"></v-overlay>
   </div>
 </template>
- <script>
-import { db } from "~/plugins/firebase.js"
+<script>
+import { db } from '~/plugins/firebase.js'
 import { collection, getDocs, getFirestore, query } from 'firebase/firestore'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      
-      username:'',
-      email:'',
+      username: '',
+      email: '',
       drawer: false,
-      is_read:true,
-       items: [
-        {
-          action: 'mdi-account-multiple',
-          items: [
-            { title: 'Users',href:'users' },
-            { title: 'Create User',href:'createUser' }
-          ],
-          title: 'Users',
-        },
+      is_read: true,
+      items: [
         {
           action: 'mdi-notification-clear-all',
           items: [
-            { title: 'Notifications',href:'Notifications' },
-            { title: 'Create Notifications',href:'Notifications/create' }
+            { title: 'Notifications', href: 'Notifications' },
+            { title: 'Create Notifications', href: 'Notifications/create' },
           ],
           title: 'Notification',
         },
         {
           action: 'mdi-skip-previous',
           items: [
-            { title: 'Reviews',href:'reviews' },
-            { title: 'Create Reviews',href:'reviews/create' }
+            { title: 'Reviews', href: 'reviews' },
+            { title: 'Create Reviews', href: 'reviews/create' },
           ],
           title: 'Reviews',
         },
         {
           action: 'mdi-account-star',
           items: [
-            { title: 'Favourite',href:'favourite' },
-            { title: 'Create Favourite',href:'favourite/create' }
+            { title: 'Favourite', href: 'favourite' },
+            { title: 'Create Favourite', href: 'favourite/create' },
           ],
           title: 'Favourite',
-        }
+        },
       ],
     }
   },
   computed: {
-    ...mapGetters(['allUsersList','allUsers', 'allAuth']),
+    ...mapGetters(['allUsersList', 'allUsers', 'allAuth']),
   },
   methods: {
-    ...mapActions(['Logout', 'changeLanguage','myInfo', 'changeMenuHeader']),
+    ...mapActions(['Logout', 'changeLanguage', 'myInfo', 'changeMenuHeader']),
     onClose() {
       this.changeMenuHeader(false)
     },
-    mydata(){
+    mydata() {
       const info = this.$cookies.get('myInfo')
-      if(info){
+      if (info) {
         this.username = info.user.userName
         this.email = info.user.email
       }
     },
-    
+
     async getUserfirebase() {
-      const querySnapshot = await getDocs(collection(db, "messages"));
+      const querySnapshot = await getDocs(collection(db, 'messages'))
       querySnapshot.forEach((doc) => {
-          this.ReadOrNotRead(doc.id)
-      });
+        this.ReadOrNotRead(doc.id)
+      })
     },
-    async ReadOrNotRead(id){
+    async ReadOrNotRead(id) {
       const db = getFirestore()
       const workQ = query(collection(db, `messages/${id}/${id}`))
       const workDetails = await getDocs(workQ)
       const workInfo = workDetails.docs.map((doc) => ({
-        ...doc.data(), id: doc.id
-      }));
-      workInfo.forEach((newarray, idx, array)=>{
-        if (idx === array.length - 1){
-            if(newarray.from != 'admin'){
-              if(newarray.isRead == 'false'){
-                this.is_read = false
-              }
-            } 
+        ...doc.data(),
+        id: doc.id,
+      }))
+      workInfo.forEach((newarray, idx, array) => {
+        if (idx === array.length - 1) {
+          if (newarray.from != 'admin') {
+            if (newarray.isRead == 'false') {
+              this.is_read = false
+            }
+          }
         }
       })
-    }
+    },
   },
   created() {
     setInterval(() => {
       // this.getUserfirebase()
     }, 1000)
   },
-  mounted(){
+  mounted() {
     this.getUserfirebase()
     this.mydata()
-  }
+  },
 }
 </script>
 
 <style scoped>
 .menu_head {
   display: flex;
-  justify-content:space-between;
-    align-items: center;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
   padding: 15px;
 }
@@ -306,7 +299,7 @@ export default {
   height: 40px;
   margin: 0px;
 }
-.menu_head .logo{
+.menu_head .logo {
   font-size: 1.5rem;
   font-weight: bold;
 }
@@ -315,11 +308,10 @@ export default {
   height: 40px;
   position: absolute;
 }
-.v-list-group--no-action  .v-list-item{
+.v-list-group--no-action .v-list-item {
   background: transparent !important;
 }
-.v-list-group--active .v-list-item{
-  
+.v-list-group--active .v-list-item {
   background: #f68c28 !important;
 }
 a.nuxt-link-exact-active {
@@ -368,20 +360,18 @@ a.nuxt-link-exact-active {
   }
 }
 
-
-.number{
-    height: 30px;
-    width: 50px;
-    background-color: #d63031;
-    border-radius: 20px;
-    color: white;
-    text-align: center;
-    position: absolute;
-    top: 10px;
-    right: 11px;
-    padding: 3px;
-    border-style: solid;
-    border-width: 2px;
+.number {
+  height: 30px;
+  width: 50px;
+  background-color: #d63031;
+  border-radius: 20px;
+  color: white;
+  text-align: center;
+  position: absolute;
+  top: 10px;
+  right: 11px;
+  padding: 3px;
+  border-style: solid;
+  border-width: 2px;
 }
-
 </style>
