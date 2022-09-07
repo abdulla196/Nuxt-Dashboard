@@ -65,21 +65,6 @@ const actions = {
         window.location.href = '/login'
     },
 
-    before({ state, dispatch }) {
-        state.loading = true
-        dispatch('setMsg', { msg: '', errors: [] })
-    },
-
-    routerTo() {
-        window.location.href = '/'
-    },
-
-    Logout() {
-        this.$cookies.remove('Authorization')
-        this.$cookies.remove('myInfo')
-        window.location.href = '/login'
-    },
-
     registerAction({ state, dispatch }, arrayData) {
         dispatch('before')
             //
@@ -100,7 +85,6 @@ const actions = {
             .post('/register', data)
             .then((res) => {
                 state.loading = false
-                console.log(res.data.msg)
                 if (res.data.status === 200) {
                     if (state.step === 1) {
                         state.step = 2

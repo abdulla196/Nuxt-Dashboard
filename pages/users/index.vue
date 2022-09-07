@@ -54,7 +54,6 @@
         </td>
       </template>
     </v-data-table>
-
     <v-snackbar
       v-if="allUsersList.flag == 'success'"
       v-model="snackbar"
@@ -137,6 +136,19 @@ export default {
   },
   components: {
     Loading,
+  },
+  computed: {
+    ...mapGetters(['allUsersList']),
+  },
+  methods: {
+    ...mapActions(['getUsers', 'DeleteUser']),
+    Delete(id) {
+      this.snackbar = true
+      this.DeleteUser(id)
+    },
+  },
+  mounted() {
+    this.getUsers()
   },
 
   mounted() {

@@ -24,7 +24,7 @@ const actions = {
                     state.data.push(users[i])
                 }
             }
-            state.length = state.data.length
+            state.length = users.length
             state.loading = false
         })
     },
@@ -85,6 +85,45 @@ const actions = {
         })
     },
 
+    getoneUserchat({ state }, ids) {
+        var urls = []
+        state.userschat = []
+        for (var i = 0; i < ids.length; i++) {
+            var endpoint = '/api/user/' + ids[i]
+            this.$axios.get(endpoint).then((res) => {
+                state.userschat.push(res.data.data)
+                state.loading = false
+            })
+        }
+    },
+
+    async updateUsers({ state, dispatch }, Obj) {
+        state.message = 'Loading ....'
+        state.loading = true
+        var data = JSON.stringify({
+            phone: Obj.phone,
+            location: Obj.location,
+            details: Obj.details,
+            birthday: Obj.birthday,
+            price: Obj.price,
+            userName: Obj.userName,
+            email: Obj.email,
+        })
+
+        this.$axios.put('/api/user/' + Obj.id, data).then((res) => {
+            state.cart = res.data
+            if (res.data.status === 1) {
+                state.data = res.data
+                state.message = res.data.message
+                setTimeout(function() {
+                    window.location.href = '/users'
+                })
+            } else {
+                state.message = res.data.message
+            }
+            state.loading = false
+        })
+    },
     Signup({ state, dispatch }, arrayData) {
         state.message = 'Loading'
         state.flag = 'loading'
@@ -120,42 +159,6 @@ const actions = {
                 state.flag = 'fail'
             })
     },
-    async changePassword({ state }, arrayData) {
-        var data = JSON.stringify({
-            email: arrayData.email,
-            password: arrayData.old_password,
-            newPassword: arrayData.new_password,
-            passwordConfirm: arrayData.new_password_confirmation,
-        })
-        this.$axios
-            .post('/changepassword', data)
-            .then((res) => {
-                state.loading = false
-                if (res.data.status == 1) {
-                    window.location.reload()
-                } else {
-                    alert('error')
-                }
-            })
-            .catch((error) => {
-                state.loading = false
-            })
-    },
-
-    async getUsers({ state }) {
-        await this.$axios.get('/api/user').then((res) => {
-            state.data = []
-            const users = res.data.data
-            state.length = users.length
-            for (let i = 0; i < users.length; i++) {
-                if (users[i].type == 'user') {
-                    state.data.push(users[i])
-                }
-            }
-            state.length = users.length
-            state.loading = false
-        })
-    },
 
     getoneUserchat({ state }, ids) {
         var urls = []
@@ -179,6 +182,28 @@ const actions = {
                 state.loading = false
                 if (res.data.status == 1) {
                     this.$router.push('/login')
+                } else {
+                    alert('error')
+                }
+            })
+            .catch((error) => {
+                state.loading = false
+            })
+    },
+
+    async changePassword({ state }, arrayData) {
+        var data = JSON.stringify({
+            email: arrayData.email,
+            password: arrayData.old_password,
+            newPassword: arrayData.new_password,
+            passwordConfirm: arrayData.new_password_confirmation,
+        })
+        this.$axios
+            .post('/changepassword', data)
+            .then((res) => {
+                state.loading = false
+                if (res.data.status == 1) {
+                    window.location.reload()
                 } else {
                     alert('error')
                 }

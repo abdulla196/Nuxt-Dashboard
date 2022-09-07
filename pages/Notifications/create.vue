@@ -170,9 +170,6 @@ export default {
 }
 </script>
 
-<<<<<<< HEAD
-<style></style>
-=======
 <style>
 .v-radio.high label {
   color: #f00 !important;
@@ -181,4 +178,3 @@ export default {
   color: green !important;
 }
 </style>
->>>>>>> d7dc6bcec470e47e1f7827c30d72b08036182b21

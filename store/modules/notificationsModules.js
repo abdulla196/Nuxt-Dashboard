@@ -75,7 +75,6 @@ const actions = {
     },
     async Addnotification({ state, dispatch }, arrayData) {
         state.message = 'Loading ....'
-        state.flag = 'loading'
         for (var i = 0; i < arrayData.users.length; i++) {
             var data = JSON.stringify({
                 content: arrayData.content,
@@ -106,8 +105,44 @@ const actions = {
                 .then((res) => {
                     state.loading = false
                     if (res.data.status == 1) {
+                        if (arrayData.users.length == i + 1)
+                            state.message = res.data.message
+                        setTimeout(function() {
+                            window.location.href = '/Notifications'
+                        })
+                    } else {
+                        alert('error')
+                    }
+                })
+                .catch((error) => {
+                    state.loading = false >>>
+                        >>>
+                        > d7dc6bcec470e47e1f7827c30d72b08036182b21
+                })
+            this.$axios
+                .post('/api/notification/', data)
+                .then((res) => {
+                    state.loading = false
+                    if (res.data.status == 1) {
+                        if (arrayData.users.length == i + 1)
+                            state.message = res.data.message
+                        setTimeout(function() {
+                            window.location.href = '/Notifications'
+                        })
+                    } else {
+                        alert('error')
+                    }
+                })
+                .catch((error) => {
+                    state.loading = false
+                })
+            this.$axios
+                .post('/api/notification/', data)
+                .then((res) => {
+                    state.loading = false
+                    if (res.data.status == 1) {
                         state.flag = 'success'
-                        if (arrayData.users.length < 0) state.message = res.data.message
+                        if (arrayData.users.length == i + 1) state.message = res.data.message
                         setTimeout(function() {
                             window.location.href = '/Notifications'
                         })

@@ -41,7 +41,6 @@
         </td>
       </template>
     </v-data-table>
-
     <v-snackbar
       v-if="allFavouriteList.flag == 'success'"
       v-model="snackbar"
