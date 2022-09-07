@@ -108,7 +108,7 @@ export default {
     ...mapState([ "messages"]),
   },
   methods: {
-    ...mapActions(['AddReview', 'getUsers', 'getMaids','getoneUser']),
+    ...mapActions(['AddReview', 'getUsers', 'getMaids','getoneUser','getoneUserchat']),
      
         // this.$refs.block.offsetTop
     
@@ -189,13 +189,23 @@ export default {
       this.is_read = 'true'
     },
     async getUserfirebase() {
+      
+      const new_ids = [];
       const querySnapshot = await getDocs(collection(db, "messages"));
-      console.log(querySnapshot)
       querySnapshot.forEach((doc) => {
-          this.ReadOrNotRead(doc.id)
+          new_ids.push(doc.id)
+          if(querySnapshot.docs.length == new_ids.length){
+            this.getuserdata(new_ids)
+          }
+            this.ReadOrNotRead(doc.id)
       });
     },
+    
+    async getuserdata(id){
+      this.getoneUserchat(id)
+    },
     async ReadOrNotRead(id){
+      
       const db = getFirestore()
       const workQ = query(collection(db, `messages/${id}/${id}`))
       const workDetails = await getDocs(workQ)
@@ -204,14 +214,18 @@ export default {
       }));
       workInfo.forEach((newarray, idx, array)=>{
         if (idx === array.length - 1){ 
-            this.getoneUser(id)
             setTimeout(() => {
-              this.alluser.push({
-                "name":this.allUsersList.data.userName,
-                "id":this.allUsersList.data._id,
-                "time":newarray.time,
-                "last_message":newarray.text
-              })
+            var usersLength = this.allUsersList.userschat.length
+            for(var d=0 ; d< usersLength ; d++){
+              if(this.allUsersList.userschat[d]._id == id ){
+                this.alluser.push({
+                  "name":this.allUsersList.userschat[d].userName,
+                  "id":this.allUsersList.userschat[d]._id,
+                  "time":newarray.time,
+                  "last_message":newarray.text
+                })
+              }
+            }
             }, 1500);
             if(newarray.from != 'admin'){
               if(newarray.isRead == 'false'){
@@ -232,6 +246,10 @@ export default {
     setInterval(() => {
       this.clientData(this.client_id)
     }, 1000)
+    
+    setInterval(() => {
+      this.getUserfirebase()
+    }, 5000)
   },
   mounted() {
     if (this.alluser == '') {

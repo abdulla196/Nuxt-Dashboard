@@ -38,6 +38,7 @@ const actions = {
   async myInfo({state}){
     await this.$axios.get("/api/user/get/myinfo").then((res) => {
       state.user = res.data.data;
+      this.$cookies.set('myInfo', res.data)
       state.loading = false;
     });
   },
@@ -79,7 +80,6 @@ const actions = {
 
     this.$axios.post('/register', data).then((res) => {
       state.loading = false
-      console.log(res.data.msg)
       if (res.data.status === 200) {
 
         if (state.step === 1) {

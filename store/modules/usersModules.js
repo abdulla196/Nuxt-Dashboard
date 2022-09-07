@@ -1,10 +1,11 @@
-
+import axios from 'axios';
 const state = {
   loading:true,
   data: [],
   myInfo:[],
   message:'loading ... ',
-  length:0
+  length:0,
+  userschat:[]
 };
 
 const getters = {
@@ -36,6 +37,19 @@ const actions = {
         state.loading = false
     })
 },
+ getoneUserchat({ state }, ids) {
+  var urls = [];
+  state.userschat = []
+  for( var i=0;i<ids.length;i++){
+    var endpoint = '/api/user/' + ids[i]
+    this.$axios.get(endpoint).then((res) => {
+      state.userschat.push(res.data.data)
+      state.loading = false
+  })
+  }
+  
+},
+
 async DeleteUser({ state, dispatch }, dataObj) {
         state.message='Loading ....'
   this.$axios
