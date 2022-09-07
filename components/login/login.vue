@@ -1,7 +1,7 @@
 <template>
   <div class="page container_cc">
     <div class="login">
-      <h1>{{ $t('Login') }}</h1>
+      <h1 style="font-size: 37px; color: #403c3c">{{ $t('Login') }}</h1>
 
       <div class="form_login_cc" id="form">
         <div class="form_login">
