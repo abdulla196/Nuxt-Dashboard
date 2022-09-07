@@ -147,9 +147,6 @@ export default {
       this.DeleteUser(id)
     },
   },
-  mounted() {
-    this.getUsers()
-  },
 
   mounted() {
     this.getUsers()
