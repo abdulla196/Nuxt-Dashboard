@@ -36,9 +36,13 @@ const actions = {
     },
     async getoneNotification({ state }, id) {
         state.loading = true
-
+        state.oneNotification = []
         await this.$axios.get('/api/notification/' + id).then((res) => {
             state.oneNotification = res.data.data
+            this.$axios.get('/api/user/' + res.data.data.user_id).then((respons) => {
+                state.oneNotification.userName = respons.data.data.userName
+                state.loading = false
+            })
             state.loading = false
         })
     },
@@ -80,6 +84,23 @@ const actions = {
                 priority: arrayData.priority,
                 user_id: arrayData.users[i],
             })
+            this.$axios
+                .post('/api/notification/', data)
+                .then((res) => {
+                    state.loading = false
+                    if (res.data.status == 1) {
+                        if (arrayData.users.length == i + 1)
+                            state.message = res.data.message
+                        setTimeout(function() {
+                            window.location.href = '/Notifications'
+                        })
+                    } else {
+                        alert('error')
+                    }
+                })
+                .catch((error) => {
+                    state.loading = false
+                })
             this.$axios
                 .post('/api/notification/', data)
                 .then((res) => {

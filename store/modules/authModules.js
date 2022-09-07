@@ -28,6 +28,13 @@ const actions = {
         if (!state.checkAuth) {
             this.$router.push('/login')
         }
+        if (
+            (this.$router.currentRoute.path == '/login/' ||
+                this.$router.currentRoute.path == '/login') &&
+            state.checkAuth
+        ) {
+            this.$router.push('/')
+        }
         await this.$axios.setHeader(
             'Authorization',
             this.$cookies.get('Authorization')
@@ -37,8 +44,25 @@ const actions = {
     async myInfo({ state }) {
         await this.$axios.get('/api/user/get/myinfo').then((res) => {
             state.user = res.data.data
+            console.log(state.user)
+            this.$cookies.set('myInfo', res.data)
             state.loading = false
         })
+    },
+
+    before({ state, dispatch }) {
+        state.loading = true
+        dispatch('setMsg', { msg: '', errors: [] })
+    },
+
+    routerTo() {
+        window.location.href = '/'
+    },
+
+    Logout() {
+        this.$cookies.remove('Authorization')
+        this.$cookies.remove('myInfo')
+        window.location.href = '/login'
     },
 
     before({ state, dispatch }) {
@@ -141,12 +165,11 @@ const actions = {
                     state.login_flag = false
                 }
             })
-
-        .catch((error) => {
-            state.loading = false
-            console.log(error.message)
-            state.errorMesage = 'Invalid user name and password combination'
-        })
+            .catch((error) => {
+                state.loading = false
+                console.log(error.message)
+                state.errorMesage = 'Invalid user name and password combination'
+            })
     },
 
     changeSessionExpired({ state }) {

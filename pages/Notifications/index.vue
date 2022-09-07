@@ -18,6 +18,9 @@
       :headers="headers"
       class="table100"
     >
+      <template v-slot:item.="{ item, index }">
+        {{ index + 1 }}
+      </template>
       <template #item.subject="{ value }">
         {{ value }}
       </template>
@@ -34,7 +37,33 @@
         {{ value }}
       </template>
       <template #item.priority="{ value }">
-        {{ value }}
+        <p
+          style="
+            background: #f00;
+            height: 75%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+          "
+          v-if="value == 'high'"
+        >
+          {{ value }}
+        </p>
+
+        <p
+          style="
+            background: green;
+            height: 75%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+          "
+          v-else
+        >
+          {{ value }}
+        </p>
       </template>
       <template #item.actions="{ item }">
         <td @click.stop class="non-clickable">
@@ -118,6 +147,7 @@ export default {
       },
       search: '',
       headers: [
+        { text: 'index', value: '' },
         { text: 'subject', value: 'subject' },
         { text: 'content', value: 'content' },
         { text: 'is_clicked', value: 'is_clicked' },

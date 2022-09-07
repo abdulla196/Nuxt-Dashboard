@@ -1,9 +1,11 @@
+import axios from 'axios'
 const state = {
     loading: true,
     data: [],
     myInfo: [],
     message: 'loading ... ',
     length: 0,
+    userschat: [],
     flag: 'loading',
 }
 
@@ -35,6 +37,7 @@ const actions = {
             state.loading = false
         })
     },
+
     async DeleteUser({ state, dispatch }, dataObj) {
         state.flag = 'loading'
         state.message = 'Loading ....'
@@ -50,6 +53,7 @@ const actions = {
                 state.flag = 'fail'
             })
     },
+
     async updateUsers({ state, dispatch }, Obj) {
         state.message = 'Loading ....'
         state.flag = 'loading'
@@ -93,8 +97,6 @@ const actions = {
             location: arrayData.location,
             phone: arrayData.phone,
             details: arrayData.details,
-            price: arrayData.price,
-            birthday: arrayData.birthday,
         })
         this.$axios
             .post('/signup', data)
@@ -103,7 +105,9 @@ const actions = {
                 state.loading = false
                 if (res.data.status == 1) {
                     state.flag = 'success'
-                    dispatch('routerTo')
+                    setTimeout(function() {
+                        window.location.href = '/users'
+                    })
                 } else {
                     state.flag = 'fail'
                     alert('error')
@@ -138,6 +142,33 @@ const actions = {
             })
     },
 
+    async getUsers({ state }) {
+        await this.$axios.get('/api/user').then((res) => {
+            state.data = []
+            const users = res.data.data
+            state.length = users.length
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].type == 'user') {
+                    state.data.push(users[i])
+                }
+            }
+            state.length = users.length
+            state.loading = false
+        })
+    },
+
+    getoneUserchat({ state }, ids) {
+        var urls = []
+        state.userschat = []
+        for (var i = 0; i < ids.length; i++) {
+            var endpoint = '/api/user/' + ids[i]
+            this.$axios.get(endpoint).then((res) => {
+                state.userschat.push(res.data.data)
+                state.loading = false
+            })
+        }
+    },
+
     async forgetpass({ state }, arrayData) {
         var data = JSON.stringify({
             email: arrayData.email,
@@ -158,12 +189,20 @@ const actions = {
     },
 
     async changeMyPhoto({ state, dispatch }, Obj) {
+        console.log(Obj)
         var data = new FormData()
-        data.append('image', Obj, Obj.name)
+        data.append('image', Obj.selectedFile)
+        console.log(data)
         var config = { headers: { 'Content-Type': 'multipart/form-data' } }
         this.$axios.post('/api/user/photo', data, config).then((res) => {
             if (res.data.status === 1) {
-                window.location.reload()
+                var photo = JSON.stringify({
+                    photo: 'http://66.29.155.80:5003/uploads/' + res.data.data.name,
+                })
+                this.$axios.$put('/api/user/' + Obj.id, photo).then((res) => {
+                    state.loading = false
+                    if (res.status === 1) {}
+                })
             } else {
                 state.loadingOptions = false
             }

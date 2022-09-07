@@ -27,7 +27,7 @@
 
               <v-col cols="12">
                 <v-select
-                  v-model="NotificationEdit.users"
+                  v-model="NotificationEdit.userNames"
                   :items="allUsersList.data"
                   item-text="userName"
                   item-value="_id"
@@ -43,8 +43,18 @@
                   row
                   :rules="[$rules.required]"
                 >
-                  <v-radio label="low" value="low"></v-radio>
-                  <v-radio label="high" value="high"></v-radio>
+                  <v-radio
+                    class="low"
+                    label="low"
+                    value="low"
+                    color="green"
+                  ></v-radio>
+                  <v-radio
+                    label="high"
+                    value="high"
+                    class="high"
+                    color="#f00"
+                  ></v-radio>
                 </v-radio-group>
               </v-col>
               <v-col cols="12">
@@ -136,6 +146,7 @@ export default {
         subject: '',
         priority: null,
         users: [],
+        userNames: { userName: '', _id: '' },
         is_clicked: false,
         id: this.$route.params.id,
       },
@@ -145,19 +156,22 @@ export default {
     ...mapActions(['updateNotification', 'getoneNotification', 'getUsers']),
 
     completeUserData() {
-      console.log(this.allnotificationList)
       this.NotificationEdit.subject =
         this.allnotificationList.oneNotification.subject
       this.NotificationEdit.content =
         this.allnotificationList.oneNotification.content
       this.NotificationEdit.is_clicked =
         this.allnotificationList.oneNotification.is_clicked
-      this.NotificationEdit.users.push(
+      this.NotificationEdit.users =
         this.allnotificationList.oneNotification.user_id
-      )
+      ;(this.NotificationEdit.userNames.userName =
+        this.allnotificationList.oneNotification.userName),
+        (this.NotificationEdit.userNames._id =
+          this.allnotificationList.oneNotification.user_id)
       this.NotificationEdit.priority =
         this.allnotificationList.oneNotification.priority
       this.NotificationEdit.id = this.$route.params.id
+      console.log(this.NotificationEdit.userNames)
     },
 
     UpdateUNotifi() {
@@ -166,11 +180,11 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['allnotificationList', 'allUsersList']),
+    ...mapGetters(['allnotificationList', 'allUsersList', 'getoneUser']),
   },
   mounted() {
     this.getoneNotification(this.$route.params.id)
-    setTimeout(() => this.completeUserData(), 1000)
+    setTimeout(() => this.completeUserData(), 1500)
     if (this.allUsersList.data == '') {
       this.getUsers()
     }
@@ -178,4 +192,11 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.v-radio.high label {
+  color: #f00 !important;
+}
+.v-radio.low label {
+  color: green !important;
+}
+</style>

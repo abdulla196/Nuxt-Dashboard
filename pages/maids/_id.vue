@@ -188,7 +188,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import VueUploadMultipleImage from 'vue-upload-multiple-image'
 export default {
   data: () => ({
     valid: true,

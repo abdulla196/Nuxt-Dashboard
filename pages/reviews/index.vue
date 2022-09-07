@@ -51,14 +51,14 @@
       :headers="headers"
       class="table100"
     >
-      <template #item._id="{ value }">
-        {{ value }}
+      <template v-slot:item.="{ item, index }">
+        {{ index + 1 }}
       </template>
       <template #item.comment="{ value }">
         {{ value }}
       </template>
       <template #item.rate="{ value }">
-        {{ value }}
+        <v-rating v-model="value" readonly></v-rating>
       </template>
       <template #item.actions="{ item }">
         <td @click.stop class="non-clickable">
@@ -151,7 +151,7 @@ export default {
       },
       search: '',
       headers: [
-        { text: 'id', value: '_id' },
+        { text: 'index', value: '' },
         { text: 'comment', value: 'comment' },
         { text: 'rate', value: 'rate' },
         { text: 'Actions', value: 'actions', sortable: false },
