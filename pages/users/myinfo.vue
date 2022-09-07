@@ -13,13 +13,13 @@
                             <font-awesome-icon icon="user" />
                             </div>
                             <div v-else>
-                                <v-img
+                                <img
+                                contain
+                                :lazy-src="allAuth.user.photo"
+                                max-height="200"
+                                max-width="200"
                                 :src="allAuth.user.photo"
-                                height="125"
-                                width="125"
-                                reduice
-                                class="grey darken-4"
-                                ></v-img>
+                                >
                             </div>
                         </div>
                         <h2>{{ allAuth.user.userName }}</h2>
@@ -219,6 +219,7 @@ export default {
         showPassword: false,
         photodata:{
             photo:'',
+            id:'',
             selectedFile: null
         },
         passworddata: {
@@ -273,7 +274,8 @@ export default {
       this.dataInfo.location = this.allAuth.user.location
       this.dataInfo.price = this.allAuth.user.price
       this.dataInfo.id = this.allAuth.user._id
-      this.photodata.photo = this.allAuth.user.photo
+      this.dataInfo.photo = this.allAuth.user.photo
+      this.photodata.id = this.allAuth.user._id
       this.passworddata.id = this.allAuth.user._id
       this.passworddata.email = this.allAuth.user.email
     },
@@ -283,11 +285,11 @@ export default {
       this.UpdateUserInfo(this.dataInfo)
     },
      onFileChanged (event) { 
-        this.selectedFile = event
+        this.photodata.selectedFile = event
     },
   onUpload() {
      
-    this.changeMyPhoto(this.selectedFile,this.selectedFile.name)
+    this.changeMyPhoto(this.photodata)
   },
 
     changePasswordFunction(e) {

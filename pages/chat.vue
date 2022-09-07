@@ -28,7 +28,7 @@
         <v-col cols="auto" class="flex-grow-1 flex-shrink-0">
           <v-responsive class="overflow-y-hidden fill-height">
             <v-card flat class="fill-height" v-if="active == true">
-              <v-card-text class="flex-grow-1 overflow-y-auto chat-container" ref="block">
+              <v-card-text class="flex-grow-1 overflow-y-auto chat-container">
                 <template>
                   <div v-for="(msg , i) in arraymessages" :key="i" >
                     <v-menu offset-y>
@@ -62,11 +62,16 @@
                       </v-list> -->
                     </v-menu>
                   </div>
+                    <div ref="scrollable"></div>
                 </template>
               </v-card-text>
               <v-card-text class="d-flex  flex-shrink-1">
                 <v-text-field v-model="messagesend" label="type a message" type="text" no- outlined />
-                <v-btn depressed color="#f68c28"  @keyup.enter="writeToFirestore()" @click="writeToFirestore()" >
+                <v-btn depressed color="#f68c28" v-if="messagesend == ''" disabled>
+                  Send now
+                </v-btn>
+                
+                <v-btn depressed color="#f68c28" v-else  @keyup.enter="writeToFirestore()" @click="writeToFirestore()" >
                   Send now
                 </v-btn>
               </v-card-text>
@@ -103,7 +108,7 @@ export default {
     ...mapState([ "messages"]),
   },
   methods: {
-    ...mapActions(['AddReview', 'getUsers', 'getMaids','getoneUser']),
+    ...mapActions(['AddReview', 'getUsers', 'getMaids','getoneUser','getoneUserchat']),
      
         // this.$refs.block.offsetTop
     
@@ -137,8 +142,8 @@ export default {
       this.arraymessages.push(document2)
     },
     async clientData(id) {
-      if(id){ 
         this.scrollDonw()
+      if(id){ 
         this.client_id = id
       }
       const db = getFirestore()
@@ -173,7 +178,8 @@ export default {
       };
     },
    async scrollDonw(){
-      this.$refs.block.scrollTop = this.$refs.block.scrollHeight
+    
+    this.$refs['scrollable'].scrollIntoView({ behavior: 'smooth' })
     },
     async Read(id,timeid){
       const washingtonRef =doc(db, `messages/${id}/${id}`, timeid);
@@ -183,12 +189,23 @@ export default {
       this.is_read = 'true'
     },
     async getUserfirebase() {
+      
+      const new_ids = [];
       const querySnapshot = await getDocs(collection(db, "messages"));
       querySnapshot.forEach((doc) => {
-          this.ReadOrNotRead(doc.id)
+          new_ids.push(doc.id)
+          if(querySnapshot.docs.length == new_ids.length){
+            this.getuserdata(new_ids)
+          }
+            this.ReadOrNotRead(doc.id)
       });
     },
+    
+    async getuserdata(id){
+      this.getoneUserchat(id)
+    },
     async ReadOrNotRead(id){
+      
       const db = getFirestore()
       const workQ = query(collection(db, `messages/${id}/${id}`))
       const workDetails = await getDocs(workQ)
@@ -197,14 +214,18 @@ export default {
       }));
       workInfo.forEach((newarray, idx, array)=>{
         if (idx === array.length - 1){ 
-            this.getoneUser(id)
             setTimeout(() => {
-              this.alluser.push({
-                "name":this.allUsersList.data.userName,
-                "id":this.allUsersList.data._id,
-                "time":newarray.time,
-                "last_message":newarray.text
-              })
+            var usersLength = this.allUsersList.userschat.length
+            for(var d=0 ; d< usersLength ; d++){
+              if(this.allUsersList.userschat[d]._id == id ){
+                this.alluser.push({
+                  "name":this.allUsersList.userschat[d].userName,
+                  "id":this.allUsersList.userschat[d]._id,
+                  "time":newarray.time,
+                  "last_message":newarray.text
+                })
+              }
+            }
             }, 1500);
             if(newarray.from != 'admin'){
               if(newarray.isRead == 'false'){
@@ -225,6 +246,10 @@ export default {
     setInterval(() => {
       this.clientData(this.client_id)
     }, 1000)
+    
+    setInterval(() => {
+      this.getUserfirebase()
+    }, 5000)
   },
   mounted() {
     if (this.alluser == '') {

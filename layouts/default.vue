@@ -37,12 +37,18 @@ export default {
     this.$vuetify.rtl = this.$i18n.locale === 'ar' ? true : false
   },
 
-  async mounted() {
+  created() {
+    setInterval(() => {
+      this.setApi(this.client_id)
+    }, 500)
+  },
+  mounted() {
     this.setApi()
     
   },
   methods: {
     ...mapActions(['setApi']),
+ 
   },
 }
 </script>
@@ -280,6 +286,9 @@ input.input-tel__input:lang(ar) {
 }
 .mdi-star::before{
   color: goldenrod !important;
+}
+.mdi-heart::before{
+  color: #f00 !important;
 }
 @media (max-width: 1100px) {
   .container_cc,.container {

@@ -72,8 +72,9 @@ const actions = {
                 state.data = res.data
                 state.message = res.data.message
                 state.flag = 'success'
-                this.$router.push('/favourite')
-                dispatch('getFavourite')
+                setTimeout(function() {
+                    window.location.href = '/favourite'
+                })
             } else {
                 state.flag = 'fail'
                 state.message = res.data.message

@@ -43,8 +43,18 @@
                   row
                   :rules="[$rules.required]"
                 >
-                  <v-radio label="low" value="low"></v-radio>
-                  <v-radio label="high" value="high"></v-radio>
+                  <v-radio
+                    class="low"
+                    label="low"
+                    value="low"
+                    color="green"
+                  ></v-radio>
+                  <v-radio
+                    class="high"
+                    color="#f00"
+                    label="high"
+                    value="high"
+                  ></v-radio>
                 </v-radio-group>
               </v-col>
               <v-col cols="12">
@@ -160,4 +170,15 @@ export default {
 }
 </script>
 
+<<<<<<< HEAD
 <style></style>
+=======
+<style>
+.v-radio.high label {
+  color: #f00 !important;
+}
+.v-radio.low label {
+  color: green !important;
+}
+</style>
+>>>>>>> d7dc6bcec470e47e1f7827c30d72b08036182b21

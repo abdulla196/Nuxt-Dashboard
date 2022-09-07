@@ -37,7 +37,7 @@ export default {
     '~/plugins/VuePhoneNumberInput.js',
     '~/plugins/validation-rules.js',
     '~/plugins/CxltToastr.js',
-    { src: '~/plugins/imageUpload.js', mode: 'client' }
+    { src: '~/plugins/multipleimage.js', mode: 'client' }
 
   ],
 
