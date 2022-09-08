@@ -205,7 +205,7 @@ export default {
       this.getoneUserchat(id)
     },
     async ReadOrNotRead(id){
-      
+      this.alluser =[]
       const db = getFirestore()
       const workQ = query(collection(db, `messages/${id}/${id}`))
       const workDetails = await getDocs(workQ)
@@ -247,9 +247,6 @@ export default {
       this.clientData(this.client_id)
     }, 1000)
     
-    setInterval(() => {
-      this.getUserfirebase()
-    }, 5000)
   },
   mounted() {
     if (this.alluser == '') {

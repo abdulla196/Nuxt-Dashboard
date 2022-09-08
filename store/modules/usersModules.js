@@ -100,64 +100,87 @@ const actions = {
     async updateUsers({ state, dispatch }, Obj) {
         state.message = 'Loading ....'
         state.loading = true
-        var data = JSON.stringify({
-            phone: Obj.phone,
-            location: Obj.location,
-            details: Obj.details,
-            birthday: Obj.birthday,
-            price: Obj.price,
-            userName: Obj.userName,
-            email: Obj.email,
-        })
+        var data_photo = new FormData()
+        data_photo.append('image', Obj.photo)
 
-        this.$axios.put('/api/user/' + Obj.id, data).then((res) => {
-            state.cart = res.data
+        var config = { headers: { 'Content-Type': 'multipart/form-data' } }
+        this.$axios.post('/api/user/photo', data_photo, config).then((res) => {
             if (res.data.status === 1) {
-                state.data = res.data
-                state.message = res.data.message
-                setTimeout(function() {
-                    window.location.href = '/users'
-                })
-            } else {
-                state.message = res.data.message
-            }
-            state.loading = false
-        })
-    },
-    Signup({ state, dispatch }, arrayData) {
-        state.message = 'Loading'
-        state.flag = 'loading'
-        var data = JSON.stringify({
-            userName: arrayData.userName,
-            password: arrayData.password,
-            email: arrayData.email,
-            passwordConfirm: arrayData.passwordConfirm,
-            type: arrayData.type,
-            location: arrayData.location,
-            phone: arrayData.phone,
-            details: arrayData.details,
-        })
-        this.$axios
-            .post('/signup', data)
-            .then((res) => {
-                //console.log(res)
-                state.loading = false
-                if (res.data.status == 1) {
-                    state.flag = 'success'
+               
+            var data_use = JSON.stringify({
+                phone: Obj.phone,
+                location: Obj.location,
+                details: Obj.details,
+                birthday: Obj.birthday,
+                price: Obj.price,
+                userName: Obj.userName,
+                email: Obj.email,
+                photo: 'http://66.29.155.80:5003/uploads/' + res.data.data.name
+            })
+
+            this.$axios.put('/api/user/' + Obj.id, data_use).then((res) => {
+                state.cart = res.data
+                if (res.data.status === 1) {
+                    state.data = res.data
+                    state.message = res.data.message
                     setTimeout(function() {
                         window.location.href = '/users'
                     })
                 } else {
+                    state.message = res.data.message
+                }
+                state.loading = false
+            })
+        }
+        })
+    },
+    Signup({ state, dispatch }, arrayData) {
+        
+        state.message = 'Loading'
+        state.flag = 'loading'
+        
+        var data_photo = new FormData()
+        data_photo.append('image', arrayData.photo)
+
+        var config = { headers: { 'Content-Type': 'multipart/form-data' } }
+        this.$axios.post('/api/user/photo', data_photo, config).then((res) => {
+            if (res.data.status === 1) {
+                var datauser = JSON.stringify({
+                    userName: arrayData.userName,
+                    password: arrayData.password,
+                    email: arrayData.email,
+                    passwordConfirm: arrayData.passwordConfirm,
+                    type: arrayData.type,
+                    location: arrayData.location,
+                    phone: arrayData.phone,
+                    details: arrayData.details,
+                    photo: 'http://66.29.155.80:5003/uploads/' + res.data.data.name
+                })
+                this.$axios.post('/signup', datauser)
+                .then((res) => {
+                    //console.log(res)
+                    state.loading = false
+                    if (res.data.status == 1) {
+                        state.flag = 'success'
+                        setTimeout(function() {
+                            window.location.href = '/users'
+                        })
+                    } else {
+                        state.flag = 'fail'
+                        alert('error')
+                    }
+                })
+                .catch(function(error) {
+                    if ((error.message = 'Request failed with status code 500')) {
+                        state.message = 'duplicate key error collection email or user name'
+                    }
                     state.flag = 'fail'
-                    alert('error')
-                }
-            })
-            .catch(function(error) {
-                if ((error.message = 'Request failed with status code 500')) {
-                    state.message = 'duplicate key error collection email or user name'
-                }
-                state.flag = 'fail'
-            })
+                })
+            } else {
+                state.loadingOptions = false
+            }
+        })
+        
     },
 
     getoneUserchat({ state }, ids) {

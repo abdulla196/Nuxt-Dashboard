@@ -6,6 +6,16 @@
       </div>
       <v-form ref="form" v-model="valid">
         <v-row id="form">
+          <v-col class="col-12 text-center"  v-if="MaidsEdit.photo">
+
+            
+            <img
+              contain
+              height="150"
+              width="150"
+              :src="MaidsEdit.photo"
+            />
+          </v-col>
           <v-col class="col-md-6 col-12">
             <v-text-field
               label="phone"
@@ -90,6 +100,16 @@
               required
               outlined
             ></v-text-field>
+          </v-col>
+          <v-col class="col-md-6 col-12">
+            
+            <v-file-input
+                :rules="rulesImage"
+                placeholder="Pick an avatar"
+                prepend-icon="mdi-camera"
+                label="Change profile"
+                @change="onFileChanged"
+            ></v-file-input>
           </v-col>
           <div
             id="my-strictly-unique-vue-upload-multiple-image"
@@ -190,11 +210,15 @@
 import { mapActions, mapGetters } from 'vuex'
 export default {
   data: () => ({
+    rulesImage: [
+        value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
+    ],
     valid: true,
     snackbar: false,
     overlay: false,
     activePicker: null,
     menu: false,
+    photoupdate:false,
     MaidsEdit: {
       maid_paper: [],
       phone: '',
@@ -205,6 +229,7 @@ export default {
       userName: '',
       email: '',
       id: '',
+      photo:''
     },
   }),
   watch: {
@@ -223,6 +248,10 @@ export default {
   },
   methods: {
     ...mapActions(['updateMaids', 'completeMaidsData']),
+    onFileChanged (event) {
+      this.photoupdate = true
+        this.MaidsEdit.photo = event
+    },
     uploadImageSuccess(formData, index, fileList) {
       //console.log('data', formData, index, fileList)
       this.MaidsEdit.maid_paper = fileList
@@ -269,6 +298,7 @@ export default {
         this.MaidsEdit.email = res.data.email
         this.MaidsEdit.id = this.$route.params.id
         this.MaidsEdit.maid_paper = res.data.maid_paper
+        this.MaidsEdit.photo = res.data.photo
         if (res.data.birthday == 'null') {
           this.MaidsEdit.birthday = ''
         } else {
@@ -281,11 +311,13 @@ export default {
     },
     UpdateMaid() {
       this.snackbar = true
+      if(this.photoupdate){
+        this.updateMaidswithphoto(this.MaidsEdit)
+      }
+      else{
       this.updateMaids(this.MaidsEdit)
+      }
     },
-  },
-  components: {
-    VueUploadMultipleImage,
   },
   computed: {
     ...mapGetters(['allMaidsList']),

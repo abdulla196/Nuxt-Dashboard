@@ -27,15 +27,15 @@
                 <span class="infomaid"> location </span>  <span class="details">{{allMaidsList.maidInfo.location}}</span> 
             </div>
             
-            <div class="col-md-12" v-if="allMaidsList.maidInfo.maid_paper">
+            <div class="col-md-12"  v-if="allMaidsList.maidInfo.maid_paper">
                 <v-divider></v-divider>
                 <div class="mt-2 mb-5">
                     <h3 style="color:#f68c28">images</h3>
                 </div>
                 <span class="mx-2" v-for="(images , i) in allMaidsList.maidInfo.maid_paper" :key="i">
                     <img 
-                    :src="images.path"
-                    :lazy-src="images.path"
+                    :src="images"
+                    :lazy-src="images"
                     aspect-ratio="1"
                     class="grey lighten-2" height="200"/>
                 </span>
@@ -43,8 +43,8 @@
         </v-row>
 
         
-        <v-divider></v-divider>
         <div class="my-2" v-if="allMaidsList.maidreviews">
+        <v-divider></v-divider>
             <h3 class="mt-2 mb-5" style="color:#f68c28">Reviewes Details</h3>
         </div>
         <div v-for="items in allMaidsList.maidreviews" :key="items._id">

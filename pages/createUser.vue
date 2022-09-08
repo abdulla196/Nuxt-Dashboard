@@ -130,6 +130,16 @@
             ></v-text-field>
           </v-col>
 
+          <v-col class="col-md-6 col-12">
+            
+            <v-file-input
+                :rules="rulesImage"
+                placeholder="Pick an avatar"
+                prepend-icon="mdi-camera"
+                label="Change profile"
+                @change="onFileChanged"
+            ></v-file-input>
+          </v-col>
           <div class="col-12 text-center">
             <v-btn
               depressed
@@ -203,7 +213,14 @@
 import { mapActions, mapGetters } from 'vuex'
 export default {
   data: () => ({
+    rulesImage: [
+        value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
+    ],
+    
+    overlay: false,
+    activePicker: null,
     valid: true,
+    menu: false,
     snackbar: false,
     showPasswordOld: false,
     showPassword: false,
@@ -471,13 +488,32 @@ export default {
       location: '',
       phone: '',
       details: '',
+      photo:null
     },
   }),
   computed: {},
 
+  watch: {
+    menu(val) {
+      val && setTimeout(() => (this.activePicker = 'YEAR'))
+    },
+    overlay(val) {
+      val &&
+        setTimeout(() => {
+          this.overlay = false
+        }, 3000)
+    },
+  },
   methods: {
     ...mapActions(['Signup']),
-
+    save(date) {
+      this.user.birthday = date
+      this.$refs.menu.save(this.UserEdit.birthday)
+    },
+    onFileChanged (event) { 
+      console.log(event)
+        this.user.photo = event
+    },
     AddUser() {
       this.Signup(this.user)
       this.snackbar = true

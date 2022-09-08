@@ -28,7 +28,6 @@
                         <div class="form_account_body">
                         <v-file-input
                             :rules="rulesImage"
-                            accept="image/png, image/jpeg, image/bmp"
                             placeholder="Pick an avatar"
                             prepend-icon="mdi-camera"
                             label="Change profile"

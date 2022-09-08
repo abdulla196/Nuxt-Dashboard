@@ -9,6 +9,16 @@
       </div>
       <v-form ref="form" v-model="valid">
         <v-row id="form">
+          <v-col class="col-12 text-center"  v-if="UserEdit.photo">
+
+            
+            <img
+              contain
+              height="150"
+              width="150"
+              :src="UserEdit.photo"
+            />
+          </v-col>
           <v-col class="col-md-6 col-12">
             <v-text-field
               label="userName"
@@ -80,7 +90,16 @@
               ></v-date-picker>
             </v-menu>
           </v-col>
-
+          <v-col class="col-md-6 col-12">
+            
+            <v-file-input
+                :rules="rulesImage"
+                placeholder="Pick an avatar"
+                prepend-icon="mdi-camera"
+                label="Change profile"
+                @change="onFileChanged"
+            ></v-file-input>
+          </v-col>
           <div class="col-12 text-center">
             <v-btn
               depressed
@@ -156,6 +175,9 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data: () => ({
+    rulesImage: [
+        value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
+    ],
     valid: true,
     snackbar: false,
     activePicker: null,
@@ -424,6 +446,7 @@ export default {
       userName: '',
       email: '',
       id: '',
+      photo:null
     },
   }),
 
@@ -448,6 +471,10 @@ export default {
       //   console.log(response)
       // })
     },
+    onFileChanged (event) { 
+      console.log(event)
+        this.UserEdit.photo = event
+    },
     beforeRemove(index, done, fileList) {
       //console.log('index', index, fileList)
       var r = confirm('remove image')
@@ -469,6 +496,8 @@ export default {
       this.UserEdit.userName = this.allUsersList.data.userName
       this.UserEdit.email = this.allUsersList.data.email
       this.UserEdit.id = this.$route.params.id
+      this.UserEdit.photo = this.allUsersList.data.photo
+      
       //console.log(this.UserEdit)
     },
     updateuser() {

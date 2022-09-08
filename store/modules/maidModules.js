@@ -59,6 +59,47 @@ const actions = {
                 state.loading = false
             })
     },
+    
+    async updateMaidswithphoto({ state, dispatch }, Obj) {
+        state.message = 'Loading ....'
+        state.loading = true
+        state.flag = 'loading'
+        var data_photo = new FormData()
+        data_photo.append('image', Obj.photo)
+
+        var config = { headers: { 'Content-Type': 'multipart/form-data' } }
+        this.$axios.post('/api/user/photo', data_photo, config).then((res) => {
+            if (res.data.status === 1) {
+               
+            var data_use = JSON.stringify({
+                phone: Obj.phone,
+                location: Obj.location,
+                details: Obj.details,
+                birthday: Obj.birthday,
+                price: Obj.price,
+                userName: Obj.userName,
+                email: Obj.email,
+                maid_paper: Obj.maid_paper,
+                photo: 'http://66.29.155.80:5003/uploads/' + res.data.data.name
+            })
+
+            this.$axios.put('/api/user/' + Obj.id, data_use).then((res) => {
+                state.cart = res.data
+                if (res.data.status === 1) {
+                state.flag = 'success'
+                    state.data = res.data
+                    state.message = res.data.message
+                    setTimeout(function() {
+                    window.location.href = '/maids'
+                    })
+                } else {
+                    state.message = res.data.message
+                }
+                state.loading = false
+            })
+        }
+        })
+    },
     async updateMaids({ state, dispatch }, Obj) {
         state.message = 'Loading ....'
         state.loading = true
