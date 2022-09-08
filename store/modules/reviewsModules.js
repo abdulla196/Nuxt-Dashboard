@@ -12,7 +12,7 @@ const getters = {
 
 const actions = {
     async getReviews({ state }) {
-        await this.$axios.put('/api/review').then((res) => {
+        await this.$axios.get('/api/review').then((res) => {
             state.data = res.data
             state.length = res.data.data.length
             state.loading = false
@@ -29,7 +29,7 @@ const actions = {
                 dispatch('getReviews')
             })
             .catch(function(error) {
-                console.log(error)
+                //console.log(error)
                 state.flag = 'fail'
             })
     },
@@ -37,6 +37,7 @@ const actions = {
         state.loading = true
 
         await this.$axios.get('/api/review/' + id).then((res) => {
+            //console.log(res)
             state.oneReviews = res.data.data
             state.loading = false
         })
@@ -52,11 +53,11 @@ const actions = {
     },
     async GetforMaid({ state, dispatch }, id) {
         state.loading = true
-        console.log(id.maids)
+            //console.log(id.maids)
         await this.$axios.get('/api/review/maid/' + id.maids).then((res) => {
             state.data = res.data.data
             if (res.data.status == 1) {
-                console.log()
+                //console.log()
                 window.location.href = '/reviews/details/' + id.maids
             }
             state.loading = false
@@ -94,8 +95,8 @@ const actions = {
         state.message = 'Loading ....'
         state.flag = 'loading'
         var data = JSON.stringify({
-            users: arrayData.users,
-            maids: arrayData.maids,
+            user_id: arrayData.users,
+            maid_id: arrayData.maids,
             rate: arrayData.rate,
             comment: arrayData.comment,
         })

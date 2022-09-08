@@ -141,7 +141,7 @@ export default {
     ...mapActions(['updateReviews', 'getoneReviews', 'getUsers', 'getMaids']),
 
     completeUserData() {
-      console.log(this.allReviewsList)
+      //console.log(this.allReviewsList)
       this.ReviewEdit.comment = this.allReviewsList.oneReviews.comment
       this.ReviewEdit.rate = this.allReviewsList.oneReviews.rate
       this.ReviewEdit.user_id = this.allReviewsList.oneReviews.user_id

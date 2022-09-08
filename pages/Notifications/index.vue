@@ -33,13 +33,11 @@
       <template #item.userName="{ value }">
         {{ value }}
       </template>
-      <template #item.user_id="{ value }">
-        {{ value }}
-      </template>
+
       <template #item.priority="{ value }">
         <p
           style="
-            background: #f00;
+            background: #c42c21d2;
             height: 75%;
             display: flex;
             align-items: center;
@@ -53,7 +51,7 @@
 
         <p
           style="
-            background: green;
+            background: #28b728b9;
             height: 75%;
             display: flex;
             align-items: center;
@@ -152,7 +150,7 @@ export default {
         { text: 'content', value: 'content' },
         { text: 'is_clicked', value: 'is_clicked' },
         { text: 'userName', value: 'user_id.userName' },
-        { text: 'user_id', value: 'user_id._id' },
+
         { text: 'priority', value: 'priority' },
         { text: 'Actions', value: 'actions', sortable: false },
       ],

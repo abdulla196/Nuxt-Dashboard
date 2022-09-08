@@ -49,7 +49,7 @@ const actions = {
                 dispatch('getUsers')
             })
             .catch(function(error) {
-                console.log(error)
+                //console.log(error)
                 state.flag = 'fail'
             })
     },
@@ -140,7 +140,7 @@ const actions = {
         this.$axios
             .post('/signup', data)
             .then((res) => {
-                console.log(res)
+                //console.log(res)
                 state.loading = false
                 if (res.data.status == 1) {
                     state.flag = 'success'
@@ -214,10 +214,9 @@ const actions = {
     },
 
     async changeMyPhoto({ state, dispatch }, Obj) {
-        console.log(Obj)
         var data = new FormData()
         data.append('image', Obj.selectedFile)
-        console.log(data)
+
         var config = { headers: { 'Content-Type': 'multipart/form-data' } }
         this.$axios.post('/api/user/photo', data, config).then((res) => {
             if (res.data.status === 1) {
@@ -226,7 +225,9 @@ const actions = {
                 })
                 this.$axios.$put('/api/user/' + Obj.id, photo).then((res) => {
                     state.loading = false
-                    if (res.status === 1) {}
+                    if (res.status === 1) {
+                        window.location.reload()
+                    }
                 })
             } else {
                 state.loadingOptions = false

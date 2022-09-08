@@ -27,7 +27,7 @@
 
               <v-col cols="12">
                 <v-select
-                  v-model="NotificationEdit.userNames"
+                  v-model="NotificationEdit.userNames._id"
                   :items="allUsersList.data"
                   item-text="userName"
                   item-value="_id"
@@ -171,7 +171,7 @@ export default {
       this.NotificationEdit.priority =
         this.allnotificationList.oneNotification.priority
       this.NotificationEdit.id = this.$route.params.id
-      console.log(this.NotificationEdit.userNames)
+      //console.log(this.NotificationEdit.userNames)
     },
 
     UpdateUNotifi() {
@@ -194,9 +194,9 @@ export default {
 
 <style scoped>
 .v-radio.high label {
-  color: #f00 !important;
+  color: #c42c21d2 !important;
 }
 .v-radio.low label {
-  color: green !important;
+  color: #28b728b9 !important;
 }
 </style>

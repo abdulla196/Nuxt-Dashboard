@@ -54,12 +54,19 @@
       <template v-slot:item.="{ item, index }">
         {{ index + 1 }}
       </template>
+      <template #item.user="{ value }">
+        {{ value }}
+      </template>
+      <template #item.maid="{ value }">
+        {{ value }}
+      </template>
       <template #item.comment="{ value }">
         {{ value }}
       </template>
       <template #item.rate="{ value }">
         <v-rating v-model="value" readonly></v-rating>
       </template>
+
       <template #item.actions="{ item }">
         <td @click.stop class="non-clickable">
           <v-btn :to="`/reviews/${item._id}`" class="btn-table">
@@ -152,6 +159,8 @@ export default {
       search: '',
       headers: [
         { text: 'index', value: '' },
+        { text: 'user', value: 'user_id.userName' },
+        { text: 'maid', value: 'maid_id.userName' },
         { text: 'comment', value: 'comment' },
         { text: 'rate', value: 'rate' },
         { text: 'Actions', value: 'actions', sortable: false },

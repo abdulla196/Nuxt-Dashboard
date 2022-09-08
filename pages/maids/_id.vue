@@ -224,15 +224,15 @@ export default {
   methods: {
     ...mapActions(['updateMaids', 'completeMaidsData']),
     uploadImageSuccess(formData, index, fileList) {
-      console.log('data', formData, index, fileList)
+      //console.log('data', formData, index, fileList)
       this.MaidsEdit.maid_paper = fileList
       // Upload image api
       // axios.post('/api/user/'+this.$route.params.id, { data: formData }).then(response => {
-      //   console.log(response)
+      //console.log(response)
       // })
     },
     beforeRemove(index, done, fileList) {
-      console.log('index', index, fileList)
+      //console.log('index', index, fileList)
       var r = confirm('remove image')
       if (r == true) {
         done()

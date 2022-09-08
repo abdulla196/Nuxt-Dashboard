@@ -441,7 +441,7 @@ export default {
       this.$refs.menu.save(this.UserEdit.birthday)
     },
     uploadImageSuccess(formData, index, fileList) {
-      console.log('data', formData, index, fileList)
+      //console.log('data', formData, index, fileList)
       this.UserEdit.maid_paper = fileList
       // Upload image api
       // axios.post('/api/user/'+this.$route.params.id, { data: formData }).then(response => {
@@ -449,7 +449,7 @@ export default {
       // })
     },
     beforeRemove(index, done, fileList) {
-      console.log('index', index, fileList)
+      //console.log('index', index, fileList)
       var r = confirm('remove image')
       if (r == true) {
         done()
@@ -469,7 +469,7 @@ export default {
       this.UserEdit.userName = this.allUsersList.data.userName
       this.UserEdit.email = this.allUsersList.data.email
       this.UserEdit.id = this.$route.params.id
-      console.log(this.UserEdit)
+      //console.log(this.UserEdit)
     },
     updateuser() {
       this.updateUsers(this.UserEdit)

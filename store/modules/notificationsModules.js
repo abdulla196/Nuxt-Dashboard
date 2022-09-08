@@ -31,7 +31,7 @@ const actions = {
             })
             .catch(function(error) {
                 state.flag = 'fail'
-                console.log(error)
+                    //console.log(error)
             })
     },
     async getoneNotification({ state }, id) {
@@ -41,6 +41,7 @@ const actions = {
             state.oneNotification = res.data.data
             this.$axios.get('/api/user/' + res.data.data.user_id).then((respons) => {
                 state.oneNotification.userName = respons.data.data.userName
+                state.oneNotification.user_id = respons.data.data._id
                 state.loading = false
             })
             state.loading = false
@@ -54,7 +55,7 @@ const actions = {
             is_clicked: Obj.is_clicked,
             content: Obj.content,
             subject: Obj.subject,
-            user_id: Obj.usersId,
+            user_id: Obj.userNames._id,
             priority: Obj.priority,
         })
         this.$axios.put('/api/notification/' + Obj.id, data).then((res) => {
@@ -83,23 +84,7 @@ const actions = {
                 priority: arrayData.priority,
                 user_id: arrayData.users[i],
             })
-            this.$axios
-                .post('/api/notification/', data)
-                .then((res) => {
-                    state.loading = false
-                    if (res.data.status == 1) {
-                        if (arrayData.users.length == i + 1)
-                            state.message = res.data.message
-                        setTimeout(function() {
-                            window.location.href = '/Notifications'
-                        })
-                    } else {
-                        alert('error')
-                    }
-                })
-                .catch((error) => {
-                    state.loading = false
-                })
+
             this.$axios
                 .post('/api/notification/', data)
                 .then((res) => {

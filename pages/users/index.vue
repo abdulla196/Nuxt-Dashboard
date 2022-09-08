@@ -32,9 +32,7 @@
       <template #item.email="{ value }">
         {{ value }}
       </template>
-      <template #item.details="{ value }">
-        {{ value }}
-      </template>
+
       <template #item.location="{ value }">
         {{ value }}
       </template>
@@ -127,7 +125,7 @@ export default {
         { text: 'Name', value: 'userName' },
         { text: 'phone', value: 'phone' },
         { text: 'Email', value: 'email' },
-        { text: 'details', value: 'details' },
+
         { text: 'location', value: 'location' },
         { text: 'type', value: 'type' },
         { text: 'Actions', value: 'actions', sortable: false },

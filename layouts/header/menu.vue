@@ -24,10 +24,16 @@
 
         <v-list-item v-if="allAuth.checkAuth">
           <v-list-item-avatar>
-            <v-icon class="grey lighten-1" dark> mdi-account </v-icon>
+            <img
+              contain
+              :lazy-src="image"
+              max-height="50"
+              max-width="50"
+              :src="image"
+            />
           </v-list-item-avatar>
 
-          <v-list-item-content v-if="allAuth.user">
+          <v-list-item-content>
             <v-list-item-title v-text="username"></v-list-item-title>
 
             <v-list-item-subtitle v-text="email"></v-list-item-subtitle>
@@ -196,6 +202,7 @@ export default {
     return {
       username: '',
       email: '',
+      image: '',
       drawer: false,
       is_read: true,
       items: [
@@ -236,10 +243,11 @@ export default {
     },
     mydata() {
       const info = this.$cookies.get('myInfo')
-      //console.log(info)
+
       if (info) {
-        this.username = info.userName
-        this.email = info.email
+        this.username = info.data.userName
+        this.email = info.data.email
+        this.image = info.data.photo
       } else {
         this.myInfo()
       }
