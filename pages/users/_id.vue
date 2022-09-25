@@ -12,7 +12,12 @@
           <v-col class="col-12 text-center"  v-if="UserEdit.photo">
 
             
+    <img v-if="url" :src="url"  
+              contain
+              height="150"
+              width="150"/>
             <img
+            v-else
               contain
               height="150"
               width="150"
@@ -436,6 +441,7 @@ export default {
       'Zambia  ',
       'Zimbabwe',
     ],
+    url:null,
     UserEdit: {
       maid_paper: [],
       phone: '',
@@ -473,7 +479,8 @@ export default {
     },
     onFileChanged (event) { 
       console.log(event)
-        this.UserEdit.photo = event
+      this.url = URL.createObjectURL(event);
+        this.UserEdit.photo = event.name
     },
     beforeRemove(index, done, fileList) {
       //console.log('index', index, fileList)

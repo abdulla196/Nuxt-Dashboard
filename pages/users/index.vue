@@ -17,7 +17,6 @@
       :items="allUsersList.data"
       :search="search"
       :headers="headers"
-      item-key="userName"
       class="table100"
     >
       <template v-slot:item.="{ item, index }">

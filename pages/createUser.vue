@@ -484,6 +484,7 @@ export default {
       password: '',
       email: '',
       passwordConfirm: '',
+      birthday:null,
       type: '',
       location: '',
       phone: '',
@@ -507,8 +508,9 @@ export default {
   methods: {
     ...mapActions(['Signup']),
     save(date) {
+      console.log(date)
       this.user.birthday = date
-      this.$refs.menu.save(this.UserEdit.birthday)
+      this.$refs.menu.save(date)
     },
     onFileChanged (event) { 
       console.log(event)

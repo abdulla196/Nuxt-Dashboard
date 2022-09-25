@@ -9,7 +9,12 @@
           <v-col class="col-12 text-center"  v-if="MaidsEdit.photo">
 
             
+    <img v-if="url" :src="url"  
+              contain
+              height="150"
+              width="150"/>
             <img
+            v-else
               contain
               height="150"
               width="150"
@@ -130,8 +135,10 @@
               idUpload="myIdUpload"
               browseText="select image"
               primaryText="images"
-              popupText=""
-              markIsPrimaryText=""
+              markIsPrimaryText = "Set as default image"
+              popupText = "This image will be set as default"
+              dropText = "Drag and drop"
+              accept = image/jpeg,image/png,image/jpg,image/tif,image/tiff
             ></vue-upload-multiple-image>
           </div>
           <div class="col-12 text-center">
@@ -219,6 +226,7 @@ export default {
     activePicker: null,
     menu: false,
     photoupdate:false,
+      url: null,
     MaidsEdit: {
       maid_paper: [],
       phone: '',
@@ -250,6 +258,7 @@ export default {
     ...mapActions(['updateMaids', 'completeMaidsData']),
     onFileChanged (event) {
       this.photoupdate = true
+      this.url = URL.createObjectURL(event);
         this.MaidsEdit.photo = event
     },
     uploadImageSuccess(formData, index, fileList) {
@@ -261,7 +270,7 @@ export default {
       // })
     },
     beforeRemove(index, done, fileList) {
-      //console.log('index', index, fileList)
+      // console.log('index', index, fileList)
       var r = confirm('remove image')
       if (r == true) {
         done()

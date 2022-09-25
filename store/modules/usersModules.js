@@ -154,6 +154,7 @@ const actions = {
                     location: arrayData.location,
                     phone: arrayData.phone,
                     details: arrayData.details,
+                    birthday:arrayData.birthday,
                     photo: 'http://66.29.155.80:5003/uploads/' + res.data.data.name
                 })
                 this.$axios.post('/signup', datauser)
