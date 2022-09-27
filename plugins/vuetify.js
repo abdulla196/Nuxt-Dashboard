@@ -1,6 +1,5 @@
 import Vue from 'vue'
-import Vuetify from 'vuetify'
-import colors from 'vuetify/es5/util/colors'
+import Vuetify from 'vuetify' 
 Vue.use(Vuetify)
 
 export default new Vuetify({

@@ -464,7 +464,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['updateUsers', 'getoneUser']),
+    ...mapActions(['updateUsers', 'getoneUser','getUsers']),
     save(date) {
       this.UserEdit.birthday = date
       this.$refs.menu.save(this.UserEdit.birthday)
@@ -519,6 +519,7 @@ export default {
 
   mounted() {
     this.getoneUser(this.$route.params.id)
+      this.getUsers()
     setTimeout(() => this.completeMaidsData(), 3000)
   },
 }

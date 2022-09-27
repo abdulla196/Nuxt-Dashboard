@@ -34,9 +34,10 @@
                 </div>
                 <span class="mx-2" v-for="(images , i) in allMaidsList.maidInfo.maid_paper" :key="i">
                     <img 
-                    :src="images"
-                    :lazy-src="images"
+                    :src="images.path"
+                    :lazy-src="images.path"
                     aspect-ratio="1"
+                    :alt="images.name"
                     class="grey lighten-2" height="200"/>
                 </span>
             </div>
