@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <h2 class="text-center my-1"> Chat</h2>
-    <v-card>
+    <v-card style="padding:0">
       <v-row>
         <v-col cols="12" sm="5" class="flex-grow-1 flex-shrink-0" style="border-right: 1px solid #0000001f;">
 
@@ -65,13 +65,20 @@
                     <div ref="scrollable"></div>
                 </template>
               </v-card-text>
-              <v-card-text class="d-flex  flex-shrink-1">
-                <v-text-field v-model="messagesend" label="type a message" type="text" no- outlined />
+              <v-card-text class="d-flex  flex-shrink-1"  v-if="!recive">
+                <input disabled label="type a message" type="text" no- outlined />
+                <v-btn depressed color="#f68c28" disabled>
+                  Send now
+                </v-btn>
+              </v-card-text>
+              
+              <v-card-text class="d-flex  flex-shrink-1" v-else>
+                <input v-model="messagesend" label="type a message" type="text" no- outlined />
                 <v-btn depressed color="#f68c28" v-if="messagesend == ''" disabled>
                   Send now
                 </v-btn>
                 
-                <v-btn depressed color="#f68c28" v-else  @keyup.enter="writeToFirestore()" @click="writeToFirestore()" >
+                <v-btn depressed color="#f68c28" class="send" v-else @click="writeToFirestore()" >
                   Send now
                 </v-btn>
               </v-card-text>
@@ -92,6 +99,7 @@ import { mapActions, mapGetters,mapState } from 'vuex'
 export default {
   data() {
     return {
+      recive:false,
       active: true,
       user_icon: 'mdi-account',
       // messages: [],
@@ -142,6 +150,7 @@ export default {
       this.arraymessages.push(document2)
     },
     async clientData(id) {
+      this.recive = true
         this.scrollDonw()
       if(id){ 
         this.client_id = id
@@ -178,8 +187,7 @@ export default {
       };
     },
    async scrollDonw(){
-    
-    this.$refs['scrollable'].scrollIntoView({ behavior: 'smooth' })
+      this.$refs['scrollable'].scrollIntoView({ behavior: 'smooth' })
     },
     async Read(id,timeid){
       const washingtonRef =doc(db, `messages/${id}/${id}`, timeid);
@@ -244,7 +252,9 @@ export default {
   },
   created() {
     setInterval(() => {
+      if(this.recive){
       this.clientData(this.client_id)
+      }
     }, 1000)
     
   },
@@ -256,6 +266,25 @@ export default {
 }
 </script>
 <style scoped>
+.send{
+  color:#fff !important;
+}
+input {
+	padding:7px 10px;
+	width:100%;
+	outline:none;
+	border:1px solid #bbb;
+	border-radius:5px;
+	display:inline-block;
+	-webkit-box-sizing:border-box;
+	   -moz-box-sizing:border-box;
+	        box-sizing:border-box;
+    -webkit-transition:0.2s ease all;
+	   -moz-transition:0.2s ease all;
+	    -ms-transition:0.2s ease all;
+	     -o-transition:0.2s ease all;
+	        transition:0.2s ease all;
+}
 .chat-container {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;

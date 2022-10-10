@@ -106,7 +106,6 @@ img {
 /* body of pages */
 .pages {
   margin-top: 67px;
-  margin-bottom: 20px;
 }
 .page {
   margin-top: 25px;
